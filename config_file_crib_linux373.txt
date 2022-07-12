@@ -1,7 +1,7 @@
 SoilPropertyPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/SoilProperty/
-InputPath=/P1/US_Var_2004/Vaira_input/
-OutputPath=/P1/US_Var_2004/Vaira_output/
-ForcingPath=/P1/US_Var_2004/Vaira_input/
+InputPath=F:/P1/US_Var_2004/Vaira_input/
+OutputPath=F:/P1/US_Var_2004/Vaira_output/
+ForcingPath=F:/P1/US_Var_2004/Vaira_input/
 ForcingFileName=US-Var_2004-2004_FLUXNET2015_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
 DurationSize=NA

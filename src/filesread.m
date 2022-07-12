@@ -4,9 +4,8 @@ global CFG
 
 %% CFG is a path to a config file
 if isempty(CFG)
-    CFG = '../config_file_crib.txt';
+    CFG = '../config_file_crib_linux373.txt';
 end
-
 %% Read the CFG file. Due to using MATLAB compiler, we cannot use run(CFG)
 disp (['Reading config from ',CFG])
 [SoilPropertyPath, InputPath, OutputPath, ForcingPath, ForcingFileName, DurationSize, InitialConditionPath] = io.read_config(CFG);
@@ -129,9 +128,9 @@ LAIL=length(LAI);
 LAIa=reshape(LAI,LAIL,1);
 LAIa(LAIa<0.01)=0.01;
 
-LAI_alternative=ncread(ForcingFilePath,'LAI_alternative');
-LAI_alternativeL=length(LAI_alternative);
-LAI_alternativea=reshape(LAI_alternative,LAI_alternativeL,1);
+% LAI_alternative=ncread(ForcingFilePath,'LAI_alternative');
+% LAI_alternativeL=length(LAI_alternative);
+% LAI_alternativea=reshape(LAI_alternative,LAI_alternativeL,1);
 
 IGBP_veg_long=ncread(ForcingFilePath,'IGBP_veg_long');
 reference_height=ncread(ForcingFilePath,'reference_height');
