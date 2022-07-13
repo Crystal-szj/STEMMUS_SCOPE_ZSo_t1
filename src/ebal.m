@@ -1,8 +1,9 @@
-function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac]             ...  
+function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih, eiu, ech,ecu]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
-                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t)
+                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL Theta_o bbx NL KT sfactor wfrac  PSItot sfactortot Theta_f
  global  m n Alpha TT
+ global rroot frac  
 % function ebal.m calculates the energy balance of a vegetated surface
 %
 % authors:      Christiaan van der Tol (tol@itc.nl)
@@ -164,6 +165,8 @@ end
 
 LAI = canopy.LAI;
 PSI=0;
+eih = equations.satvap(Tch);
+eiu = equations.satvap(Tcu);												 
 %[bbx]=Max_Rootdepth(bbx,TIME,NL,KT);
 [bbx]=Max_Rootdepth(bbx,NL,KT,TT);
 [PSIs,rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha);
@@ -229,7 +232,7 @@ while CONT                          % while energy balance does not close
     biochem_in.BallBerry0   = leafbio.BallBerry0;
     biochem_in.O            = meteo.Oa;
     biochem_in.Rdparam      = leafbio.Rdparam;
-    
+    biochem_in.PSI          = PSI;
     if options.Fluorescence_model==2    % specific for the v.Caemmerer-Magnani model
         b                   = @biochemical_MD12;
         biochem_in.Tyear        = leafbio.Tyear;
@@ -238,7 +241,7 @@ while CONT                          % while energy balance does not close
         biochem_in.NPQs        = leafbio.kNPQs;
         biochem_in.stressfactor = leafbio.stressfactor;
     else
-        b                   = @biochemical; % specific for Berry-v.d.Tol model
+        b                   = biochemical; % specific for Berry-v.d.Tol model
         biochem_in.tempcor      = options.apply_T_corr;
         biochem_in.Tparams      = leafbio.Tparam;
         biochem_in.stressfactor = SMCsf;    
@@ -250,6 +253,7 @@ while CONT                          % while energy balance does not close
     biochem_in.Vcmo     = fVh.*leafbio.Vcmo;
     biochem_in.Cs       = Cch;
     biochem_in.Q        = rad.Pnh_Cab*1E6;
+	biochem_in.ei       = eih;							   
     
     biochem_out         = b(biochem_in);
     Ah                  = biochem_out.A;
@@ -259,6 +263,7 @@ while CONT                          % while energy balance does not close
     rcwh                = biochem_out.rcw;
     qEh                 = biochem_out.qE; % vCaemmerer- Magnani does not generate this parameter (dummy value)
     Knh                 = biochem_out.Kn;
+	VPDh                = biochem_out.VPD_l2b;												   
     
     % for sunlit leaves
     biochem_in.T        = Tcu;
@@ -266,6 +271,7 @@ while CONT                          % while energy balance does not close
     biochem_in.Vcmo     = fVu.*leafbio.Vcmo;
     biochem_in.Cs       = Ccu;
     biochem_in.Q        = rad.Pnu_Cab*1E6;
+	biochem_in.ei       = eiu;							   
     
     biochem_out         = b(biochem_in);
  
@@ -276,6 +282,7 @@ while CONT                          % while energy balance does not close
     rcwu                = biochem_out.rcw;
     qEu                 = biochem_out.qE;
     Knu                 = biochem_out.Kn;
+	VPDu                = biochem_out.VPD_l2b;												   
     
     Pinh                = rad.Pnh;
     Pinu                = rad.Pnu;

@@ -8,10 +8,10 @@ if isempty(CFG)
 end
 %% Read the CFG file. Due to using MATLAB compiler, we cannot use run(CFG)
 disp (['Reading config from ',CFG])
-[SoilPropertyPath, InputPath, OutputPath, ForcingPath, ForcingFileName, DurationSize, InitialConditionPath] = io.read_config(CFG);
+[SoilPropertyPath, InputPath, OutputPath, ForcingPath, ForcingFileName, DurationSize, InitialConditionPath, Scenario] = io.read_config(CFG);
 
 %%%%%%% Prepare input files. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-global DELT IGBP_veg_long latitude longitude reference_height canopy_height sitename
+global DELT IGBP_veg_long latitude longitude reference_height canopy_height  Dur_tot biochemical
 
 % Add the forcing name to forcing path
 ForcingFilePath=fullfile(ForcingPath, ForcingFileName);
@@ -23,6 +23,21 @@ sitefullname=dir(ForcingFilePath).name; %read sitename
     startyear=str2double(startyear);
     endyear=str2double(endyear);
 %ncdisp(sitefullname,'/','full');
+
+if Scenario == 'Vc_gs_b'                            % Vc = Vcmax * WSF ; b = BallBerrySlope
+    biochemical = @biochemical_Vc_gs_b;
+elseif Scenario == 'Vcmax_gs_bw'                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
+    biochemical = @biochemical_Vcmax_gs_bw;
+elseif Scenario == 'Vc_gs_bw'                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
+    biochemical = @biochemical_Vc_gs_bw;
+elseif Scenario == 'Vc_gs_m'                        % Vc = Vcmax * WSF ; m = MedlynSlope
+    biochemical = @biochemical_Vc_gs_m;
+elseif Scenario == 'Vcmax_gs_mw'                    % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
+    biochemical = @biochemical_Vcmax_gs_mw;
+elseif Scenario == 'Vc_gs_bw'                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
+    biochemical = @biochemical_Vc_gs_mw;
+end
+fprintf('This is Scenario -- %s for %s',Scenario,sitename);
 
 % Read time values from forcing file
 time1=ncread(ForcingFilePath,'time');

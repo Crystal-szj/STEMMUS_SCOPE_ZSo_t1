@@ -56,6 +56,7 @@ global HCAP SF TCA GA1 GA2 GB1 GB2 HCD ZETA0 CON0 PS1 PS2 XWILT FEHCAP QMTT QMBB
 global constants
 global RWU EVAP theta_s0 Ks0
 global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime DELT IGBP_veg_long latitude longitude reference_height canopy_height sitename Dur_tot Tmin fmax
+global biochemical
 
 %% 1. define constants
 [constants] = io.define_constants();
@@ -563,9 +564,9 @@ for i = 1:1:Dur_tot
         
         switch options.calc_ebal
             case 1
-                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac]                          ...
+                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu]                          ...
                     = ebal(iter,options,spectral,rad,gap,                       ...
-                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t);
+                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical);
                 if options.calc_fluor
                     if options.calc_vert_profiles
                         [rad,profiles] = RTMf(spectral,rad,soil,leafopt,canopy,gap,angles,profiles);
