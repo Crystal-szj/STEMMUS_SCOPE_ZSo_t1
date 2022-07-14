@@ -4,7 +4,7 @@ global CFG
 
 %% CFG is a path to a config file
 if isempty(CFG)
-    CFG = '../config_file_crib_linux373.txt';
+    CFG = '../config_file_linux373.txt';
 end
 %% Read the CFG file. Due to using MATLAB compiler, we cannot use run(CFG)
 disp (['Reading config from ',CFG])
@@ -37,7 +37,7 @@ elseif Scenario == 'Vcmax_gs_mw'                    % Vcmax = Vcmax    ; mw = Me
 elseif Scenario == 'Vc_gs_bw'                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
     biochemical = @biochemical_Vc_gs_mw;
 end
-fprintf('This is Scenario -- %s for %s',Scenario,sitename);
+fprintf('This is Scenario -- %s for %s\n',Scenario,sitename);
 
 % Read time values from forcing file
 time1=ncread(ForcingFilePath,'time');
