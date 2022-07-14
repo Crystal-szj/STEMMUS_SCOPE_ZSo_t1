@@ -36,6 +36,8 @@ elseif Scenario == 'Vcmax_gs_mw'                    % Vcmax = Vcmax    ; mw = Me
     biochemical = @biochemical_Vcmax_gs_mw;
 elseif Scenario == 'Vc_gs_bw'                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
     biochemical = @biochemical_Vc_gs_mw;
+else
+    biochemical = @biochemical_backup;
 end
 fprintf('This is Scenario -- %s for %s\n',Scenario,sitename);
 
