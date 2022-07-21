@@ -56,7 +56,7 @@ global HCAP SF TCA GA1 GA2 GB1 GB2 HCD ZETA0 CON0 PS1 PS2 XWILT FEHCAP QMTT QMBB
 global constants
 global RWU EVAP theta_s0 Ks0
 global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime DELT IGBP_veg_long latitude longitude reference_height canopy_height sitename Dur_tot Tmin fmax
-global biochemical
+global biochemical Scenario startyear endyear
 
 %% 1. define constants
 [constants] = io.define_constants();
@@ -406,8 +406,10 @@ run StartInit;   % Initialize Temperature, Matric potential and soil air pressur
 
 
 %% 14. Run the model
+diary([Output_dir,'log.txt'])
+fprintf('This is Scenario -- %s for %s_%d-%d\n',Scenario,sitename,startyear,endyear);
 fprintf('\n The calculations start now \r')
-diary([Output_dir,'log.txt']) 
+ 
 calculate = 1;
 TIMEOLD=0;SAVEhh_frez=zeros(NN+1,1);FCHK=zeros(1,NN);KCHK=zeros(1,NN);hCHK=zeros(1,NN);
 TIMELAST=0;

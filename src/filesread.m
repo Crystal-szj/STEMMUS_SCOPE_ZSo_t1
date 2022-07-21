@@ -24,22 +24,22 @@ sitefullname=dir(ForcingFilePath).name; %read sitename
     endyear=str2double(endyear);
 %ncdisp(sitefullname,'/','full');
 
-if Scenario == 'Vc_gs_b'                            % Vc = Vcmax * WSF ; b = BallBerrySlope
+if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
     biochemical = @biochemical_Vc_gs_b;
-elseif Scenario == 'Vcmax_gs_bw'                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
+elseif strcmp(Scenario,'Vcmax_gs_bw')                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
     biochemical = @biochemical_Vcmax_gs_bw;
-elseif Scenario == 'Vc_gs_bw'                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
+elseif strcmp(Scenario, 'Vc_gs_bw')                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
     biochemical = @biochemical_Vc_gs_bw;
-elseif Scenario == 'Vc_gs_m'                        % Vc = Vcmax * WSF ; m = MedlynSlope
+elseif strcmp(Scenario, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m = MedlynSlope
     biochemical = @biochemical_Vc_gs_m;
-elseif Scenario == 'Vcmax_gs_mw'                    % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
+elseif strcmp(Scenario,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
     biochemical = @biochemical_Vcmax_gs_mw;
-elseif Scenario == 'Vc_gs_bw'                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
+elseif strcmp(Scenario,'Vc_gs_bw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
     biochemical = @biochemical_Vc_gs_mw;
 else
-    biochemical = @biochemical_backup;
+    biochemical = @biochemical_Vc_gs_b;
 end
-fprintf('This is Scenario -- %s for %s\n',Scenario,sitename);
+% fprintf('This is Scenario -- %s for %s_%d-%d\n',Scenario,sitename,startyear,endyear);
 
 % Read time values from forcing file
 time1=ncread(ForcingFilePath,'time');
@@ -178,4 +178,4 @@ Meteodata=[time';Taira';RHa';Winda';Psurfa';Precipa';SWdowna';LWdowna';VPDa';LAI
 save([InputPath, 'Mdata.txt'], '-ascii', 'Meteodata') %save meteorological data for STEMMUS
 %Lacationdata=[latitude;longitude;reference_height;canopy_height;elevation]';
 %save([InputPath, 'Lacationdata.txt'], '-ascii', 'Lacationdata')
-clearvars -except SoilPropertyPath InputPath OutputPath InitialConditionPath DELT Dur_tot IGBP_veg_long latitude longitude reference_height canopy_height sitename
+clearvars -except SoilPropertyPath InputPath OutputPath InitialConditionPath DELT Dur_tot IGBP_veg_long latitude longitude reference_height canopy_height sitename startyear endyear
