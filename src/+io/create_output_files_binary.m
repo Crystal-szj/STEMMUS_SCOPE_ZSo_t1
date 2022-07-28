@@ -1,8 +1,9 @@
 function [Output_dir, f, fnames] = create_output_files_binary(parameter_file, sitename, path_of_code, input_path, output_path, spectral, options)
 %% Create Output dir
+global Scenario
 string          = clock;
 simulation_name = char(sitename);
-outdir_name     = sprintf('%s_%4.0f-%02.0f-%02.0f-%02.0f%02.0f', simulation_name, string(1:5));
+outdir_name     = sprintf('%s_%4.0f-%02.0f-%02.0f-%02.0f%02.0f_%s', simulation_name, string(1:5),Scenario);
 Output_dir = [fullfile(output_path, outdir_name) filesep];
 
 warning('off','MATLAB:DELETE:FileNotFound')
