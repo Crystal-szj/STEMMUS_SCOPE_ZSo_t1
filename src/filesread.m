@@ -1,6 +1,6 @@
 %%%%%%% Set paths %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global SoilPropertyPath InputPath OutputPath ForcingPath ForcingFileName DurationSize
-global CFG
+global CFG Scenario
 
 %% CFG is a path to a config file
 if isempty(CFG)
