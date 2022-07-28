@@ -4,7 +4,7 @@ global CFG
 
 %% CFG is a path to a config file
 if isempty(CFG)
-    CFG = '../config_file_linux373.txt';
+    CFG = '../config_file_crib.txt';
 end
 %% Read the CFG file. Due to using MATLAB compiler, we cannot use run(CFG)
 disp (['Reading config from ',CFG])
