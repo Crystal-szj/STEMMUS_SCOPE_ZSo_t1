@@ -34,7 +34,7 @@ elseif strcmp(Scenario, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m
     biochemical = @biochemical_Vc_gs_m;
 elseif strcmp(Scenario,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
     biochemical = @biochemical_Vcmax_gs_mw;
-elseif strcmp(Scenario,'Vc_gs_bw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
+elseif strcmp(Scenario,'Vc_gs_mw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
     biochemical = @biochemical_Vc_gs_mw;
 else
     biochemical = @biochemical_Vc_gs_b;
