@@ -20,11 +20,64 @@
 %
 %     You should have received a copy of the GNU General Public License
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-%%
 
 %% 0. globals
 clear all;clc;
-run filesread %get paths and prepare input files
+% We replaced the filereads (old) script with a function named prepareForcingData, see issue #86,
+% but there still global variables here, because we not sure which
+% progresses related to these global variables.
+
+% Read the configPath file. Due to using MATLAB compiler, we cannot use run(CFG)
+global CFG
+if isempty(CFG)
+    CFG = '../config_file_crib.txt';
+end
+disp (['Reading config from ',CFG])
+[DataPaths.soilProperty, DataPaths.input, DataPaths.output, ...
+    DataPaths.forcingPath, forcingFileName, numberOfTimeSteps, ...
+    DataPaths.initialCondition,Scenario] = io.read_config(CFG);
+
+% Set scenario
+if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
+    biochemical = @biochemical_Vc_gs_b;
+elseif strcmp(Scenario,'Vcmax_gs_bw')                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
+    biochemical = @biochemical_Vcmax_gs_bw;
+elseif strcmp(Scenario, 'Vc_gs_bw')                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
+    biochemical = @biochemical_Vc_gs_bw;
+elseif strcmp(Scenario, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m = MedlynSlope
+    biochemical = @biochemical_Vc_gs_m;
+elseif strcmp(Scenario,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
+    biochemical = @biochemical_Vcmax_gs_mw;
+elseif strcmp(Scenario,'Vc_gs_mw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
+    biochemical = @biochemical_Vc_gs_mw;
+else
+    Scenario = 'Vc_gs_b';
+    biochemical = @biochemical_Vc_gs_b;
+end
+
+% Prepare forcing data
+global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
+[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);
+SoilPropertyPath     = DataPaths.soilProperty;
+InputPath            = DataPaths.input;
+OutputPath           = DataPaths.output;
+InitialConditionPath = DataPaths.initialCondition;
+IGBP_veg_long        = SiteProperties.igbpVegLong;
+latitude             = SiteProperties.latitude;
+longitude            = SiteProperties.longitude;
+reference_height     = SiteProperties.referenceHeight;
+canopy_height        = SiteProperties.canopyHeight;
+sitename             = SiteProperties.siteName;
+
+%Set the end time of the main loop in STEMMUS_SCOPE.m
+%using config file or time length of forcing file
+if isnan(numberOfTimeSteps)
+    Dur_tot=forcingTimeLength;
+else
+    Dur_tot = min(numberOfTimeSteps, forcingTimeLength);
+end
+
+%%
 run Constants %input soil parameters
 global i tS KT Delt_t TEND TIME MN NN NL ML ND hOLD TOLD h hh T TT P_gOLD P_g P_gg Delt_t0 g
 global KIT NIT TimeStep Processing
@@ -56,7 +109,7 @@ global HCAP SF TCA GA1 GA2 GB1 GB2 HCD ZETA0 CON0 PS1 PS2 XWILT FEHCAP QMTT QMBB
 global constants
 global RWU EVAP theta_s0 Ks0
 global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime DELT IGBP_veg_long latitude longitude reference_height canopy_height sitename Dur_tot Tmin fmax
-global biochemical Scenario startyear endyear
+% global biochemical Scenario startyear endyear
 
 %% 1. define constants
 [constants] = io.define_constants();
@@ -407,7 +460,8 @@ run StartInit;   % Initialize Temperature, Matric potential and soil air pressur
 
 %% 14. Run the model
 diary([Output_dir,'log.txt'])
-fprintf('This is Scenario -- %s for %s_%d-%d\n',Scenario,sitename,startyear,endyear);
+fprintf('This is Scenario -- %s for %s_%d-%d\n',...
+    Scenario,SiteProperties.siteName,SiteProperties.startyear,SiteProperties.endyear);
 fprintf('\n The calculations start now \r')
  
 calculate = 1;
@@ -832,7 +886,14 @@ fprintf('\n The calculations end now \r')
 if options.verify
     io.output_verification(Output_dir)
 end
-io.bin_to_csv(fnames, V, vmax, n_col, k, options, DeltZ_R)
+
+%% soil layer information
+%% Ztot is defined as a global variable in Initial_root_biomass.m
+%% TODO avoid global variables
+SoilLayer.thickness = DeltZ_R;
+SoilLayer.depth = Ztot';
+
+io.bin_to_csv(fnames, V, vmax, n_col, k, options, SoilLayer)
 save([Output_dir,'output.mat'])
 %if options.makeplots
 %  plot.plots(Output_dir)

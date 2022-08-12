@@ -32,4 +32,8 @@ indx = find(strcmp(config_vars, 'DurationSize'));
 DurationSize = str2double(config_paths{indx});
 
 indx = find(strcmp(config_vars, 'Scenario'));
-Scenario = config_paths{indx};
+if isempty(indx)
+    Scenario = [];
+else
+    Scenario = config_paths{indx};
+end
