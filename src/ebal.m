@@ -224,7 +224,7 @@ while CONT                          % while energy balance does not close
     
     % 2.3. Biochemical processes
     
-    % photosynthesis (A), fluorescence factor (F), and stomatal resistance (rcw), for shaded (1) and sunlit (h) leaves
+    % photosynthesis (A), fluorescence factor (F), and stomatal resistance (rcw), for shaded (h) and sunlit (u) leaves
     biochem_in.Fluorescence_model = options.Fluorescence_model;
     biochem_in.Type         = leafbio.Type;
     biochem_in.p            = p;
@@ -299,45 +299,47 @@ while CONT                          % while energy balance does not close
     rac     = (LAI+1)*(raa+rawc);
     ras     = (LAI+1)*(raa+raws);
     for i=1:30
-    [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
-    [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
-    [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
-    
-    %if any( ~isreal( Cch )) || any( ~isreal( Ccu(:) ))
-     %  error('Heatfluxes produced complex values for CO2 concentration!')
-    %end
+        [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
+        [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
+        [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
 
-  %  if any( Cch < 0 ) || any( Ccu(:) < 0 )
-  %     error('Heatfluxes produced negative values for CO2 concentration!')
-   % end
+        %if any( ~isreal( Cch )) || any( ~isreal( Ccu(:) ))
+         %  error('Heatfluxes produced complex values for CO2 concentration!')
+        %end
 
-    % integration over the layers and sunlit and shaded fractions
-    Hstot       = Fs*Hs;
-    Hctot       = LAI*(Fc*Hch + equations.meanleaf(canopy,Hcu,'angles_and_layers',Ps));
-    Htot        = Hstot + Hctot;
-     %%%%%% Leaf water potential calculate
-    lambda1      = (2.501-0.002361*Ta)*1E6;
-    lEctot     = LAI*(Fc*lEch + equations.meanleaf(canopy,lEcu,'angles_and_layers',Ps)); % latent heat leaves
-    if (isreal(lEctot) && lEctot<1000 && lEctot>-300)
-    else
-        lEctot=0;
-    end
-    Trans = lEctot/lambda1/1000;  %unit: m s-1
-    AA1=PSIs./(rsss+rrr+rxx);
-    AA2=1./(rsss+rrr+rxx);
-    BB1=AA1(~isnan(AA1));
-    BB2=AA2(~isinf(AA2));
-    PSI1 = (sum(BB1)-Trans)/sum(BB2);
-    if isnan(PSI1)
-    PSI1 = -1; 
-    end
-    if ~isreal(PSI1)
-        PSI1 = -1;
-    end
-    if abs(PSI-PSI1)<0.01
-        break
-    end
-    PSI  = (PSI + PSI1)/2;
+        %  if any( Cch < 0 ) || any( Ccu(:) < 0 )
+        %     error('Heatfluxes produced negative values for CO2 concentration!')
+        % end
+
+        % integration over the layers and sunlit and shaded fractions
+        Hstot       = Fs*Hs;
+        Hctot       = LAI*(Fc*Hch + equations.meanleaf(canopy,Hcu,'angles_and_layers',Ps));
+        Htot        = Hstot + Hctot;
+        
+        %%%%%% Leaf water potential calculate
+        lambda1      = (2.501-0.002361*Ta)*1E6;
+        lEctot     = LAI*(Fc*lEch + equations.meanleaf(canopy,lEcu,'angles_and_layers',Ps)); % latent heat leaves
+        if (isreal(lEctot) && lEctot<1000 && lEctot>-300)
+        else
+            lEctot=0;
+        end
+        Trans = lEctot/lambda1/1000;    % total canopy transpiration: unit: m s-1
+        AA1=PSIs./(rsss+rrr+rxx);       % flux
+        AA2=1./(rsss+rrr+rxx);          % conductance
+        BB1=AA1(~isnan(AA1));           % non-nan soil water flux
+        BB2=AA2(~isinf(AA2));           % non-nan soil hydraulic conductance
+        PSI1 = (sum(BB1)-Trans)/sum(BB2);       % leaf water potential = total soil water flux ./ total soil hydraulic conductance
+        
+        if isnan(PSI1)
+            PSI1 = -1; 
+        end
+        if ~isreal(PSI1)
+            PSI1 = -1;
+        end
+        if abs(PSI-PSI1)<0.01
+            break
+        end
+        PSI  = (PSI + PSI1)/2;
     end
     PSItot(KT)=PSI;
     %%%%%%%
