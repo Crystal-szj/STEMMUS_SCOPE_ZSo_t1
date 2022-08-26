@@ -57,7 +57,7 @@ end
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
-[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);
+[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);   % DELT: time steps, default is 1800 s.
 SoilPropertyPath     = DataPaths.soilProperty;
 InputPath            = DataPaths.input;
 OutputPath           = DataPaths.output;
@@ -69,8 +69,8 @@ reference_height     = SiteProperties.referenceHeight;
 canopy_height        = SiteProperties.canopyHeight;
 sitename             = SiteProperties.siteName;
 
-%Set the end time of the main loop in STEMMUS_SCOPE.m
-%using config file or time length of forcing file
+% Set the end time of the main loop in STEMMUS_SCOPE.m
+% using config file or time length of forcing file
 if isnan(numberOfTimeSteps)
     Dur_tot=forcingTimeLength;
 else
@@ -454,7 +454,7 @@ atmfile     = [path_input 'radiationdata/' char(F(4).FileName(1))];
 atmo.M      = helpers.aggreg(atmfile,spectral.SCOPEspec);
 
 %% 13. create output files
-[Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options);
+[Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario);
 run StartInit;   % Initialize Temperature, Matric potential and soil air pressure.
 
 
