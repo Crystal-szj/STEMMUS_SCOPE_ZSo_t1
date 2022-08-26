@@ -26,28 +26,28 @@ SiteProperties.endyear = endyear;
 
 % Read time values from forcing file
 time1=ncread(ForcingFilePath,'time');
-t1=datenum(startyear,1,1,0,0,0);
-timeStep=time1(2);
+t1=datenum(startyear,1,1,0,0,0);            % start time point
+timeStep=time1(2);                          % initial time interval between two time steps
 
 %get time length of forcing file
 forcingTimeLength=length(time1);
 
-dt=time1(2)/3600/24;
-t2=datenum(endyear,12,31,23,30,0);
+dt=time1(2)/3600/24;        % real time steps in day, e.g timeStep == 1800, then dt is 0.0208 day. 
+t2=datenum(endyear,12,31,23,30,0);          % end time point
 T=t1:dt:t2;
 TL=length(T);
 T=T';
-T=datestr(T,'yyyy-mm-dd HH:MM:SS');
-T0=T(:,1:4);
-T1=T(:,5:19);
-T3=T1(1,:);
+T=datestr(T,'yyyy-mm-dd HH:MM:SS'); % transfer datenum to datestr
+T0=T(:,1:4);    % 'yyyy'
+T1=T(:,5:19);   % '-mm-dd HH:MM:SS'
+T3=T1(1,:);     % first time point: e.g. '-01-01 00:00:00'
 T4=T3(ones(TL,1),:);
-T5=[T0,T4];
+T5=[T0,T4];     %'yyyy-01-01 00:00:00'
 T6=datenum(T);
 T7=datenum(T5);
-T8=T6-T7;
-time=T8;
-T10=year(T);
+T8=T6-T7;       % DOY 
+time=T8;        % DOY
+T10=year(T);    % year
 
 RH=ncread(ForcingFilePath,'RH');            % Unit: %
 RHL=length(RH);
