@@ -11,7 +11,7 @@ KIT=0;                      % KIT is used to count the number of iteration in a 
 NIT=30;                     % Desirable number of iterations in a time step;               
 Nmsrmn=Dur_tot*10;       %Nmsrmn=140256*100;  Here, it is made as big as possible, in case a long simulation period containing many time step is defined. 
 SUMTIME=0;                                                                                    
-DURTN=DELT*Dur_tot;     % Duration of simulation period;                                  
+DURTN=DELT*Dur_tot;     % Duration of simulation period (s);                                  
 KT=0;                        % Number of time steps;                                           
 TIME=0*DELT;                     % Time of simulation released;                                  
 
@@ -29,9 +29,9 @@ PERR=5000;                  % Maximum desirable change of soil air pressure (Pa,
 uERR=0.02;                  % Maximum desirable change of total water content;                                                                    
 Tot_Depth=500;           % Unit is cm. it should be usually bigger than 0.5m. Otherwise, 
                                  % the DeltZ would be reset in 50cm by hand;                                  
-R_depth=300; %                                                                               
-Eqlspace=0;                 % Indicator for deciding is the space step equal or not;       
-NL=100;
+R_depth=300;                % Unit is cm.                                                                              
+Eqlspace=0;                 % (Equal layer space) Indicator for deciding is the space step equal or not;       
+NL=100;                     % NL is the number of soil layers. Here 100 is a initial value. The specific layers is defined in Dtrmn_Z.m .
 if ~Eqlspace                                                                     
    run Dtrmn_Z              % Determination of NL, the number of elments;              
 else
@@ -422,7 +422,7 @@ Gsc=1360;                         % The solar constant (1360 Wï¿½ï¿½m^-2)
 Sigma_E=4.90*10^(-9);       % The stefan-Boltzman constant.(=4.90*10^(-9) MJï¿½ï¿½m^-2ï¿½ï¿½Cels^-4ï¿½ï¿½d^-1)
 P_g0=95197.850;%951978.50;               % The mean atmospheric pressure (Should be given in new simulation period subroutine.)
 rroot=1.5*1e-3; 
-RTB=1000;                    %initial root total biomass (g m-2)
+RTB=1000;                    %initial root total biomass (g m-2) root total biomass
 Precipp=0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Input for producing initial soil moisture and soil temperature profile
