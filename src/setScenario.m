@@ -1,4 +1,4 @@
-function biochemical = setScenario(Scenario)
+function [biochemical,Scenario] = setScenario(Scenario)
 
     % Set scenario
     if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope

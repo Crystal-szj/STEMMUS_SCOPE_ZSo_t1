@@ -58,7 +58,7 @@ else
 end
 
 % set Scenario 
-biochemical = setScenario(Scenario);
+[biochemical,Scenario] = setScenario(Scenario);
 %%
 run Constants %input soil parameters
 global i tS KT Delt_t TEND TIME MN NN NL ML ND hOLD TOLD h hh T TT P_gOLD P_g P_gg Delt_t0 g
