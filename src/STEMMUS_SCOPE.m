@@ -33,9 +33,7 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
-[DataPaths.soilProperty, DataPaths.input, DataPaths.output, ...
-    DataPaths.forcingPath, forcingFileName, numberOfTimeSteps, ...
-    DataPaths.initialCondition,Scenario] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, Scenario] = io.read_config(CFG);
 
 % Set scenario
 if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
@@ -114,7 +112,7 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 %% 1. define constants
 [constants] = io.define_constants();
 % [Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
-[Rl, ri,Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties)
+[Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties);
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
 path_of_code                = cd;
