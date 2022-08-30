@@ -22,7 +22,7 @@
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 %% 0. globals
-clear all;clc;
+clear all; clc;
 % We replaced the filereads (old) script with a function named prepareForcingData, see issue #86,
 % but there still global variables here, because we not sure which
 % progresses related to these global variables.
@@ -113,13 +113,18 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 
 %% 1. define constants
 [constants] = io.define_constants();
-[Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
+% [Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
+[Rl, ri,Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties)
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
 path_of_code                = cd;
 run set_parameter_filenames; 
 
-if length(parameter_file)>1, useXLSX = 0; else useXLSX = 1; end
+if length(parameter_file)>1 
+    useXLSX = 0; 
+else
+    useXLSX = 1; 
+end
 
 if ~useXLSX
     run([path_input parameter_file{1}])
