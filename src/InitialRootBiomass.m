@@ -22,7 +22,7 @@ function [Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties
     Rltot = RTB/R_C/root_den/(pi*(rroot^2)); % root length index [m root / m^2 PFT]
 
     % root fraction in each soil layers
-    [ri,Ztot] = RootDistribution(igbpVegLong,DeltZ_R,ML)
+    [ri,Ztot] = RootDistribution(igbpVegLong,DeltZ_R,ML);
 
     % root length density in each soil layers [m root / m^3 PFT]
     Rl=(ri.*Rltot./(DeltZ_R./100))'; 
