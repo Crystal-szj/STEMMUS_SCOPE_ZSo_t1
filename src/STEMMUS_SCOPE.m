@@ -35,24 +35,6 @@ end
 disp (['Reading config from ',CFG])
 [DataPaths, forcingFileName, numberOfTimeSteps, Scenario] = io.read_config(CFG);
 
-% Set scenario
-if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
-    biochemical = @biochemical_Vc_gs_b;
-elseif strcmp(Scenario,'Vcmax_gs_bw')                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
-    biochemical = @biochemical_Vcmax_gs_bw;
-elseif strcmp(Scenario, 'Vc_gs_bw')                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
-    biochemical = @biochemical_Vc_gs_bw;
-elseif strcmp(Scenario, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m = MedlynSlope
-    biochemical = @biochemical_Vc_gs_m;
-elseif strcmp(Scenario,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
-    biochemical = @biochemical_Vcmax_gs_mw;
-elseif strcmp(Scenario,'Vc_gs_mw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
-    biochemical = @biochemical_Vc_gs_mw;
-else
-    Scenario = 'Vc_gs_b';
-    biochemical = @biochemical_Vc_gs_b;
-end
-
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
 [SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);   % DELT: time steps, default is 1800 s.
@@ -75,6 +57,8 @@ else
     Dur_tot = min(numberOfTimeSteps, forcingTimeLength);
 end
 
+% set Scenario 
+biochemical = setScenario(Scenario);
 %%
 run Constants %input soil parameters
 global i tS KT Delt_t TEND TIME MN NN NL ML ND hOLD TOLD h hh T TT P_gOLD P_g P_gg Delt_t0 g
