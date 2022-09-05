@@ -83,8 +83,8 @@ else
     V(22).Val          = canopy.LAI*ones(size(time_));
 end
 if  ~isempty(hc_file)
-    hctable         = load([path_input,Dataset_dir,'/',hc_file]);
-    V(23).Val       = interp1(hctable(:,1),hctable(:,2),t_); 
+%     hctable         = load([path_input,Dataset_dir,'/',hc_file]);
+%     V(23).Val       = interp1(hctable(:,1),hctable(:,2),t_); 
     canopy.hc = V(23).Val;
     if options.calc_zo
         [V(24).Val ,V(25).Val ]  = equations.zo_and_d(soil,canopy);

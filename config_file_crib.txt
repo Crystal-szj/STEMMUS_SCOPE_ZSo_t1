@@ -1,9 +1,9 @@
 SoilPropertyPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/SoilProperty/
-InputPath=../../US_Var_2001/Vaira_input/
-OutputPath=../../US_Var_2001/Vaira_output/
-ForcingPath=../../US_Var_2001/Vaira_input/
-ForcingFileName=US-Var_2001-2001_FLUXNET2015_Met.nc
+InputPath=../../CH_YLS_2017/Yangling_input/
+OutputPath=../../CH_YLS_2017/Yangling_output/
+ForcingPath=../../CH_YLS_2017/Yangling_input/
+ForcingFileName=CH-YLS_2017-2017_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
-DurationSize=NA
+DurationSize=48
 Scenario=NaN
 
