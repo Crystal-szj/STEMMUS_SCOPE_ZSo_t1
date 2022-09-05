@@ -4,6 +4,6 @@ OutputPath=../../US_Var_2001/Vaira_output/
 ForcingPath=../../US_Var_2001/Vaira_input/
 ForcingFileName=US-Var_2001-2001_FLUXNET2015_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
-DurationSize=NA
+DurationSize=10
 Scenario=NaN
 

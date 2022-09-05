@@ -642,7 +642,7 @@ for i = 1:1:Dur_tot
                         [rad] = RTMf(spectral,rad,soil,leafopt,canopy,gap,angles,profiles);
                     end
                 end
-        end
+            end
         if options.calc_fluor % total emitted fluorescence irradiance (excluding leaf and canopy re-absorption and scattering)
             if options.calc_PSI
                 rad.Femtot = 1E3*(leafbio.fqe(2)* optipar.phiII(spectral.IwlF) * fluxes.aPAR_Cab_eta +leafbio.fqe(1)* optipar.phiI(spectral.IwlF)  * fluxes.aPAR_Cab);
