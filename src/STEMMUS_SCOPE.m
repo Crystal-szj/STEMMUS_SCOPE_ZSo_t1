@@ -33,6 +33,7 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
+global Scenario
 [DataPaths.soilProperty, DataPaths.input, DataPaths.output, ...
     DataPaths.forcingPath, forcingFileName, numberOfTimeSteps, ...
     DataPaths.initialCondition,Scenario] = io.read_config(CFG);

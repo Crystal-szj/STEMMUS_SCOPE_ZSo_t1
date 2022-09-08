@@ -4,6 +4,6 @@ OutputPath=../../CH_YLS_2017/Yangling_output/
 ForcingPath=../../CH_YLS_2017/Yangling_input/
 ForcingFileName=CH-YLS_2017-2017_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
-DurationSize=48
-Scenario=NaN
+DurationSize=5856
+Scenario=Vc_gs_mw
 
