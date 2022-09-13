@@ -138,7 +138,7 @@ T             = biochem_in.T + 273.15*(biochem_in.T<200); % convert temperatures
 eb            = biochem_in.eb;
 O             = biochem_in.O;
 p             = biochem_in.p;
-PSI           = biochem_in.PSI; % plant water potential
+% PSI           = biochem_in.PSI; % plant water potential
 ei            = biochem_in.ei;  % leaf intercellular vapour pressure														
  % physiological
 Type          = biochem_in.Type;
@@ -519,7 +519,7 @@ biochem_out.Fm_Fo    = fm ./ fo;  % parameters used for curve fitting
 biochem_out.Ft_Fo    = fs ./ fo;  % parameters used for curve fitting
 biochem_out.qQ      = qQ;
 biochem_out.VPD_l2b  = mean(VPD_l2b,'all'); 
-biochem_out.PSI      = PSI;															
+% biochem_out.PSI      = PSI;															
 return;
 
 end  % end of function biochemical
