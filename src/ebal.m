@@ -1,4 +1,4 @@
-function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih, eiu, ech,ecu]             ...  
+function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
                 angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
@@ -170,9 +170,9 @@ eih = equations.satvap(Tch);
 eiu = equations.satvap(Tcu);												 
 %[bbx]=Max_Rootdepth(bbx,TIME,NL,KT);
 [bbx]=Max_Rootdepth(bbx,NL,KT,TT);
-[PSIs, Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha);
+[psiSoil, Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha);
 [sfactor] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f);
-PSIss=PSIs(NL,1);
+PSIss=psiSoil(NL,1);
 
 % initial leaf water potental = soil water potential - gravitational potential
 canopyHeight = SiteProperties.canopyHeight;
@@ -333,7 +333,7 @@ while CONT                          % while energy balance does not close
             lEctot=0;
         end
         Trans = lEctot/lambda1/1000;    % total canopy transpiration: unit: m s-1
-        AA1=PSIs./(rsss+rrr+rxx);       % flux
+        AA1=psiSoil./(rsss+rrr+rxx);       % flux
         AA2=1./(rsss+rrr+rxx);          % conductance
         BB1=AA1(~isnan(AA1));           % non-nan soil water flux
         BB2=AA2(~isinf(AA2));           % non-nan soil hydraulic conductance
@@ -531,7 +531,7 @@ thermal.Tch   = Tch;
 
 fluxes.Au     = Au;
 fluxes.Ah     = Ah;
-RWU =(PSIs - psiLeaf)./(rsss+rrr+rxx).*bbx;
+RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
 nn=numel(RWU);
 for i=1:nn
     if isnan(RWU(i))
@@ -544,7 +544,7 @@ for i=1:nn
     end
 end
 frac = RWU./abs(sum(sum(RWU)));
-RWU =(PSIs - psiLeaf)./(rsss+rrr+rxx).*bbx;
+RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
 RWU =real(RWU);
 for i=1:nn
     if isnan(RWU(i))
