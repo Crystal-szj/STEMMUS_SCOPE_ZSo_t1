@@ -96,7 +96,15 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 %% 1. define constants
 [constants] = io.define_constants();
 % [Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
-[Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties);
+% [Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties);
+ParaPlant = io.define_plant_constants();
+
+numSoilLayer = ML;
+soilThickness = DeltZ_R';
+[RootProperties,soilDepth] = calRootProperties(SiteProperties, ParaPlant, numSoilLayer, soilThickness, RTB);
+Rl = RootProperties.lengthDensity;
+ri = RootProperties.Frac;
+
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
 path_of_code                = cd;
