@@ -1,6 +1,6 @@
 function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih, eiu, ech,ecu]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
-                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical)
+                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
  global  m n Alpha TT
  global rroot frac  
@@ -164,7 +164,8 @@ for i = 1:nl
 end
 
 LAI = canopy.LAI;
-PSI=0;
+% PSI=0;
+% psiLeaf = 0;
 eih = equations.satvap(Tch);
 eiu = equations.satvap(Tcu);												 
 %[bbx]=Max_Rootdepth(bbx,TIME,NL,KT);
@@ -172,6 +173,11 @@ eiu = equations.satvap(Tcu);
 [PSIs,rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha);
 [sfactor] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f);
 PSIss=PSIs(NL,1);
+
+% initial leaf water potental = soil water potential - gravitational potential
+canopyHeight = SiteProperties.canopyHeight;
+psiLeaf = PSIss-canopyHeight;  
+
 %% 2. Energy balance iteration loop
 
 %'Energy balance loop (Energy balance and radiative transfer)
@@ -232,7 +238,8 @@ while CONT                          % while energy balance does not close
     biochem_in.BallBerry0   = leafbio.BallBerry0;
     biochem_in.O            = meteo.Oa;
     biochem_in.Rdparam      = leafbio.Rdparam;
-    biochem_in.PSI          = PSI;
+%     biochem_in.PSI          = PSI;
+
     if options.Fluorescence_model==2    % specific for the v.Caemmerer-Magnani model
         b                   = @biochemical_MD12;
         biochem_in.Tyear        = leafbio.Tyear;
@@ -299,10 +306,12 @@ while CONT                          % while energy balance does not close
     rac     = (LAI+1)*(raa+rawc);
     ras     = (LAI+1)*(raa+raws);
     for i=1:30
-        [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
-        [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
+%         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
+%         [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
+%         [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
+        [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,psiLeaf,Ca,Cih,constants,es_fun,s_fun);
+        [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,psiLeaf,Ca,Ciu,constants,es_fun,s_fun);
         [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
-
         %if any( ~isreal( Cch )) || any( ~isreal( Ccu(:) ))
          %  error('Heatfluxes produced complex values for CO2 concentration!')
         %end
@@ -336,12 +345,12 @@ while CONT                          % while energy balance does not close
         if ~isreal(PSI1)
             PSI1 = -1;
         end
-        if abs(PSI-PSI1)<0.01
+        if abs(psiLeaf-PSI1)<0.01
             break
         end
-        PSI  = (PSI + PSI1)/2;
+        psiLeaf  = (psiLeaf + PSI1)/2;
     end
-    PSItot(KT)=PSI;
+    PSItot(KT)=psiLeaf;
     %%%%%%%
     if SoilHeatMethod==2
        G = 0.30*Rns;
@@ -522,7 +531,7 @@ thermal.Tch   = Tch;
 
 fluxes.Au     = Au;
 fluxes.Ah     = Ah;
-RWU =(PSIs - PSI)./(rsss+rrr+rxx).*bbx;
+RWU =(PSIs - psiLeaf)./(rsss+rrr+rxx).*bbx;
 nn=numel(RWU);
 for i=1:nn
     if isnan(RWU(i))
@@ -535,7 +544,7 @@ for i=1:nn
     end
 end
 frac = RWU./abs(sum(sum(RWU)));
-RWU =(PSIs - PSI)./(rsss+rrr+rxx).*bbx;
+RWU =(PSIs - psiLeaf)./(rsss+rrr+rxx).*bbx;
 RWU =real(RWU);
 for i=1:nn
     if isnan(RWU(i))
