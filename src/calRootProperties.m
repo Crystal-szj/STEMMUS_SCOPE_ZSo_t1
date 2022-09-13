@@ -67,6 +67,7 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
         end
     end
     rootFrac = rootFrac';
+    
     %% ================ root cross area ===========================
     rootCrossArea = pi .* rootRadius^2; % [m^2]
     
@@ -77,7 +78,7 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
     
     %% ==================== root spacing =======================
     % root spacing is same with CLM5 based on eq.11.12 in CLM5 tech notes.
-    rootSpac = sqrt(pi.* rootLengthDensity);
+    rootSpac = sqrt(1./(pi.* rootLengthDensity));
     
     %% ================ output ===============
     RootProperties.Frac = rootFrac;% [unitless]
