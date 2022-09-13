@@ -25,7 +25,7 @@ function ParaPlant = define_plant_constants()
     ParaPlant.Krootmax          =2e-9;       % root conductivity [m s-1]
     ParaPlant.Kstemmax          =2e-8;       % stem conductivity [m s-1]
     ParaPlant.Kleafmax          =2e-7;       % maximum leaf conductance [s-1]
-    
+    ParaPlant.rootLateralLength = 0.25;
 
     
 end
