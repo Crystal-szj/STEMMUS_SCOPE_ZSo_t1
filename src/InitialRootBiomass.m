@@ -3,13 +3,14 @@ function [Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties
 % root distribution (ri).
 %
 % Input:
-%     RTB:       A parameter of root to biomass [g m-2]
-%     DeltZ_R:   An array of soil layer depth, from soil surface to bottom [m]
-%     rroot:     A parameter of root radius [m]
-%     ML:        Number of soil layers, same value with NL.
+%     RTB      : A parameter of root to biomass [g m-2], now the RTB is
+%                defined in constants.m as 1000.
+%     DeltZ_R  : An array of soil layer depth, from soil surface to bottom [m]
+%     rroot    : A parameter of root radius [m]
+%     ML       : Number of soil layers, same value with NL.
 % Output:
-%     Rl:        An array of root length density for each soil layer from bottom to surface [m m-3].
-%     ri:        Root distribution: root fraction in each soil layers.
+%     Rl       : An array of root length density for each soil layer from bottom to surface [m m-3].
+%     ri       : Root distribution: root fraction in each soil layers.
 %
 
     % define variable and parameters
