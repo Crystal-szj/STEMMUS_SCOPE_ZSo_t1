@@ -95,15 +95,28 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 
 %% 1. define constants
 [constants] = io.define_constants();
-% [Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
+% [Rl,ri] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
 % [Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties);
 ParaPlant = io.define_plant_constants();
 
 numSoilLayer = ML;
-soilThickness = DeltZ_R';
+soilThickness = DeltZ_R';  % the direction of soilThickness is from surface to bottom. 
 [RootProperties,soilDepth] = calRootProperties(SiteProperties, ParaPlant, numSoilLayer, soilThickness, RTB);
-Rl = RootProperties.lengthDensity;
-ri = RootProperties.Frac;
+% %++++++++++++++++++++ for debug ++++++++++++++++++++++
+% rootLengthDensity = flipud(RootProperties.lengthDensity);
+% rootFrac = RootProperties.frac;
+% f1 = figure;
+% subplot(2,1,1)
+% x_layer_num = [1:54]';
+% plot(x_layer_num,Rl,x_layer_num, rootLengthDensity);
+% legend('origin','PHS')
+% subplot(2,1,2)
+% plot(x_layer_num, ri, x_layer_num, rootFrac);
+% legend('origin','PHS')
+% error('debugging')
+% %+++++++++++++++++++++ end of debug ++++++++++++++++++++++
+Rl = flipud(RootProperties.lengthDensity); % direction: bottom to surface
+ri = flipud(RootProperties.frac); % direction: bottom to surface
 
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
