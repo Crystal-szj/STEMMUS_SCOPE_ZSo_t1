@@ -10,7 +10,7 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
 % Input:
 %     SiteProperties: A structure contains site properties. In this function, vegetation type (igbpVegLong) is needed.
 %     ParaPlant     : A structure contains plant parameters
-%     numSoilLayer      : The number of soil layers
+%     numSoilLayer  : The number of soil layers
 %     soilTickness  : soil thickness [cm]
 %     RTB           : root to biomass [g m-2]. This parameter is defined in
 %                     Constants.m with the value of 1000.
@@ -55,8 +55,7 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
 
     %% ======= calculate the depth of each soil layer to land surface =====
     % change the unit from cm to m
-    soilThickness = soilThickness./100; % [unit: m]
-    soilDepth=cumsum(soilThickness,1);  % [unit: m]
+    soilDepth=cumsum(soilThickness,1);  % [unit: cm]
 
     %% ============= calculate root distribution ==================
     for i=1:numSoilLayer
@@ -74,7 +73,7 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
     %% =============== root length density ======================
     % RTB = 1000, gC/m2 or g biomass/ m2? I think the unit is gC/m2.
     Rltot = RTB/B2C/rootDensity/rootCrossArea; % root length index [m root / m^2 PFT]
-    rootLengthDensity = (Rltot .* rootFrac) ./ soilThickness;  % [m/m3]
+    rootLengthDensity = (Rltot .* rootFrac) ./ (soilThickness./100);  % [m/m3]; 100 is scale factor from cm to m.
     
     %% ==================== root spacing =======================
     % root spacing is same with CLM5 based on eq.11.12 in CLM5 tech notes.
