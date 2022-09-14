@@ -81,7 +81,7 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
     rootSpac = sqrt(1./(pi.* rootLengthDensity));
     
     %% ================ output ===============
-    RootProperties.Frac = rootFrac;% [unitless]
+    RootProperties.frac = rootFrac;% [unitless]
     RootProperties.crossArea = rootCrossArea;   %[m2]
     RootProperties.spac = rootSpac;             % [m]
     RootProperties.lengthDensity = rootLengthDensity; %[m/m3]
