@@ -6,7 +6,7 @@ function ParaPlant = define_plant_constants()
     %% ----------------------- root growth ----------------------------
     ParaPlant.C2B            = 2;         %(g biomass / gC)
     ParaPlant.B2C            = 0.488;     % ratio of biomass to carbon [gC / g biomass]
-    ParaPlant.rootRadius     = 2.9e-4;    % root radius [m] (from CLM5), 1.5*1e-3 (0.5-6e-3 m)in STEMMUS_SCOPE_GMD
+    ParaPlant.rootRadius     = 1.5*1e-3;    % root radius [m] (2.9e-4 in CLM5),  (0.5-6e-3 m)in STEMMUS_SCOPE_GMD
     ParaPlant.rootDensity    = 250*1000;  % Root density Jackson et al., 1997 [gDM / m^3] 
 
     %% ----------------------- Plant hydraulics -----------------------
