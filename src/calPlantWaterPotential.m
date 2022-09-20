@@ -80,7 +80,7 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
     rai = (sai + lai).* rootFrac .* froot2leaf;
     
     %% =================== soil to root conductance =====================
-    soilConductance = min(Ks' , Ksoil) ./ rootSpac ./100; % 100 is a transfer factor from [cm/s] to [m/s]
+    soilConductance = min(Ks' , Ksoil) ./100 ./ rootSpac ; % 100 is a transfer factor from [cm/s] to [m/s]
     
     phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, ckRoot);
     
