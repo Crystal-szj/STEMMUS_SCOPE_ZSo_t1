@@ -118,7 +118,7 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
         kStem2Leaf = ParaPlant.Kleafmax .* phwsfLeaf;
 
         % leaf water potential
-        psiLeaf = psiStem - qStem2Leaf ./ lai;
+        psiLeaf = psiStem - qStem2Leaf ./ lai ./kStem2Leaf;
     else
         psiLeaf = psiStem;
     end
