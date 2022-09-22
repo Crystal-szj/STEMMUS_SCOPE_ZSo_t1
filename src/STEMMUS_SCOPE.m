@@ -115,8 +115,8 @@ soilThickness = DeltZ_R';  % the direction of soilThickness is from surface to b
 % legend('origin','PHS')
 % error('debugging')
 % %+++++++++++++++++++++ end of debug ++++++++++++++++++++++
-Rl = flipud(RootProperties.lengthDensity); % direction: bottom to surface
-ri = flipud(RootProperties.frac); % direction: bottom to surface
+Rl = RootProperties.lengthDensity; % direction: bottom to surface
+ri = RootProperties.frac; % direction: bottom to surface
 
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
