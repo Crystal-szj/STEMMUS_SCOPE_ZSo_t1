@@ -2,8 +2,8 @@ function [psiSoil,Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,
 % calculation of soil water potential and soil, root and xylem resistance.
 % Input:
 %     Rl      : root length density [m/m3]
-%     DeltZ   : thickness of soil layers (bottom - surface) [m]
-%     Ks      : saturated hydraulic conductance [m/s]
+%     DeltZ   : thickness of soil layers (bottom - surface) [cm]
+%     Ks      : saturated hydraulic conductance [cm/s]
 %     Theta_s : saturated soil water contents
 %     Theta_r : residual water contents
 %     Theta_LL:
@@ -14,7 +14,7 @@ function [psiSoil,Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,
 %    
 % Output:
 %     PSIs    : soil water potential (bottom - surface)
-%     Ksoil   : soil hydraulic conductance [m/s] (bottom - surface)
+%     Ksoil   : soil hydraulic conductance [cm/s] (bottom - surface)
 %     rsss    : soil resistance
 %     rrr     : root resistance
 %     rxx     : xylem resistance

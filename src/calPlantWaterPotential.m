@@ -84,6 +84,27 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
     
     phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, ckRoot);
     
+    % +++++++++++++++++++ debug ++++++++++++++++
+%     rootLengthDensity = RootProperties.lengthDensity;
+%     figure
+%     subplot(3,1,1)
+%     plot(Ksoil)
+%     set(gca, 'xTick',[1:3:54],'xtickLabels',[54:-3:1])
+%     title('Ksoil')
+%     
+%     subplot(3,1,2)
+%     plot(phwsfRoot)
+%     set(gca, 'xTick',[1:3:54],'xtickLabels',[54:-3:1])
+%     title('phwsfRoot')
+%     
+%     subplot(3,1,3)
+%     plot(rootLengthDensity)
+%     title('rootLengthDensity')
+%     set(gca, 'xTick',[1:3:54],'xtickLabels',[54:-3:1])
+%     xlabel("num of soil layer")
+%     pause
+    % ++++++++++++++++++++++++++++++++++++++++++
+    
     rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + DeltZ./100); % unit [m/s]
     
     soilConductance = max(soilConductance, 1e-16);

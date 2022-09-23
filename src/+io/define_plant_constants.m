@@ -15,9 +15,9 @@ function ParaPlant = define_plant_constants()
 %     ParaPlant.ck_sunleaf     = ;        % parameter of plant hydraulic pathway [MPa]
 %     ParaPlant.ck_shdleaf     = ;        % parameter of plant hydraulic pathway [MPa]
 
-    ParaPlant.p50Leaf        = 5.0968e-11;  % 0.5./1e6*pa2m;       % parameter of plant hydraulic pathway [m] 0.5MPa refer to Kennedy 2019.
-    ParaPlant.p50Stem        = -1.7839e-10; % -1.75./1e6*pa2m;     % parameter of plant hydraulic pathway [m] -1.75MPa refer to Kennedy 2019.
-    ParaPlant.p50Root        = -1.7839e-10; % -1.75./1e6*pa2m;     % parameter of plant hydraulic pathway [m] -1.75MPa refer to Kennedy 2019.
+    ParaPlant.p50Leaf        = 0.5;   % unit MPa   5.0968e-11;  % 0.5./1e6*pa2m;       % parameter of plant hydraulic pathway [m] 0.5MPa refer to Kennedy 2019.
+    ParaPlant.p50Stem        = -1.75; % unit MPa  -1.7839e-10; % -1.75./1e6*pa2m;     % parameter of plant hydraulic pathway [m] -1.75MPa refer to Kennedy 2019.
+    ParaPlant.p50Root        = -1.75; % unit MPa  -1.7839e-10; % -1.75./1e6*pa2m;     % parameter of plant hydraulic pathway [m] -1.75MPa refer to Kennedy 2019.
     
     ParaPlant.ckLeaf         = 2.95;      % parameter of plant hydraulic pathway
     ParaPlant.ckStem         = 2.95;      % parameter of plant hydraulic pathway [unitless]
