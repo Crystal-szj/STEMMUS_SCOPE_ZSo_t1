@@ -1,4 +1,4 @@
-git function ParaPlant = define_plant_constants()
+function ParaPlant = define_plant_constants()
 % define parameters used in plant hydraulic pathway
 % Output:
 %     ParaPlant: A structure contains all of parameters used in plant hydraulic pathway.
