@@ -33,9 +33,7 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
-[DataPaths.soilProperty, DataPaths.input, DataPaths.output, ...
-    DataPaths.forcingPath, forcingFileName, numberOfTimeSteps, ...
-    DataPaths.initialCondition,Scenario] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, Scenario] = io.read_config(CFG);
 
 % Set scenario
 if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
