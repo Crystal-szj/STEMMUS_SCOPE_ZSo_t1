@@ -26,14 +26,14 @@ SiteProperties.endyear = endyear;
 
 % Read time values from forcing file
 time1=ncread(ForcingFilePath,'time');
-t1=datenum(startyear,6,11,0,0,0);
-timeStep=1800;
-% 
+t1=datenum(startyear,1,1,0,0,0);
+timeStep=time1(2);
+
 %get time length of forcing file
 forcingTimeLength=length(time1);
-% 
-dt=1800/3600/24;
-t2=datenum(endyear,10,10,23,30,0);
+
+dt=time1(2)/3600/24;
+t2=datenum(endyear,12,31,23,30,0);
 T=t1:dt:t2;
 TL=length(T);
 T=T';
@@ -46,8 +46,8 @@ T5=[T0,T4];
 T6=datenum(T);
 T7=datenum(T5);
 T8=T6-T7;
+time=T8;
 T10=year(T);
-time= ncread(ForcingFilePath,'time');
 
 RH=ncread(ForcingFilePath,'RH');            % Unit: %
 RHL=length(RH);
@@ -112,17 +112,13 @@ LAIL=length(LAI);
 LAIa=reshape(LAI,LAIL,1);
 LAIa(LAIa<0.01)=0.01;
 
-canopyHeight = ncread(ForcingFilePath,'canopy_height');
-canopyHeightL=length(canopyHeight);
-canopyHeighta=reshape(canopyHeight,canopyHeightL,1);
-
 % LAI_alternative=ncread(ForcingFilePath,'LAI_alternative');
 % LAI_alternativeL=length(LAI_alternative);
 % LAI_alternativea=reshape(LAI_alternative,LAI_alternativeL,1);
 
 SiteProperties.igbpVegLong=ncread(ForcingFilePath,'IGBP_veg_long');
 SiteProperties.referenceHeight=ncread(ForcingFilePath,'reference_height');
-SiteProperties.canopyHeight=canopyHeighta;
+SiteProperties.canopyHeight=ncread(ForcingFilePath,'canopy_height');
 
 save([DataPaths.input, 't_.dat'], '-ascii', 'time')
 save([DataPaths.input, 'Ta_.dat'], '-ascii', 'Taira')
@@ -138,7 +134,7 @@ save([DataPaths.input, 'CO2_.dat'], '-ascii', 'CO2aira')
 %save([DataPaths.input, 'latitude.dat'], '-ascii', 'latitude')
 %save([DataPaths.input, 'longitude.dat'], '-ascii', 'longitude')
 %save([DataPaths.input, 'reference_height.dat'], '-ascii', 'reference_height')
-save([DataPaths.input, 'canopy_height.dat'], '-ascii', 'canopyHeighta')
+%save([DataPaths.input, 'canopy_height.dat'], '-ascii', 'canopy_height')
 %save([DataPaths.input, 'elevation.dat'], '-ascii', 'elevation')
 save([DataPaths.input, 'ea_.dat'], '-ascii', 'ea')
 save([DataPaths.input, 'year_.dat'], '-ascii', 'T10')
