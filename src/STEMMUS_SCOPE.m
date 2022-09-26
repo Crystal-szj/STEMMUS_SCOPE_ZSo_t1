@@ -35,24 +35,6 @@ end
 disp (['Reading config from ',CFG])
 [DataPaths, forcingFileName, numberOfTimeSteps, Scenario] = io.read_config(CFG);
 
-% Set scenario
-if strcmp(Scenario ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
-    biochemical = @biochemical_Vc_gs_b;
-elseif strcmp(Scenario,'Vcmax_gs_bw')                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
-    biochemical = @biochemical_Vcmax_gs_bw;
-elseif strcmp(Scenario, 'Vc_gs_bw')                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
-    biochemical = @biochemical_Vc_gs_bw;
-elseif strcmp(Scenario, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m = MedlynSlope
-    biochemical = @biochemical_Vc_gs_m;
-elseif strcmp(Scenario,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
-    biochemical = @biochemical_Vcmax_gs_mw;
-elseif strcmp(Scenario,'Vc_gs_mw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
-    biochemical = @biochemical_Vc_gs_mw;
-else
-    Scenario = 'Vc_gs_b';
-    biochemical = @biochemical_Vc_gs_b;
-end
-
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
 [SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);
@@ -74,6 +56,9 @@ if isnan(numberOfTimeSteps)
 else
     Dur_tot = min(numberOfTimeSteps, forcingTimeLength);
 end
+
+% set Scenario 
+[biochemical,Scenario] = setScenario(Scenario);
 
 %%
 run Constants %input soil parameters
@@ -453,7 +438,7 @@ atmfile     = [path_input 'radiationdata/' char(F(4).FileName(1))];
 atmo.M      = helpers.aggreg(atmfile,spectral.SCOPEspec);
 
 %% 13. create output files
-[Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options);
+[Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario);
 run StartInit;   % Initialize Temperature, Matric potential and soil air pressure.
 
 
