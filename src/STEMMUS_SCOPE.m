@@ -33,6 +33,7 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
+
 [DataPaths, forcingFileName, numberOfTimeSteps, Scenario] = io.read_config(CFG);
 
 % Prepare forcing data
