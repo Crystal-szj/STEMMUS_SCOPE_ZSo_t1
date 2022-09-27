@@ -96,7 +96,8 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 
 %% 1. define constants
 [constants] = io.define_constants();
-[Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
+% [Rl] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
+Rl = [1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1000;1100;1200;1300;1400;1480;1560;1700;1900;2000;1800;1300;1000;1000;1000;1000;1000;1000];
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
 path_of_code                = cd;
@@ -446,6 +447,7 @@ run StartInit;   % Initialize Temperature, Matric potential and soil air pressur
 diary([Output_dir,'log.txt'])
 fprintf('This is Scenario -- %s for %s_%d-%d\n',...
     Scenario,SiteProperties.siteName,SiteProperties.startyear,SiteProperties.endyear);
+fprintf('Dynamic root growth open\n\r')
 fprintf('\n The calculations start now \r')
  
 calculate = 1;
@@ -654,11 +656,13 @@ for i = 1:1:Dur_tot
            Acc=fluxes.Actot;
            lEstot =fluxes.lEstot;
            lEctot =fluxes.lEctot;
+           [Rl] = Root_properties(Rl, Acc,rroot, frac, bbx,KT);
            Tss=thermal.Tsave; 
         else
            Acc=0;
            lEstot =0;
            lEctot =0;
+           [Rl] = Root_properties(Rl, Acc,rroot, frac, bbx,KT);
            Tss=Ta_msr(KT); 
         end
     elseif NoTime(KT)>NoTime(KT-1)
@@ -666,15 +670,17 @@ for i = 1:1:Dur_tot
            Acc=fluxes.Actot;
            lEstot =fluxes.lEstot;
            lEctot =fluxes.lEctot;
+           [Rl] = Root_properties(Rl, Acc,rroot, frac, bbx,KT);
            Tss=thermal.Tsave; 
         else
            Acc=0;
            lEstot =0;
            lEctot =0;
+           [Rl] = Root_properties(Rl, Acc,rroot, frac, bbx,KT);
            Tss=Ta_msr(KT); 
         end
     end
- 
+    RlTOT(:,KT) = Rl;
     sfactortot(KT)=sfactor;
     DSTOR0=DSTOR; 
     

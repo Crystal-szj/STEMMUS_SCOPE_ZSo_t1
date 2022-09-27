@@ -166,9 +166,14 @@ end
 LAI = canopy.LAI;
 PSI=0;
 eih = equations.satvap(Tch);
-eiu = equations.satvap(Tcu);												 
-%[bbx]=Max_Rootdepth(bbx,TIME,NL,KT);
-[bbx]=Max_Rootdepth(bbx,NL,KT,TT);
+eiu = equations.satvap(Tcu);
+% ---------dynamic root growth --------
+% calculate root growth according to air temperature.
+[bbx]=Max_Rootdepth_GMD(bbx,NL,KT,Ta);
+
+% dynamic root growth close
+% [bbx]=Max_Rootdepth(bbx,NL,KT,TT);
+% --------------------------------------
 [PSIs,rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha);
 [sfactor] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f);
 PSIss=PSIs(NL,1);
