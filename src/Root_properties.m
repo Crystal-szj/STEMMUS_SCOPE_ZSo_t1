@@ -28,7 +28,7 @@ end
    % fr=0.02;
 %end
 DeltZ0=DeltZ'/100;
-BR = Ac*fr*1800*12/1000000;
+BR = Ac*fr*1800*12/1000000; % transfer umol to g
 root_den = 250*1000; %% [gDM / m^3] Root density  Jackson et al., 1997 
 R_C = 0.488; %% [gC/gDM] Ratio Carbon-Dry Matter in root   Jackson et al.,  1997 
 nn=numel(Rl);
