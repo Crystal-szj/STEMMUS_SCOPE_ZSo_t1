@@ -177,7 +177,7 @@ PSIss=psiSoil(NL,1);
 
 % initial leaf water potental = soil water potential - gravitational potential
 canopyHeight = SiteProperties.canopyHeight;
-psiLeaf = PSIss-canopyHeight;  
+psiLeaf = 0-canopyHeight;  
 
 %% 2. Energy balance iteration loop
 
@@ -306,7 +306,7 @@ while CONT                          % while energy balance does not close
     rss  = soil.rss;
     rac     = (LAI+1)*(raa+rawc);
     ras     = (LAI+1)*(raa+raws);
-%     for i=1:30
+    for i=1:30
 %         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
 %         [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
 %         [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
@@ -336,7 +336,7 @@ while CONT                          % while energy balance does not close
         Trans = lEctot/lambda1/1000;    % total canopy transpiration: unit: m s-1
         
         %% PHS
-        [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, DeltZ', LAI, sfactor, psiSoil, canopyHeight);
+        [psiLeaf_temp, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, DeltZ', LAI, sfactor, psiSoil, canopyHeight);
         %%
 %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
 %         AA2=1./(rsss+rrr+rxx);          % conductance
@@ -344,17 +344,18 @@ while CONT                          % while energy balance does not close
 %         BB2=AA2(~isinf(AA2));           % non-nan soil hydraulic conductance
 %         PSI1 = (sum(BB1)-Trans)/sum(BB2);       % leaf water potential = total soil water flux ./ total soil hydraulic conductance
 %         
-%         if isnan(PSI1)
-%             PSI1 = -1; 
-%         end
-%         if ~isreal(PSI1)
-%             PSI1 = -1;
-%         end
-%         if abs(psiLeaf-PSI1)<0.01
-%             break
-%         end
-%         psiLeaf  = (psiLeaf + PSI1)/2;
-%     end
+        % check convergence of leaf water potential 
+        if isnan(psiLeaf_temp)
+            psiLeaf_temp = -1; 
+        end
+        if ~isreal(psiLeaf_temp)
+            psiLeaf_temp = -1;
+        end
+        if abs(psiLeaf - psiLeaf_temp)<0.01
+            break
+        end
+        psiLeaf  = (psiLeaf + psiLeaf_temp)/2;
+    end
     PSItot(KT)=psiLeaf;
     %%%%%%%
     if SoilHeatMethod==2
