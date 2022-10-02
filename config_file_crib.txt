@@ -1,9 +1,10 @@
 SoilPropertyPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/SoilProperty/
 InputPath=../../CH_YLS_2017/Yangling_input/
-OutputPath=../../CH_YLS_2017/Yangling_output/
+OutputPath=../../CH_YLS_2017/Yangling_output/CH_YLS_Ballberry_output/
 ForcingPath=../../CH_YLS_2017/Yangling_input/
 ForcingFileName=CH-YLS_2017-2017_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
 DurationSize=5856
-Scenario=Vc_gs_mw
+Scenario=Vc_gs_b
+RunningMessages=TurningSoilProperties
 

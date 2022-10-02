@@ -34,7 +34,7 @@ if isempty(CFG)
 end
 disp (['Reading config from ',CFG])
 
-[DataPaths, forcingFileName, numberOfTimeSteps, Scenario] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, Scenario, RunningMessages] = io.read_config(CFG);
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
@@ -446,7 +446,7 @@ atmfile     = [path_input 'radiationdata/' char(F(4).FileName(1))];
 atmo.M      = helpers.aggreg(atmfile,spectral.SCOPEspec);
 
 %% 13. create output files
-[Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario);
+[Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario, RunningMessages);
 run StartInit;   % Initialize Temperature, Matric potential and soil air pressure.
 
 
