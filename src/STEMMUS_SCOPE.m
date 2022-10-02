@@ -270,14 +270,21 @@ elseif strcmp(IGBP_veg_long(1:20)', 'Evergreen Needleleaf')
     V(11).Val= [0];   
     V(28).Val= [0.01];
 elseif strcmp(IGBP_veg_long(1:9)', 'Croplands')    
-    if isequal(sitename1,{'ES-ES2'})||isequal(sitename1,{'FR-Gri'})||isequal(sitename1,{'US-ARM'})||isequal(sitename1,{'US-Ne1'})...
-            ||isequal(sitename1,{'CH-YLS'})
+    if isequal(sitename1,{'ES-ES2'})||isequal(sitename1,{'FR-Gri'})||isequal(sitename1,{'US-ARM'})||isequal(sitename1,{'US-Ne1'})
         V(14).Val= [0.2 0.3 278 303 328];
         V(9).Val= [50];
         V(10).Val= [4];
         V(11).Val= [1]; 
         V(13).Val= [0.025]; % Respiration = Rdparam*Vcmcax
-        V(28).Val= [0.03];
+        V(28).Val= [0.08];   % leaf width: GMD version
+        V(55).Val= 15;       % Tyear: GMD version
+    elseif isequal(sitename1,{'CH-YLS'})
+        V(14).Val= [0.2 0.3 278 303 328];
+        V(9).Val= [50];
+        V(10).Val= [4];
+        V(11).Val= [1]; 
+        V(13).Val= [0.025]; % Respiration = Rdparam*Vcmcax
+        V(28).Val= [0.03];       
     else 
         V(14).Val= [0.2 0.3 278 303 328];
         V(9).Val= [120];
