@@ -279,7 +279,7 @@ elseif strcmp(IGBP_veg_long(1:9)', 'Croplands')
         V(28).Val= [0.03];
     % --------- CH-YLS V ---------------    
     elseif isequal(sitename1,{'CH-YLS'})
-        V(14).Val= [0.2 0.3 278 303 328];
+        V(14).Val= [0.2 0.3 281 308 328];
         V(9).Val= [50];
         V(10).Val= [4];
         V(11).Val= [1]; 
