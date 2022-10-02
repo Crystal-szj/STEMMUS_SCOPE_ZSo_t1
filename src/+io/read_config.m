@@ -1,4 +1,4 @@
-function [DataPaths, forcingFileName, durationSize, Scenario] = read_config(config_file)
+function [DataPaths, forcingFileName, durationSize, Scenario, RunningMessages] = read_config(config_file)
 
     file_id = fopen(config_file);
     config = textscan(file_id,'%s %s', 'HeaderLines',0, 'Delimiter', '=');
@@ -36,5 +36,10 @@ function [DataPaths, forcingFileName, durationSize, Scenario] = read_config(conf
         Scenario = [];
     else
         Scenario = config_paths{indx};
+    end
+    
+    indx = find(strcmp(config_vars,'RunningMessages'));
+    if ~isempty(indx)
+        RunningMessages = config_paths{indx};
     end
 end

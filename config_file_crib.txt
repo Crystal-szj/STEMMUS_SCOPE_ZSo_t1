@@ -6,4 +6,5 @@ ForcingFileName=CH-YLS_2017-2017_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
 DurationSize=5856
 Scenario=NaN
+RunningMessages=
 
