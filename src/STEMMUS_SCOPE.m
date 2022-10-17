@@ -355,6 +355,10 @@ else
         V(50).Val= TZ;
     end
 end
+
+if isequal(sitename1,{'CH-YLS'})
+    V(50).Val = 8;
+end
 %% 5. Declare paths
 path_input      = InputPath;          % path of all inputs
 path_output     = OutputPath;
