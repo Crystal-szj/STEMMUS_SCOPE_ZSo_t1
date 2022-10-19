@@ -1,6 +1,7 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
 
-function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, DeltZ, lai, sfactor, psiSoil, canopyHeight)
+function [psiLeaf, psiStem, psiRoot, rootConductance] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
+                                                         RootProperties, soilDepth, lai, sfactor, psiSoil, canopyHeight)
 % Calculation of plant hydraulic conductance among plant components
 
 % Input:
@@ -9,8 +10,9 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
 %     Ksoil: unsaturated soil hydraulic conductivity [m s-1]
 %     ParaPlant: A structure contains plant parameters
 %     RootProperties: A structure contains root properties
-%     DeltZ: An array contains soil thickness of each soil layer from
-%            bottom to surface.
+%     soilDepth: An array contains soil depth of each soil layer to soil
+%           surface. (direction: from surface to bottom)
+%            
 %     lai: An array contains LAI
 %     sfactor: soil water stress factor, WSF
 
@@ -21,11 +23,11 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
 
     %% +++++++++++++++++++++++++ PHS ++++++++++++++++++++++++++++++++
     % ----------------------------------------------------------------
-    % qSoil2Root = kSoil2Root * (psiSoil - psiRoot - DeltaZ)
-    %                                 qSoil2Root          
-    % psiRoot = psiSoil - DeltaZ -  ---------------
-    %                                 kSoil2Root
-    %
+    % qSoil2Root = kSoil2Root * (psiSoil - psiRoot - soilDepth)
+    %                                              
+    %            kSoil2Root * (psiSoil - soilDepth) -  qSoil2Root
+    %  psiRoot = --------------------------------------------------                                 
+    %                          kSoil2Root
 
     % qRoot2Stem = kRoot2Stem * SAI * (psiRoot - psiStem - canopyHeight)
     %                                         qRoot2Stem          
@@ -55,6 +57,9 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
     rootSpac = RootProperties.spac;    
     rootFrac = RootProperties.frac;
     
+    % inverse soilDepth 
+    soilDepth = flipud(soilDepth);
+    
     % Q_soil2root = Q_root2stem = Q_stem2leaf = Transpiration
     qSoil2Root = Trans;  % unit [m/s]
     qRoot2Stem = Trans;
@@ -83,29 +88,8 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
     soilConductance = min(Ks' , Ksoil) ./100 ./ rootSpac ; % 100 is a transfer factor from [cm/s] to [m/s]
     
     phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, ckRoot);
-    
-    % +++++++++++++++++++ debug ++++++++++++++++
-%     rootLengthDensity = RootProperties.lengthDensity;
-%     figure
-%     subplot(3,1,1)
-%     plot(Ksoil)
-%     set(gca, 'xTick',[1:3:54],'xtickLabels',[54:-3:1])
-%     title('Ksoil')
-%     
-%     subplot(3,1,2)
-%     plot(phwsfRoot)
-%     set(gca, 'xTick',[1:3:54],'xtickLabels',[54:-3:1])
-%     title('phwsfRoot')
-%     
-%     subplot(3,1,3)
-%     plot(rootLengthDensity)
-%     title('rootLengthDensity')
-%     set(gca, 'xTick',[1:3:54],'xtickLabels',[54:-3:1])
-%     xlabel("num of soil layer")
-%     pause
-    % ++++++++++++++++++++++++++++++++++++++++++
-    
-    rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + DeltZ./100); % unit [m/s]
+
+    rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + soilDepth./100); % unit [m/s]
     
     soilConductance = max(soilConductance, 1e-16);
     rootConductance = max(rootConductance, 1e-16);
@@ -115,10 +99,10 @@ function [psiLeaf, psiStem, psiRoot] = calPlantWaterPotential(Trans,Ks, Ksoil, P
     % Q_soil2root = Q_root2stem = Q_stem2leaf = Transpiration
     if (abs(sum(kSoil2Root,1)) == 0)
         % for saturated condition
-        psiRoot = sum((psiSoil - DeltZ./100)) / numSoilLayer;
+        psiRoot = sum((psiSoil - soilDepth./100)) / numSoilLayer;
     else
         % for unsaturated condition
-        psiRoot = sum( ((psiSoil - DeltZ./100) - qSoil2Root)) / sum(kSoil2Root);
+        psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepth./100)) - qSoil2Root) / sum(kSoil2Root);
     end
 
     %% =================== stem water potential ========================
