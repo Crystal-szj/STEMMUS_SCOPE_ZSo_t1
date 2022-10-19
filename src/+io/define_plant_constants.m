@@ -15,17 +15,17 @@ function ParaPlant = define_plant_constants()
 %     ParaPlant.ck_sunleaf     = ;        % parameter of plant hydraulic pathway [MPa]
 %     ParaPlant.ck_shdleaf     = ;        % parameter of plant hydraulic pathway [MPa]
 
-    ParaPlant.p50Leaf        = 0.5;   % unit MPa   5.0968e-11;  % 0.5./1e6*pa2m;       % parameter of plant hydraulic pathway [m] 0.5MPa refer to Kennedy 2019.
+    ParaPlant.p50Leaf        = -1.75; %0.5;   % unit MPa   5.0968e-11;  % 0.5./1e6*pa2m;       % parameter of plant hydraulic pathway [m] 0.5MPa refer to Kennedy 2019.
     ParaPlant.p50Stem        = -1.75; % unit MPa  -1.7839e-10; % -1.75./1e6*pa2m;     % parameter of plant hydraulic pathway [m] -1.75MPa refer to Kennedy 2019.
     ParaPlant.p50Root        = -1.75; % unit MPa  -1.7839e-10; % -1.75./1e6*pa2m;     % parameter of plant hydraulic pathway [m] -1.75MPa refer to Kennedy 2019.
     
-    ParaPlant.ckLeaf         = 2.95;      % parameter of plant hydraulic pathway
+    ParaPlant.ckLeaf         = 2.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
     ParaPlant.ckStem         = 2.95;      % parameter of plant hydraulic pathway [unitless]
     ParaPlant.ckRoot         = 2.95;      % parameter of plant hydraulic pathway [unitless]
 
-    ParaPlant.Krootmax          =2e-9;       % root conductivity [m s-1]
-    ParaPlant.Kstemmax          =2e-8;       % stem conductivity [m s-1]
-    ParaPlant.Kleafmax          =2e-7;       % maximum leaf conductance [s-1]
+    ParaPlant.Krootmax          =6e-9;%2e-9;       % root conductivity [m s-1]
+    ParaPlant.Kstemmax          =2e-7;%2e-8;       % stem conductivity [m s-1]
+    ParaPlant.Kleafmax          =2e-7;%2e-7;       % maximum leaf conductance [s-1]
     ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
 
     

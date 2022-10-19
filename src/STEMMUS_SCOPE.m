@@ -627,9 +627,15 @@ for i = 1:1:Dur_tot
         
         switch options.calc_ebal
             case 1
-                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu]                          ...
+                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu,psiStem,psiRoot,psiLeaf]                          ...
                     = ebal(iter,options,spectral,rad,gap,                       ...
-                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties);
+                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth);
+                    
+                TestPHS.psiStemTot(KT) = psiStem;
+                TestPHS.psiRootTot(KT) = psiRoot;
+                TestPHS.psiSoilTot(:,KT) = PSIs;  % psiSoil
+                TestPHS.psiLeafTot(KT) = psiLeaf;
+                
                 if options.calc_fluor
                     if options.calc_vert_profiles
                         [rad,profiles] = RTMf(spectral,rad,soil,leafopt,canopy,gap,angles,profiles);

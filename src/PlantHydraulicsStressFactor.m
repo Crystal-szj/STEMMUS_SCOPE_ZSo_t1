@@ -24,6 +24,7 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, ck, phwsf_method)
         case 'Weibull'
             phwsf = 2.^(-(psi./psi50)).^ck;
             phwsf(phwsf < 5e-5) = 0;
+%         case ''
         otherwise
             phwsf = NaN;
             fprintf('phwsf method need to be defined.')
