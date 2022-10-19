@@ -33,11 +33,11 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
-[DataPaths, forcingFileName, numberOfTimeSteps, Scenario, RunningMessages] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, Scenario, RunningMessages] = io.read_config(CFG);
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
-[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);   % DELT: time steps, default is 1800 s.
+[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName, startDate, endDate);   % DELT: time steps, default is 1800 s.
 SoilPropertyPath     = DataPaths.soilProperty;
 InputPath            = DataPaths.input;
 OutputPath           = DataPaths.output;

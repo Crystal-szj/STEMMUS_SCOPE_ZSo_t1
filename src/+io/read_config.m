@@ -1,4 +1,4 @@
-function [DataPaths, forcingFileName, durationSize, Scenario,RunningMessages] = read_config(config_file)
+function [DataPaths, forcingFileName, durationSize, startDate, endDate, Scenario,RunningMessages] = read_config(config_file)
 
     file_id = fopen(config_file);
     config = textscan(file_id,'%s %s', 'HeaderLines',0, 'Delimiter', '=');
@@ -30,6 +30,13 @@ function [DataPaths, forcingFileName, durationSize, Scenario,RunningMessages] = 
     % value of DurationSize is optional and can be NA
     indx = find(strcmp(config_vars, 'DurationSize'));
     durationSize = str2double(config_paths{indx});
+    
+    % set start date and end date
+    indx = find(strcmp(config_vars,'StartDate'));
+    startDate = config_paths{indx};
+
+    indx = find(strcmp(config_vars,'EndDate'));
+    endDate = config_paths{indx};
 
     indx = find(strcmp(config_vars, 'Scenario'));
     if isempty(indx)
