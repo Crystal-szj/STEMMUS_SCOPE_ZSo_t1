@@ -1,6 +1,6 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
 
-function [psiLeaf, psiStem, psiRoot, rootConductance] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
+function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
                                                          RootProperties, soilDepth, lai, sfactor, psiSoil, canopyHeight)
 % Calculation of plant hydraulic conductance among plant components
 
@@ -17,9 +17,13 @@ function [psiLeaf, psiStem, psiRoot, rootConductance] = calPlantWaterPotential(T
 %     sfactor: soil water stress factor, WSF
 
 % Output:
+%     psiLeaf: leaf water potential [m]
+%     psiStem: stem water potential [m]
+%     psiRoot: root water potential [m]
 %     kSoil2Root: hydraulic conductance from soil to root
-%     sai       : stem area index [m2/m2]
-%     rai       : root area index [m2/m2]
+%     kRoot2Stem: hydraulic conductance from root to stem
+%     kStem2Leaf: hydraulic conductance from stem to leaf
+%     phwsfLeaf : leaf water stress factor
 
     %% +++++++++++++++++++++++++ PHS ++++++++++++++++++++++++++++++++
     % ----------------------------------------------------------------
