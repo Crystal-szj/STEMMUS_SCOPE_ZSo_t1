@@ -127,4 +127,15 @@ function [psiLeaf, psiStem, psiRoot, rootConductance] = calPlantWaterPotential(T
     else
         psiLeaf = psiStem;
     end
+    
+    %% ==================== set complex value ======================
+    if ~isreal(psiRoot)
+        psiRoot = real(psiRoot);
+    end
+    if ~isreal(psiStem)
+        psiStem = real(psiStem);
+    end
+    if ~isreal(psiLeaf)
+        psiLeaf = real(psiLeaf);
+    end
 end

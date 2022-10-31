@@ -353,9 +353,9 @@ while CONT                          % while energy balance does not close
         if isnan(psiLeaf_temp)
             psiLeaf_temp = -1; 
         end
-        if ~isreal(psiLeaf_temp)
-            psiLeaf_temp = -1;
-        end
+%         if ~isreal(psiLeaf_temp)
+%             psiLeaf_temp = -1;
+%         end
         if abs(psiLeaf - psiLeaf_temp)<0.01
             break
         end
