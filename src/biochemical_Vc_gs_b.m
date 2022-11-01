@@ -1,4 +1,4 @@
-function biochem_out = biochemical(biochem_in,Ci_input)
+function biochem_out = biochemical(biochem_in, phwsf, Ci_input)
 %
 A = [];
 Ag = [];
@@ -102,7 +102,7 @@ end
 % Vcmax     % [umol/m2/s]           carboxylation capacity after
 %                                   ... temperature correction 
 
-if nargin < 2
+if nargin < 3
     Ci_input = [];
 end
 %% input
@@ -283,9 +283,11 @@ kpepcase = Kpep25.* exp(log(1.8).*qt);  % "pseudo first order rate constant for 
 
 % jak 2014-12-04: Add TL for C3 as well, works much better with our cotton temperature dataset (A-T)
 if strcmpi(Type, 'C3') && ~useTLforC3
-   Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./TH * sfactor;
+%    Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./TH * sfactor;
+    Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./TH * phwsf;
 else
-   Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./(TL.*TH) * sfactor;
+%    Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./(TL.*TH) * sfactor;
+    Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./(TL.*TH) * phwsf;
 end
 
 % specificity (tau in Collatz e.a. 1991)

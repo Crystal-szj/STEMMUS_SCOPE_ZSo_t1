@@ -627,7 +627,7 @@ for i = 1:1:Dur_tot
         
         switch options.calc_ebal
             case 1
-                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu,psiStem,psiRoot,psiLeaf]                          ...
+                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu,psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]                          ...
                     = ebal(iter,options,spectral,rad,gap,                       ...
                     leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth);
                     
@@ -635,6 +635,10 @@ for i = 1:1:Dur_tot
                 TestPHS.psiRootTot(KT) = psiRoot;
                 TestPHS.psiSoilTot(:,KT) = PSIs;  % psiSoil
                 TestPHS.psiLeafTot(KT) = psiLeaf;
+                TestPHS.kSoil2Root(:,KT) = kSoil2Root;
+                TestPHS.kRoot2Stem(KT) = kRoot2Stem;
+                TestPHS.kStem2Leaf(KT) = kStem2Leaf;
+                TestPHS.plantWaterStressFactor(KT) = phwsf;
                 
                 if options.calc_fluor
                     if options.calc_vert_profiles

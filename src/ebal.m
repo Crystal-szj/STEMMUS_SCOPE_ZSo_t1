@@ -1,4 +1,4 @@
-function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, psiStem,psiRoot,psiLeaf]             ...  
+function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
                 angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
@@ -181,6 +181,9 @@ canopyHeight = SiteProperties.canopyHeight;
 
 psiLeaf = 0-canopyHeight;  
 PSI = 0;
+
+% --------- initial plant water stress factor--------
+phwsf = sfactor;
 %% 2. Energy balance iteration loop
 
 %'Energy balance loop (Energy balance and radiative transfer)
@@ -265,7 +268,7 @@ while CONT                          % while energy balance does not close
     biochem_in.Q        = rad.Pnh_Cab*1E6;
 	biochem_in.ei       = eih;							   
     
-    biochem_out         = b(biochem_in);
+    biochem_out         = b(biochem_in, phwsf);
     Ah                  = biochem_out.A;
     Ahh                  = biochem_out.Ag;
     Cih                 = biochem_out.Ci;
@@ -283,7 +286,7 @@ while CONT                          % while energy balance does not close
     biochem_in.Q        = rad.Pnu_Cab*1E6;
 	biochem_in.ei       = eiu;							   
     
-    biochem_out         = b(biochem_in);
+    biochem_out         = b(biochem_in,phwsf);
  
     Au                  = biochem_out.A; % Ag? or A?
     Auu                  = biochem_out.Ag;   %GPP calculation.
@@ -342,7 +345,7 @@ while CONT                          % while energy balance does not close
         Trans = lEctot/lambda1/1000;    % total canopy transpiration: unit: m s-1
         
         %% PHS
-        [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
+        [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
         %%
 %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
 %         AA2=1./(rsss+rrr+rxx);          % conductance
