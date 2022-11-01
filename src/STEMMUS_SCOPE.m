@@ -480,7 +480,7 @@ for i = 1:1:Dur_tot
     KT=KT+1                         % Counting Number of timesteps
     if KT>1 && Delt_t>(TEND-TIME)
         Delt_t=TEND-TIME;           % If Delt_t is changed due to excessive change of state variables, the judgement of the last time step is excuted.
-    end
+    end 
     TIME=TIME+Delt_t;               % The time elapsed since start of simulation
     TimeStep(KT,1)=Delt_t;
     SUMTIME(KT,1)=TIME;
