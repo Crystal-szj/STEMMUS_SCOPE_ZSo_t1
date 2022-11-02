@@ -118,6 +118,10 @@ soilThickness = DeltZ_R';  % the direction of soilThickness is from surface to b
 Rl = RootProperties.lengthDensity; % direction: bottom to surface
 ri = RootProperties.frac; % direction: bottom to surface
 
+
+% --------- initial plant water stress factor--------
+phwsf = 1;
+
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
 path_of_code                = cd;
@@ -629,7 +633,7 @@ for i = 1:1:Dur_tot
             case 1
                 [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu,psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]                          ...
                     = ebal(iter,options,spectral,rad,gap,                       ...
-                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth);
+                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth, phwsf);
                     
                 TestPHS.psiStemTot(KT) = psiStem;
                 TestPHS.psiRootTot(KT) = psiRoot;

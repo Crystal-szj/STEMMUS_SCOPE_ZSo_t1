@@ -1,6 +1,6 @@
 function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
-                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth)
+                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth, phwsf)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
  global  m n Alpha TT
  global rroot frac  
@@ -182,8 +182,7 @@ canopyHeight = SiteProperties.canopyHeight;
 psiLeaf = 0-canopyHeight;  
 PSI = 0;
 
-% --------- initial plant water stress factor--------
-phwsf = sfactor;
+
 %% 2. Energy balance iteration loop
 
 %'Energy balance loop (Energy balance and radiative transfer)
