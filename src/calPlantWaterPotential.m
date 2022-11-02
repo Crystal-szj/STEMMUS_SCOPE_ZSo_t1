@@ -142,4 +142,16 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     if ~isreal(psiLeaf)
         psiLeaf = real(psiLeaf);
     end
+    
+    if ~exist('kSoil2Root','var')
+        kSoil2Root = NaN;
+    end
+    
+    if ~exist('kRoot2Stem','var')
+        kRoot2Stem = NaN;
+    end
+    
+    if~exist('kStem2Leaf', 'var')
+        kStem2Leaf = NaN;
+    end
 end
