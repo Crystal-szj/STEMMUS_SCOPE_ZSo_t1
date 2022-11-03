@@ -1,6 +1,6 @@
 function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
-                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth, phwsf)
+                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
  global  m n Alpha TT
  global rroot frac  
@@ -267,7 +267,7 @@ while CONT                          % while energy balance does not close
     biochem_in.Q        = rad.Pnh_Cab*1E6;
 	biochem_in.ei       = eih;							   
     
-    biochem_out         = b(biochem_in, phwsf);
+    biochem_out         = b(biochem_in);
     Ah                  = biochem_out.A;
     Ahh                  = biochem_out.Ag;
     Cih                 = biochem_out.Ci;
@@ -285,7 +285,7 @@ while CONT                          % while energy balance does not close
     biochem_in.Q        = rad.Pnu_Cab*1E6;
 	biochem_in.ei       = eiu;							   
     
-    biochem_out         = b(biochem_in,phwsf);
+    biochem_out         = b(biochem_in);
  
     Au                  = biochem_out.A; % Ag? or A?
     Auu                  = biochem_out.Ag;   %GPP calculation.
