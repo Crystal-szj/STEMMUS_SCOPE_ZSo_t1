@@ -134,13 +134,13 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     
     %% ==================== set complex value ======================
     if ~isreal(psiRoot)
-        psiRoot = real(psiRoot);
+        psiRoot = mean(psiSoil(rootFrac > 0.001));
     end
     if ~isreal(psiStem)
-        psiStem = real(psiStem);
+        psiStem = psiRoot;
     end
     if ~isreal(psiLeaf)
-        psiLeaf = real(psiLeaf);
+        psiLeaf = -1; 
     end
     
     if ~exist('kSoil2Root','var')
