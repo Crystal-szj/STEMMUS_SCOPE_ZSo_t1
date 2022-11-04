@@ -139,10 +139,11 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     if ~isreal(psiStem)
         psiStem = psiRoot;
     end
-    if ~isreal(psiLeaf)
-        psiLeaf = -1; 
+    if ~isreal(psiLeaf) | isnan(psiLeaf)
+        psiLeaf = psiStem; 
     end
     
+    %% ================== set default conductance ==================
     if ~exist('kSoil2Root','var')
         kSoil2Root = NaN;
     end

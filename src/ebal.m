@@ -352,9 +352,9 @@ while CONT                          % while energy balance does not close
 %         BB2=AA2(~isinf(AA2));           % non-nan soil hydraulic conductance
 %         PSI1 = (sum(BB1)-Trans)/sum(BB2);       % leaf water potential = total soil water flux ./ total soil hydraulic conductance
 %         
-        if isnan(psiLeaf_temp)
-            psiLeaf_temp = -1; 
-        end
+%         if isnan(psiLeaf_temp)
+%             psiLeaf_temp = -1; 
+%         end
 %         if ~isreal(psiLeaf_temp)
 %             psiLeaf_temp = -1;
 %         end
@@ -364,6 +364,13 @@ while CONT                          % while energy balance does not close
         psiLeaf  = (psiLeaf + psiLeaf_temp)/2;
     end
     PSItot(KT)=psiLeaf;
+    
+    % if phwsf is a complex value, set it as sfactor
+    if ~isreal(phwsf)
+        phwsf = sfactor;
+    end
+    
+    
 
     %%%%%%%
     if SoilHeatMethod==2
