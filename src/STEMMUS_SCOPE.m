@@ -245,12 +245,22 @@ if strcmp(IGBP_veg_long(1:18)', 'Permanent Wetlands')
     V(10).Val= [9]; % Ball-Berry stomatal conductance parameter
     V(11).Val= [0]; % Photochemical pathway: 0=C3, 1=C4
     V(28).Val= [0.05]; % leaf width
-elseif strcmp(IGBP_veg_long(1:19)', 'Evergreen Broadleaf')  
-    V(14).Val= [0.2 0.3 283 311 328];
-    V(9).Val= [80];
-    V(10).Val= [9];
-    V(11).Val= [0];
-    V(28).Val= [0.05];
+elseif strcmp(IGBP_veg_long(1:19)', 'Evergreen Broadleaf')
+    if isequal(sitename1,{'CH-HTC'})
+        V(1).Val = [100];
+        V(2).Val = 25;
+        V(14).Val= [0.2 0.3 288 313 328];
+        V(9).Val = [80];
+        V(11).Val= [0];
+        V(28).Val= [0.035];
+        V(55).Val = [17.5];
+    else
+        V(14).Val= [0.2 0.3 283 311 328];
+        V(9).Val= [80];
+        V(10).Val= [9];
+        V(11).Val= [0];
+        V(28).Val= [0.05];
+    end
 elseif strcmp(IGBP_veg_long(1:19)', 'Deciduous Broadleaf') 
     V(14).Val= [0.2 0.3 283 311 328];
     V(9).Val= [80];
@@ -295,11 +305,22 @@ elseif strcmp(IGBP_veg_long(1:9)', 'Croplands')
         V(28).Val= [0.03];    
     end
 elseif strcmp(IGBP_veg_long(1:15)', 'Open Shrublands')
-    V(14).Val= [0.2 0.3 288 313 328];
-    V(9).Val= [120];
-    V(10).Val= [9];
-    V(11).Val= [0];  
-    V(28).Val= [0.05];
+    if isequal(sitename1,{'CH-HTC'})
+        V(1).Val = [80];
+        V(2).Val = 20;
+        V(14).Val= [0.2 0.3 288 313 328];
+        V(9).Val = [80];
+        V(10).Val= [7];
+        V(11).Val= [0];
+        V(28).Val= [0.015];
+        V(55).Val = [17.5];
+    else
+        V(14).Val= [0.2 0.3 288 313 328];
+        V(9).Val= [120];
+        V(10).Val= [9];
+        V(11).Val= [0];  
+        V(28).Val= [0.05];
+    end
 elseif strcmp(IGBP_veg_long(1:17)', 'Closed Shrublands') 
     V(14).Val= [0.2 0.3 288 313 328];
     V(9).Val= [80];

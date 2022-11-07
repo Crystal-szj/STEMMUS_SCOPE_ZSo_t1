@@ -26,14 +26,14 @@ SiteProperties.endyear = endyear;
 
 % Read time values from forcing file
 time1=ncread(ForcingFilePath,'time');
-t1=datenum(startyear,6,11,0,0,0);
+t1=datenum(startyear,7,13,0,0,0);
 timeStep=1800;
 % 
 %get time length of forcing file
 forcingTimeLength=length(time1);
 % 
 dt=1800/3600/24;
-t2=datenum(endyear,10,10,23,30,0);
+t2=datenum(endyear,8,9,23,30,0);
 T=t1:dt:t2;
 TL=length(T);
 T=T';
