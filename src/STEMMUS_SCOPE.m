@@ -469,7 +469,6 @@ atmo.M      = helpers.aggreg(atmfile,spectral.SCOPEspec);
 [Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario, RunningMessages);
 run StartInit;   % Initialize Temperature, Matric potential and soil air pressure.
 
-
 %% 14. Run the model
 diary([Output_dir,'log.txt'])
 fprintf('This is Scenario -- %s for %s_%d-%d\n',...
@@ -480,6 +479,10 @@ calculate = 1;
 TIMEOLD=0;SAVEhh_frez=zeros(NN+1,1);FCHK=zeros(1,NN);KCHK=zeros(1,NN);hCHK=zeros(1,NN);
 TIMELAST=0;
 SAVEtS=tS; kk=0;   %DELT=Delt_t; 
+
+%PHS
+TestPHS.psiLeafIni = 0 - SiteProperties.canopyHeight;
+
 for i = 1:1:Dur_tot
     KT=KT+1                         % Counting Number of timesteps
     if KT>1 && Delt_t>(TEND-TIME)
@@ -628,22 +631,14 @@ for i = 1:1:Dur_tot
         atmo.Ta     = meteo.Ta;
         
         [rad,gap,profiles]   = RTMo(spectral,atmo,soil,leafopt,canopy,angles,meteo,rad,options);
+
         
         switch options.calc_ebal
             case 1
-                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu,psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]                          ...
+                [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu, TestPHS]                          ...
                     = ebal(iter,options,spectral,rad,gap,                       ...
-                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth);
-                    
-                TestPHS.psiStemTot(KT) = psiStem;
-                TestPHS.psiRootTot(KT) = psiRoot;
-                TestPHS.psiSoilTot(:,KT) = PSIs;  % psiSoil
-                TestPHS.psiLeafTot(KT) = psiLeaf;
-                TestPHS.kSoil2Root(:,KT) = kSoil2Root;
-                TestPHS.kRoot2Stem(KT) = kRoot2Stem;
-                TestPHS.kStem2Leaf(KT) = kStem2Leaf;
-                TestPHS.plantWaterStressFactor(KT) = phwsf;
-                
+                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth, TestPHS);
+            
                 if options.calc_fluor
                     if options.calc_vert_profiles
                         [rad,profiles] = RTMf(spectral,rad,soil,leafopt,canopy,gap,angles,profiles);

@@ -1,6 +1,6 @@
-function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, psiStem,psiRoot,psiLeaf,kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf]             ...  
+function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, TestPHS]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
-                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth)
+                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth, TestPHS)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
  global  m n Alpha TT
  global rroot frac  
@@ -178,8 +178,8 @@ PSIss=psiSoil(NL,1);
 % initial leaf water potental = soil water potential - gravitational potential
 canopyHeight = SiteProperties.canopyHeight;
 
-
-psiLeaf = 0-canopyHeight;  
+% psiLeaf = 0-canopyHeight;  
+psiLeaf = TestPHS.psiLeafIni;
 PSI = 0;
 
 
@@ -344,7 +344,8 @@ while CONT                          % while energy balance does not close
         Trans = lEctot/lambda1/1000;    % total canopy transpiration: unit: m s-1
         
         %% PHS
-        [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
+        [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf] = calPlantWaterPotential(Trans,Ks, ...
+            Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
         %%
 %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
 %         AA2=1./(rsss+rrr+rxx);          % conductance
@@ -352,16 +353,14 @@ while CONT                          % while energy balance does not close
 %         BB2=AA2(~isinf(AA2));           % non-nan soil hydraulic conductance
 %         PSI1 = (sum(BB1)-Trans)/sum(BB2);       % leaf water potential = total soil water flux ./ total soil hydraulic conductance
 %         
-%         if isnan(psiLeaf_temp)
-%             psiLeaf_temp = -1; 
-%         end
-%         if ~isreal(psiLeaf_temp)
-%             psiLeaf_temp = -1;
-%         end
+        if isnan(psiLeaf_temp)|~isreal(psiLeaf_temp)
+                psiLeaf_temp = -1; 
+        end
+        
         if abs(psiLeaf - psiLeaf_temp)<0.01
             break
         end
-        psiLeaf  = (psiLeaf + psiLeaf_temp)/2;
+        psiLeaf  = 0.5 * (psiLeaf + psiLeaf_temp);
     end
     PSItot(KT)=psiLeaf;
     
@@ -369,9 +368,7 @@ while CONT                          % while energy balance does not close
     if ~isreal(phwsf)
         phwsf = sfactor;
     end
-    
-    
-
+        
     %%%%%%%
     if SoilHeatMethod==2
        G = 0.30*Rns;
@@ -414,6 +411,16 @@ while CONT                          % while energy balance does not close
     if any(isnan(Ts)), warning('Soil temperature gives NaNs'), end
   
 end
+
+    TestPHS.psiStemTot(KT) = psiStem;
+    TestPHS.psiRootTot(KT) = psiRoot;
+    TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
+    TestPHS.psiLeafTot(KT) = psiLeaf;
+    TestPHS.kSoil2RootTot(:,KT) = kSoil2Root;
+    TestPHS.kRoot2StemTot(KT) = kRoot2Stem;
+    TestPHS.kStem2LeafTot(KT) = kStem2Leaf;
+    TestPHS.phwsfTot(KT) = phwsf;
+
 
 iter.counter = counter;
 profiles.etah = Fh;

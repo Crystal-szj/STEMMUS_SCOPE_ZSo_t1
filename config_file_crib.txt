@@ -4,9 +4,8 @@ OutputPath=../../US_Var_2004/Vaira_output_PHS/
 ForcingPath=../../US_Var_2004/Vaira_input/
 ForcingFileName=US-Var_2004-2004_FLUXNET2015_Met.nc
 InitialConditionPath=/data/shared/EcoExtreML/STEMMUS_SCOPEv1.0.0/input/Initial_condition/
-DurationSize=480
+DurationSize=NaN
 StartDate=2004-01-01_00:00:00
 EndDate=2004-12-31_23:30:00
 Scenario=NaN
-RunningMessages=P50
-
+RunningMessages=phwsfComplexValue_advance1
