@@ -342,7 +342,9 @@ while CONT                          % while energy balance does not close
         Trans = lEctot/lambda1/1000;    % total canopy transpiration: unit: m s-1
         
         %% PHS
-        [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
+        [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks,...
+            Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
+        
         %%
 %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
 %         AA2=1./(rsss+rrr+rxx);          % conductance
@@ -361,6 +363,7 @@ while CONT                          % while energy balance does not close
         end
         psiLeaf  = (psiLeaf + psiLeaf_temp)/2;
     end
+    i
     PSItot(KT)=psiLeaf;
 
     %%%%%%%

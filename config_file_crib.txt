@@ -9,4 +9,3 @@ StartDate=2004-01-01_00:00:00
 EndDate=2004-12-31_23:30:00
 Scenario=NaN
 RunningMessages=P50
-

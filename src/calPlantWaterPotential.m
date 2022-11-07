@@ -1,5 +1,4 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
-
 function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
                                                          RootProperties, soilDepth, lai, sfactor, psiSoil, canopyHeight)
 % Calculation of plant hydraulic conductance among plant components
