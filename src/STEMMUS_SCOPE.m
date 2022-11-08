@@ -33,11 +33,12 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
-[DataPaths, forcingFileName, numberOfTimeSteps, Scenario, RunningMessages] = io.read_config(CFG);
+
+[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDateScenario, RunningMessages] = io.read_config(CFG);
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
-[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName);
+[SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName, startDate, endDate);
 SoilPropertyPath     = DataPaths.soilProperty;
 InputPath            = DataPaths.input;
 OutputPath           = DataPaths.output;
@@ -100,42 +101,23 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 %% 2. simulation options
 path_input = InputPath;          % path of all inputs
 path_of_code                = cd;
-run set_parameter_filenames; 
 
-if length(parameter_file)>1, useXLSX = 0; else useXLSX = 1; end
-
-if ~useXLSX
-    run([path_input parameter_file{1}])
-    
-    options.calc_ebal           = N(1);    % calculate the energy balance (default). If 0, then only SAIL is executed!
-    options.calc_vert_profiles  = N(2);    % calculate vertical profiles of fluxes
-    options.calc_fluor          = N(3);    % calculate chlorophyll fluorescence in observation direction
-    options.calc_planck         = N(4);    % calculate spectrum of thermal radiation
-    options.calc_directional    = N(5);    % calculate BRDF and directional temperature
-    options.calc_xanthophyllabs = N(6);    % include simulation of reflectance dependence on de-epoxydation state
-    options.calc_PSI            = N(7);    % 0: optipar 2017 file with only one fluorescence spectrum vs 1: Franck et al spectra for PSI and PSII
-    options.rt_thermal          = N(8);    % 1: use given values under 10 (default). 2: use values from fluspect and soil at 2400 nm for the TIR range
-    options.calc_zo             = N(9);
-    options.soilspectrum        = N(10);    %0: use soil spectrum from a file, 1: simulate soil spectrum with the BSM model
-    options.soil_heat_method    = N(11);    % 0: calculated from specific heat and conductivity (default), 1: empiricaly calibrated, 2: G as constant fraction of soil net radiation
-    options.Fluorescence_model  = N(12);     %0: empirical, with sustained NPQ (fit to Flexas' data); 1: empirical, with sigmoid for Kn; 2: Magnani 2012 model
-    options.calc_rss_rbs        = N(13);    % 0: calculated from specific heat and conductivity (default), 1: empiricaly calibrated, 2: G as constant fraction of soil net radiation
-    options.apply_T_corr        = N(14);    % correct Vcmax and rate constants for temperature in biochemical.m
-    options.verify              = N(15);
-    options.save_headers        = N(16);    % write headers in output files
-    options.makeplots           = N(17);
-    options.simulation          = N(18);    % 0: individual runs (specify all input in a this file)
-    % 1: time series (uses text files with meteo input as time series)
-    % 2: Lookup-Table (specify the values to be included)
-    % 3: Lookup-Table with random input (specify the ranges of values)
+useXLSX = 1;      % set it to 1 or 0, the current stemmus-scope does not support useXLSX=0
+if useXLSX == 0
+    % parameter_file             = { 'setoptions.m', 'filenames.m', 'inputdata.txt'};
+    % Read parameter file which is 'input_data.xlsx' and return it as options.
+%     options = io.setOptions(parameter_file,path_input); 
+    warning("the current stemmus-scope does not support useXLSX=0");
 else
+    parameter_file            = {'input_data.xlsx'}; 
     options = io.readStructFromExcel([path_input char(parameter_file)], 'options', 3, 1);
-end
+end  
 
 if options.simulation>2 || options.simulation<0, fprintf('\n simulation option should be between 0 and 2 \r'); return, end
 
 %% 3. file names
-if ~useXLSX
+% the current stemmus-scope does not support useXLSX=0
+if useXLSX==0
     run([path_input parameter_file{2}])
 else
     [dummy,X]                       = xlsread([path_input char(parameter_file)],'filenames');
@@ -155,8 +137,8 @@ for i = 1:length(F)
 end
 
 %% 4. input data
-
-if ~useXLSX
+% the current stemmus-scope does not support useXLSX=0
+if useXLSX==0
     X                           = textread([path_input parameter_file{3}],'%s'); %#ok<DTXTRD>
     N                           = str2double(X);
 else
@@ -168,7 +150,8 @@ options.Cca_function_of_Cab = 0;
 
 for i = 1:length(V)
     j = find(strcmp(strtok(X(:,1)),V(i).Name));
-    if ~useXLSX, cond = isnan(N(j+1)); else cond = sum(~isnan(N(j,:)))<1; end
+    % the current stemmus-scope does not support useXLSX=0
+    if useXLSX==0, cond = isnan(N(j+1)); else cond = sum(~isnan(N(j,:)))<1; end
     if isempty(j) || cond
         if i==2
             warning('warning: input "', V(i).Name, '" not provided in input spreadsheet...', ...
@@ -207,7 +190,8 @@ for i = 1:length(V)
         end
     end
     
-    if ~useXLSX
+    % the current stemmus-scope does not support useXLSX=0
+    if useXLSX==0
         j2 = []; j1 = j+1;
         while 1
             if isnan(N(j1)), break, end
@@ -244,12 +228,22 @@ if strcmp(IGBP_veg_long(1:18)', 'Permanent Wetlands')
     V(10).Val= [9]; % Ball-Berry stomatal conductance parameter
     V(11).Val= [0]; % Photochemical pathway: 0=C3, 1=C4
     V(28).Val= [0.05]; % leaf width
-elseif strcmp(IGBP_veg_long(1:19)', 'Evergreen Broadleaf')  
-    V(14).Val= [0.2 0.3 283 311 328];
-    V(9).Val= [80];
-    V(10).Val= [9];
-    V(11).Val= [0];
-    V(28).Val= [0.05];
+elseif strcmp(IGBP_veg_long(1:19)', 'Evergreen Broadleaf')
+    if isequal(sitename1,{'CH-HTC'})
+        V(1).Val = [100];
+        V(2).Val = 25;
+        V(14).Val= [0.2 0.3 288 313 328];
+        V(9).Val = [80];
+        V(11).Val= [0];
+        V(28).Val= [0.035];
+        V(55).Val = [17.5];
+    else
+        V(14).Val= [0.2 0.3 283 311 328];
+        V(9).Val= [80];
+        V(10).Val= [9];
+        V(11).Val= [0];
+        V(28).Val= [0.05];
+    end
 elseif strcmp(IGBP_veg_long(1:19)', 'Deciduous Broadleaf') 
     V(14).Val= [0.2 0.3 283 311 328];
     V(9).Val= [80];
@@ -275,7 +269,17 @@ elseif strcmp(IGBP_veg_long(1:9)', 'Croplands')
         V(10).Val= [4];
         V(11).Val= [1]; 
         V(13).Val= [0.025]; % Respiration = Rdparam*Vcmcax
-        V(28).Val= [0.03];
+        V(28).Val= [0.03];   % leaf width: GMD version
+%     ------------- CH-YLS -----------------
+    elseif isequal(sitename1,{'CH-YLS'})
+        V(14).Val= [0.2 0.3 281 308 328];
+        V(9).Val= [50];
+        V(10).Val= [4];
+        V(11).Val= [1]; 
+        V(13).Val= [0.025]; % Respiration = Rdparam*Vcmcax
+        V(28).Val= [0.08];  
+        V(55).Val= 15;       % Tyear: GMD version
+%     ---------------------------------------------    
     else 
         V(14).Val= [0.2 0.3 278 303 328];
         V(9).Val= [120];
@@ -284,11 +288,22 @@ elseif strcmp(IGBP_veg_long(1:9)', 'Croplands')
         V(28).Val= [0.03];    
     end
 elseif strcmp(IGBP_veg_long(1:15)', 'Open Shrublands')
-    V(14).Val= [0.2 0.3 288 313 328];
-    V(9).Val= [120];
-    V(10).Val= [9];
-    V(11).Val= [0];  
-    V(28).Val= [0.05];
+    if isequal(sitename1,{'CH-HTC'})
+        V(1).Val = [80];
+        V(2).Val = 20;
+        V(14).Val= [0.2 0.3 288 313 328];
+        V(9).Val = [80];
+        V(10).Val= [7];
+        V(11).Val= [0];
+        V(28).Val= [0.015];
+        V(55).Val = [17.5];
+    else
+        V(14).Val= [0.2 0.3 288 313 328];
+        V(9).Val= [120];
+        V(10).Val= [9];
+        V(11).Val= [0];  
+        V(28).Val= [0.05];
+    end
 elseif strcmp(IGBP_veg_long(1:17)', 'Closed Shrublands') 
     V(14).Val= [0.2 0.3 288 313 328];
     V(9).Val= [80];
