@@ -34,7 +34,7 @@ if isempty(CFG)
 end
 disp (['Reading config from ',CFG])
 
-[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDateScenario, RunningMessages] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, Scenario, RunningMessages] = io.read_config(CFG);
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
@@ -109,7 +109,7 @@ if useXLSX == 0
 %     options = io.setOptions(parameter_file,path_input); 
     warning("the current stemmus-scope does not support useXLSX=0");
 else
-    parameter_file            = {'input_data.xlsx'}; 
+    parameter_file            = {'input_data_BallBerry_gs.xlsx'}; 
     options = io.readStructFromExcel([path_input char(parameter_file)], 'options', 3, 1);
 end  
 
