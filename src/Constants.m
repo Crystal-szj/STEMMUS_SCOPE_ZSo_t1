@@ -455,30 +455,30 @@ Initial_path=dir(fullfile(InitialConditionPath,[sitename,'*.nc']));
 
 % set different initial conditions for different sites 
 if isequal(sitename,'CH-HTC')
-    InitND1=20;    % Unit of it is cm. These variables are used to indicated the depth corresponding to the measurement.
-    InitND2=40;
-    InitND3=80;
-    InitND4=100;
-    InitND5=200;
-    InitND6=300;
+    InitND1=5;    % Unit of it is cm. These variables are used to indicated the depth corresponding to the measurement.
+    InitND2=10;
+    InitND3=20;
+    InitND4=40;
+    InitND5=60;
+    InitND6=80;
     
     InitT0= 26.33;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
-    InitT1= 25.24;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
-    InitT2= 23.89;%ncread([InitialConditionPath,Initial_path(2).name],'stl1')-273.15;
-    InitT3=	22.38;%ncread([InitialConditionPath,Initial_path(3).name],'stl2')-273.15;
-    InitT4=	21.38;%ncread([InitialConditionPath,Initial_path(4).name],'stl3')-273.15;
-    InitT5=	20.2;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
-    InitT6=	19.1;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
-    Tss = InitT0;
+    InitT1= 25.94;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
+    InitT2= 25.87;%ncread([InitialConditionPath,Initial_path(2).name],'stl1')-273.15;
+    InitT3=	25.24;%ncread([InitialConditionPath,Initial_path(3).name],'stl2')-273.15;
+    InitT4=	23.89;%ncread([InitialConditionPath,Initial_path(4).name],'stl3')-273.15;
+    InitT5=	23.18;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
+    InitT6=	22.38;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
+    Tss = 17.5;   % average yearly air temparature
     
-    InitX0=	0.19;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1');  %0.0793
-    InitX1=	0.2186;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1'); % Measured soil liquid moisture content
-    InitX2=	0.2412;%ncread([InitialConditionPath,Initial_path(7).name],'swvl2'); %0.182
-    InitX3=	0.3097;%ncread([InitialConditionPath,Initial_path(8).name],'swvl3');
-    InitX4= 0.31;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4'); %0.14335
-    InitX5=	0.31;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
-    InitX6=	0.31;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
-    BtmX  = 0.31;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');%0.05;    % The initial moisture content at the bottom of the column.
+    InitX0=	0.1990;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1');  %0.0793
+    InitX1=	0.1633;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1'); % Measured soil liquid moisture content
+    InitX2=	0.1990;%ncread([InitialConditionPath,Initial_path(7).name],'swvl2'); %0.182
+    InitX3=	0.2186;%ncread([InitialConditionPath,Initial_path(8).name],'swvl3');
+    InitX4= 0.3412;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4'); %0.14335
+    InitX5=	0.3762;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
+    InitX6=	0.3997;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
+    BtmX  = 0.4;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');%0.05;    % The initial moisture content at the bottom of the column.
 
 elseif isequal(sitename,'CH-YLS') 
     InitND1=5;    % Unit of it is cm. These variables are used to indicated the depth corresponding to the measurement.
