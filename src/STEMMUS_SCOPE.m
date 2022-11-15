@@ -908,7 +908,7 @@ end
 %% Ztot is defined as a global variable in Initial_root_biomass.m
 %% TODO avoid global variables
 SoilLayer.thickness = DeltZ_R;
-SoilLayer.depth = Ztot';
+SoilLayer.depth = soilDepth';
 
 io.bin_to_csv(fnames, V, vmax, n_col, k, options, SoilLayer)
 save([Output_dir,'output.mat'])
