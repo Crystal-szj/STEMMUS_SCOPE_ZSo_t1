@@ -43,8 +43,8 @@ timeStep=1800; % default time step [s]
 % %get time length of forcing file
 % forcingTimeLength=length(time1);
 
-dt=time1(2)/3600/24;        % real time steps in day, e.g timeStep == 1800, then dt is 0.0208 day. 
-t2=datenum(endyear,12,31,23,30,0);          % end time point
+dt=timeStep/3600/24;        % real time steps in day, e.g timeStep == 1800, then dt is 0.0208 day. 
+t2=datenum(endyear,endMonth,endDay,endHH,endMM,endSS);          % end time point
 T=t1:dt:t2;
 forcingTimeLength = length(T);
 TL=length(T);
@@ -132,7 +132,8 @@ if length(canopyHeightSize) == 2
     SiteProperties.canopyHeight=ncread(ForcingFilePath,'canopy_height');
 else 
     % if the canopyHeight is time series data
-    SiteProperties.canopyHeight = ncread(ForcingFilePath,'canopy_height', startLoc, readNcCount);
+    canopyHeight = ncread(ForcingFilePath,'canopy_height', startLoc, readNcCount);
+    SiteProperties.canopyHeight = reshape(canopyHeight,forcingTimeLength,1);
 end
 
 save([DataPaths.input, 't_.dat'], '-ascii', 'time')
