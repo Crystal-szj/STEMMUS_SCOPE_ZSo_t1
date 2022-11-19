@@ -176,10 +176,10 @@ eiu = equations.satvap(Tcu);
 PSIss=psiSoil(NL,1);
 
 % initial leaf water potental = soil water potential - gravitational potential
-canopyHeight = SiteProperties.canopyHeight;
+canopyHeight = SiteProperties.canopyHeight(KT);
 
 % psiLeaf = 0-canopyHeight;  
-psiLeaf = TestPHS.psiLeafIni;
+psiLeaf = TestPHS.psiLeafIni(KT);
 PSI = 0;
 
 
