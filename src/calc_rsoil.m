@@ -1,7 +1,7 @@
-function [PSIs,rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha)
+function [PSIs,rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha, NL)
 DeltZ0=DeltZ';
 l=0.5;
-SMC=Theta_LL(1:54,2);
+SMC=Theta_LL(1:NL,2);
 Se  = (SMC-Theta_r')./(Theta_s'-Theta_r');
 Ksoil=Ks'.*Se.^l.*(1-(1-Se.^(1./m')).^(m')).^2;
 PSIs=-((Se.^(-1./m')-1).^(1./n'))./(Alpha*100)'.*bbx;

@@ -8,8 +8,12 @@
 
 %             Sim_Theta(KT,1:5)=Theta_LLL(Moni_Depth_SM,1,KT);
 %             Sim_Temp(KT,1:7)=TTT(Moni_Depth,KT);
-
-            NL=54;
+global sitename
+if strcmp(sitename,'CH-HTC')
+    NL=27;
+else
+    NL =54;
+end
             Moni_Depth=NL:-1:1;
             Moni_Depth_SM=NL:-1:1;
             Moni_Depth_RT=NL:-1:1;

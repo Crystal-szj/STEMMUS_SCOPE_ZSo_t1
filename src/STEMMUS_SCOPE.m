@@ -667,7 +667,8 @@ for i = 1:1:Dur_tot
            Acc=fluxes.Actot;
            lEstot =fluxes.lEstot;
            lEctot =fluxes.lEctot;
-           Tss=thermal.Tsave; 
+%            Tss=thermal.Tsave; 
+            Tss=thermal.Ts(1);
         else
            Acc=0;
            lEstot =0;
@@ -679,7 +680,8 @@ for i = 1:1:Dur_tot
            Acc=fluxes.Actot;
            lEstot =fluxes.lEstot;
            lEctot =fluxes.lEctot;
-           Tss=thermal.Tsave; 
+%            Tss=thermal.Tsave; 
+            Tss=thermal.Ts(1);
         else
            Acc=0;
            lEstot =0;
