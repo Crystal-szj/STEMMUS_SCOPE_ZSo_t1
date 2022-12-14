@@ -17,7 +17,7 @@ hc_file             = char(F(18).FileName);
 SMC_file            = char(F(19).FileName);
 Vcmax_file          = char(F(20).FileName);
 Cab_file            = char(F(21).FileName);
-
+RH_file             = char(F(23).FileName);
 %% 1. Time and zenith angle
 xyt.t               = load([path_input,Dataset_dir,'/' ,t_file] );
 xyt.year            = load([path_input,Dataset_dir,'/',year_file]);
@@ -67,6 +67,12 @@ if ~isempty(p_file)
     V(33).Val       = load([path_input,Dataset_dir,'/',p_file]);
 else
     V(33).Val       = V(33).Val*ones(size(t_));
+end
+
+if ~isempty(RH_file)
+    V(65).Val       = load([path_input,Dataset_dir,'/',RH_file]);
+else
+    V(65).Val       = V(65).Val*ones(size(t_));
 end
 
 %% 4. Vegetation structure (measurement height, vegetation height and LAI)
