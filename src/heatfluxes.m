@@ -1,4 +1,4 @@
-function [lE, H, ec, Cc, lambda, s]  = heatfluxes(ra,rs,Tc,ea,Ta,e_to_q,PSI,Ca,Ci,constants,es_fun,s_fun)
+function [lE, H, ec, Cc, lambda, s, delta_e, delta_t]  = heatfluxes(ra,rs,Tc,ea,Ta,e_to_q,PSI,Ca,Ci,constants,es_fun,s_fun)
 
 rhoa = constants.rhoa;
 cp   = constants.cp;
@@ -44,3 +44,5 @@ lE          = rhoa./(ra+rs).*lambda.*(qi-qa);   % [W m-2]   Latent heat flux
 H           = (rhoa*cp)./ra.*(Tc-Ta);           % [W m-2]   Sensible heat flux
 ec          = ea + (ei-ea)*ra./(ra+rs);         % [W m-2] vapour pressure at the leaf surface
 Cc          = Ca - (Ca-Ci).*ra./(ra+rs);        % [umol m-2 s-1] CO2 concentration at the leaf surface
+delta_e     = ei-ea;
+delta_t     = Tc-Ta;
