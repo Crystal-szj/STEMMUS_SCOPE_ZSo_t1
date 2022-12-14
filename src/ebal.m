@@ -107,6 +107,7 @@ ea              = meteo.ea;
 Ca              = meteo.Ca;
 Ts              = soil.Ts;
 p               = meteo.p;
+RH              = meteo.RH;
 if options.soil_heat_method < 2 && options.simulation ==1
     if k>1
         Deltat          = Delt_t;           %           Duration of the time interval (s)
@@ -171,8 +172,8 @@ eih = equations.satvap(Tch);
 eiu = equations.satvap(Tcu);												 
 %[bbx]=Max_Rootdepth(bbx,TIME,NL,KT);
 [bbx]=Max_Rootdepth(bbx,NL,KT,TT);
-[psiSoil, Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha);
-[sfactor] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f);
+[psiSoil, Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha, NL);
+[sfactor] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f, NL);
 PSIss=psiSoil(NL,1);
 
 % initial leaf water potental = soil water potential - gravitational potential
@@ -181,7 +182,7 @@ canopyHeight = SiteProperties.canopyHeight(KT);
 % psiLeaf = 0-canopyHeight;  
 psiLeaf = TestPHS.psiLeafIni(KT);
 PSI = 0;
-
+psiAir = air_water_potential(RH, Ta);
 
 %% 2. Energy balance iteration loop
 
@@ -311,14 +312,15 @@ while CONT                          % while energy balance does not close
     rac     = (LAI+1)*(raa+rawc);
     ras     = (LAI+1)*(raa+raws);
     
+    
     % Check convergency of leaf water potential loop
     for i=1:30
 %         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
 %         [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
 %         [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
-        [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,psiLeaf,Ca,Cih,constants,es_fun,s_fun);
-        [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,psiLeaf,Ca,Ciu,constants,es_fun,s_fun);
-        [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
+        [lEch,Hch,ech,Cch,lambdah,sh, delta_eh, delta_th]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,psiLeaf,Ca,Cih,constants,es_fun,s_fun);
+        [lEcu,Hcu,ecu,Ccu,lambdau,su, delta_eu, delta_tu]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,psiLeaf,Ca,Ciu,constants,es_fun,s_fun);
+        [lEs,Hs,~,~,lambdas,ss, delta_es, delta_ts]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
         
 %         PSI-psiLeaf
         %if any( ~isreal( Cch )) || any( ~isreal( Ccu(:) ))
@@ -372,7 +374,7 @@ while CONT                          % while energy balance does not close
     %%%%%%%
     if SoilHeatMethod==2
        G = 0.30*Rns;
-    else      
+    else     
        G = GAM/sqrt(pi)*2*sum(([Ts'; Tsold(1:end-1,:)] - Tsold)/Deltat .* (sqrt(x) - sqrt(x-Deltat)));
        G = G';
     end
@@ -415,11 +417,17 @@ end
     TestPHS.psiStemTot(KT) = psiStem;
     TestPHS.psiRootTot(KT) = psiRoot;
     TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
+    TestPHS.psiSoilTotMean(KT) = mean(psiSoil.*bbx);
     TestPHS.psiLeafTot(KT) = psiLeaf;
     TestPHS.kSoil2RootTot(:,KT) = kSoil2Root;
+    TestPHS.kSoil2RootTotMean(KT) = mean(kSoil2Root .* bbx);
     TestPHS.kRoot2StemTot(KT) = kRoot2Stem;
     TestPHS.kStem2LeafTot(KT) = kStem2Leaf;
     TestPHS.phwsfTot(KT) = phwsf;
+    TestPHS.transTot(KT) = Trans;
+    TestPHS.psiAirTot(KT) = psiAir;
+    TestPHS.kLeaf2AirTot(KT) = Trans./(psiLeaf - psiAir);
+    
 
 
 iter.counter = counter;
@@ -441,6 +449,17 @@ end
 Tbr         = (rad.Eoutte/constants.sigmaSB)^0.25;
 Lot_        = equations.Planck(spectral.wlS',Tbr);
 rad.LotBB_  = Lot_;           % Note that this is the blackbody radiance!
+
+%% =============== debug: output resistance 20221205 Z.So ==========
+TestPHS.rssTot(KT) = rss;  % Surface resistance of soil for vapour transport
+TestPHS.racTot(KT) = rac;  % aerodynamic resistance for heat in canopy
+TestPHS.rasTot(KT) = ras;  % aerodynamic resistance for heat in soil
+TestPHS.rcwTot(KT) = Fc*rcwh+equations.meanleaf(canopy,rcwu,'angles_and_layers',Ps);  % stomatal resistance of sunlit leaf
+TestPHS.gamTot(KT) = GAM;
+TestPHS.delta_ecTot(KT) = Fc*delta_eh+equations.meanleaf(canopy, delta_eu, 'angles_and_layers',Ps); 
+TestPHS.delta_tcTot(KT) = Fc*delta_th+equations.meanleaf(canopy, delta_tu, 'angles_and_layers',Ps);
+TestPHS.delta_esTot(KT) = Fs*delta_es;
+TestPHS.delta_tsTot(KT) = Fs*delta_ts;
 
 %% 3. Print warnings whenever the energy balance could not be solved
 if counter>=maxit

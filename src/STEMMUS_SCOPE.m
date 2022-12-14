@@ -175,7 +175,7 @@ end
 F = struct('FileID',{'Simulation_Name','soil_file','leaf_file','atmos_file'...
     'Dataset_dir','t_file','year_file','Rin_file','Rli_file'...
     ,'p_file','Ta_file','ea_file','u_file','CO2_file','z_file','tts_file'...
-    ,'LAI_file','hc_file','SMC_file','Vcmax_file','Cab_file','LIDF_file'});
+    ,'LAI_file','hc_file','SMC_file','Vcmax_file','Cab_file','LIDF_file','RH_file'});
 for i = 1:length(F)
     k = find(strcmp(F(i).FileID,strtok(X(:,1))));
     if ~isempty(k)
@@ -429,6 +429,8 @@ spectral.IwlF = (640:850)-399;
 [rho,tau,rs] = deal(zeros(nwlP + nwlT,1));
 
 %% 11. load time series data
+% V(65).Name = 'RH';
+% V(65).Val  = load([path_input,'/RHa_.dat']);
 if options.simulation == 1
     vi = ones(length(V),1);
     [soil,leafbio,canopy,meteo,angles,xyt]  = io.select_input(V,vi,canopy,options);
