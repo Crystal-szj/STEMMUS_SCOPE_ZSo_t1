@@ -362,9 +362,9 @@ end
 %    (if iteration was used). In other words, A is assigned at this point in the file (when iterating).
     function [err, Ci_out] = Ci_next(Ci_in, Cs, RH, minCi)
         % compute the difference between "guessed" Ci (Ci_in) and Ci computed using BB after computing A
-        A = computeA(Ci_in);
-        A_bar = A .* ppm2bar;
-        Ci_out = BallBerry(Cs, RH, A_bar, BallBerrySlope, BallBerry0, minCi); %[Ci_out, gs]
+        A = computeA(Ci_in);  % A: ppm
+        A_bar = A .* ppm2bar; % A: bar
+        Ci_out = BallBerry(Cs, RH, A_bar, BallBerrySlope, BallBerry0, minCi); %[Ci_out, gs]  Ci: bar
        
         err = Ci_out - Ci_in; % f(x) - x
     end
@@ -436,7 +436,7 @@ end
     %     error('My algorithm didn''t work!');
     % end
 %[~, gs1] = BallBerry(Cs, RH, A .* ppm2bar, BallBerrySlope, BallBerry0, minCi, Ci);
-gs = 1.6 * A .* ppm2bar ./ (Cs-Ci);
+gs = 1.6 * A .* ppm2bar ./ (Cs-Ci);  % units of Cs-Ci is bar, unit of A is ppm
 
 Ja          = Ag ./ CO2_per_electron;        % actual electron transport rate
 
