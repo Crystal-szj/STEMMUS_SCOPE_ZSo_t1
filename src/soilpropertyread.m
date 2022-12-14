@@ -134,10 +134,37 @@ end
 fmax=FMAX(j,i);
 
 % soil property
-SaturatedK=[Ks0/(3600*24) Ks5/(3600*24) Ks30/(3600*24) Ks60/(3600*24) Ks100/(3600*24) Ks200/(3600*24)];%[2.67*1e-3  1.79*1e-3 1.14*1e-3 4.57*1e-4 2.72*1e-4];      %[2.3*1e-4  2.3*1e-4 0.94*1e-4 0.94*1e-4 0.68*1e-4] 0.18*1e-4Saturation hydraulic conductivity (cm.s^-1);
-SaturatedMC=[theta_s0 theta_s5 theta_s30 theta_s60 theta_s100 theta_s200];                              % 0.42 0.55 Saturated water content;
-ResidualMC=[theta_r0 theta_r5 theta_r30 theta_r60 theta_r100 theta_r200];                               %0.037 0.017 0.078 The residual water content of soil;
-Coefficient_n=[n0 n5 n30 n60 n100 n200];                            %1.2839 1.3519 1.2139 Coefficient in VG model;
-Coefficient_Alpha=[alpha0 alpha5 alpha30 alpha60 alpha100 alpha200];                   % 0.02958 0.007383 Coefficient in VG model;
-porosity=[theta_s0 theta_s5 theta_s30 theta_s60 theta_s100 theta_s200];                                      % Soil porosity;
-fieldMC=(1./(((341.09.*Coefficient_Alpha).^(Coefficient_n)+1).^(1-1./Coefficient_n))).*(SaturatedMC-ResidualMC)+ResidualMC; 
+switch sitename
+    case 'CH-YLS'
+        SaturatedK  = ones(1,6).*0.000208;
+        SaturatedMC = ones(1,6).*0.420000;
+        ResidualMC  = ones(1,6).*0.087500;
+        Coefficient_n = ones(1,6).*1.41;
+        Coefficient_Alpha = ones(1,6).*0.004500;
+        porosity = ones(1,6).*0.5;
+        fieldMC = ones(1,6).*0.272;
+    case 'CH-HTC'
+        SaturatedK=   [22.78/(3600*24) 10/(3600*24) 3/(3600*24) 3/(3600*24) 2/(3600*24) 1/(3600*24)];% Saturation hydraulic conductivity (cm.s^-1);
+        SaturatedMC=  [0.4629 0.4560 0.4458 0.4306 0.4135 0.4126];                              % 0.42 0.55 Saturated water content;
+        ResidualMC=   [0.02   0.06   0.09   0.08   0.08   0.08 ];                               %0.037 0.017 0.078 The residual water content of soil;
+        Coefficient_n=[2    2.2    2    1.5    1.47   1.44 ];                            %1.2839 1.3519 1.2139 Coefficient in VG model;
+        Coefficient_Alpha=[0.0085  0.0088  0.0093  0.0101  0.0106  0.0111];                   % 0.02958 0.007383 Coefficient in VG model;
+        porosity=         [0.4629  0.4560  0.4458  0.4306  0.4135  0.4126];                                   % Soil porosity;
+        fieldMC=(1./(((341.09.*Coefficient_Alpha).^(Coefficient_n)+1).^(1-1./Coefficient_n))).*(SaturatedMC-ResidualMC)+ResidualMC;
+%         SaturatedK=[Ks0/(3600*24) Ks5/(3600*24) Ks15/(3600*24) Ks60/(3600*24) Ks100/(3600*24) Ks200/(3600*24)];% Saturation hydraulic conductivity (cm.s^-1);
+%         SaturatedMC=[theta_s0 theta_s5 theta_s15 theta_s60 theta_s100 theta_s200];                              % 0.42 0.55 Saturated water content;
+%         ResidualMC=[theta_r0 theta_r5 theta_r15 theta_r60 theta_r100 theta_r200];                               %0.037 0.017 0.078 The residual water content of soil;
+%         Coefficient_n=[n0 n5 n15 n60 n100 n200];                            %1.2839 1.3519 1.2139 Coefficient in VG model;
+%         Coefficient_Alpha=[alpha0 alpha5 alpha15 alpha60 alpha100 alpha200];                   % 0.02958 0.007383 Coefficient in VG model;
+%         porosity=[theta_s0 theta_s5 theta_s15 theta_s60 theta_s100 theta_s200];                                      % Soil porosity;
+%         fieldMC=(1./(((341.09.*Coefficient_Alpha).^(Coefficient_n)+1).^(1-1./Coefficient_n))).*(SaturatedMC-ResidualMC)+ResidualMC;
+
+    otherwise
+        SaturatedK=[Ks0/(3600*24) Ks5/(3600*24) Ks30/(3600*24) Ks60/(3600*24) Ks100/(3600*24) Ks200/(3600*24)];%[2.67*1e-3  1.79*1e-3 1.14*1e-3 4.57*1e-4 2.72*1e-4];      %[2.3*1e-4  2.3*1e-4 0.94*1e-4 0.94*1e-4 0.68*1e-4] 0.18*1e-4Saturation hydraulic conductivity (cm.s^-1);
+        SaturatedMC=[theta_s0 theta_s5 theta_s30 theta_s60 theta_s100 theta_s200];                              % 0.42 0.55 Saturated water content;
+        ResidualMC=[theta_r0 theta_r5 theta_r30 theta_r60 theta_r100 theta_r200];                               %0.037 0.017 0.078 The residual water content of soil;
+        Coefficient_n=[n0 n5 n30 n60 n100 n200];                            %1.2839 1.3519 1.2139 Coefficient in VG model;
+        Coefficient_Alpha=[alpha0 alpha5 alpha30 alpha60 alpha100 alpha200];                   % 0.02958 0.007383 Coefficient in VG model;
+        porosity=[theta_s0 theta_s5 theta_s30 theta_s60 theta_s100 theta_s200];                                      % Soil porosity;
+        fieldMC=(1./(((341.09.*Coefficient_Alpha).^(Coefficient_n)+1).^(1-1./Coefficient_n))).*(SaturatedMC-ResidualMC)+ResidualMC;
+end
