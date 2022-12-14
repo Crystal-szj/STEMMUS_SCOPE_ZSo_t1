@@ -1,5 +1,5 @@
 function [AVAIL0,RHS,C4,C4_a,Rn_SOIL,Evap,EVAP,Trap,r_a_SOIL,Resis_a,Srt,Precip]=h_BC(RHS,NBCh,NBChB,BCh,BChB,hN,KT,Delt_t,DSTOR0,NBChh,TIME,h_SUR,C4,KL_h,NN,C4_a,DeltZ,RHOV,Ta,HR_a,U,Theta_LL,Ts,Rv,g,NL,hh,rwuef,Theta_UU,Rn,T,TT,Gvc,Rns,Srt,Precip_msr,SUMTIME) %[AVAIL0,RHS,C4,C4_a,Evap,EVAP,Trap,Precip,bx,r_a_SOIL,Resis_a]=h_BC(DeltZ,bx,RHS,NBCh,NBChB,BCh,BChB,hN,KT,Delt_t,DSTOR0,NBChh,TIME,h_SUR,C4,KL_h,Precip,NN,AVAIL0,C4_a,Evap,RHOV,Ta,HR_a,U,Ts,Theta_LL,Rv,g,NL,hh,rwuef,Theta_UU,Rn,T,TT,Gvc,Rns) 
-global DELT Precipp Ks0 theta_s0
+global DELT Precipp Ks0 theta_s0 sitename
 %%%%%%%%%% Apply the bottom boundary condition called for by NBChB %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if NBChB==1            %-----> Specify matric head at bottom to be ---BChB;
@@ -35,7 +35,11 @@ else
     [Rn_SOIL,Evap,EVAP,Trap,r_a_SOIL,Resis_a,Srt]= Evap_Cal(DeltZ,TIME,RHOV,Ta,HR_a,U,Theta_LL,Ts,Rv,g,NL,NN,KT,hh,rwuef,Theta_UU,Rn,T,TT,Gvc,Rns,Srt);
     
     Precip_msr(KT)=min(Precip_msr(KT),Ks0/(3600*24)*DELT*10);
-    Precip_msr(KT)=min(Precip_msr(KT),theta_s0*50-DeltZ(51:54)*Theta_UU(51:54,1)*10);
+    if strcmp(sitename,'CH-HTC')
+        Precip_msr(KT)=min(Precip_msr(KT),theta_s0*50-DeltZ(24:27)*Theta_UU(24:27,1)*10);
+    else 
+        Precip_msr(KT)=min(Precip_msr(KT),theta_s0*50-DeltZ(51:54)*Theta_UU(51:54,1)*10);
+    end
     
     if Ts(KT) >0
     Precip(KT)=Precip_msr(KT)*0.1/DELT;
