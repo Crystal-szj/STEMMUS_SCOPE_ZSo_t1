@@ -97,7 +97,7 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 [constants] = io.define_constants();
 % [Rl,ri] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
 % [Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties);
-ParaPlant = io.define_plant_constants();
+ParaPlant = io.define_plant_constants(SiteProperties);
 
 numSoilLayer = ML;
 soilThickness = DeltZ_R';  % the direction of soilThickness is from surface to bottom. 
