@@ -5,6 +5,11 @@ function ParaPlant = define_plant_constants(SiteProperties)
 
 % Output:
 %     ParaPlant: A structure contains all of parameters used in plant hydraulic pathway.
+
+% Reference:
+%     Parameters cite from Li,Hongmei_forests_2021
+%     Functions cite from Kennedy_JAMES_2019
+
        
     %% ----------------------- root growth ----------------------------
     ParaPlant.C2B            = 2;         %(g biomass / gC)
