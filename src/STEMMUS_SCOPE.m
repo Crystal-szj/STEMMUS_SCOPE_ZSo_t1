@@ -476,7 +476,7 @@ diary([Output_dir,'log.txt'])
 fprintf('This is Scenario -- %s for %s_%d-%d\n',...
     Scenario,SiteProperties.siteName,SiteProperties.startyear,SiteProperties.endyear);
 fprintf('SaturatedK(cm/d):  %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedK.*3600.*24);
-fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedK.*3600.*24);
+fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedMC);
 fprintf('ResidualMC:        %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',ResidualMC);
 fprintf('Coefficient_n:     %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_n);
 fprintf('Coefficient_Alpha: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_Alpha);
