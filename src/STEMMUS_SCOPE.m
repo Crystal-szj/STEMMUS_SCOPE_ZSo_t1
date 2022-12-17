@@ -926,4 +926,4 @@ save([Output_dir,'output.mat'])
 %if options.makeplots
 %  plot.plots(Output_dir)
 %end  
-run plotSMresults
+run comparison_ECT_Sim_SM
