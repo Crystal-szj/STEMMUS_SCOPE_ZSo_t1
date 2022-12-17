@@ -480,6 +480,11 @@ fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedMC);
 fprintf('ResidualMC:        %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',ResidualMC);
 fprintf('Coefficient_n:     %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_n);
 fprintf('Coefficient_Alpha: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_Alpha);
+
+fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 InitND2 InitND3 InitND4 InitND5 InitND6 Tot_Depth]);
+fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
+fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
+
 fprintf('\n The calculations start now \r')
 calculate = 1;
 TIMEOLD=0;SAVEhh_frez=zeros(NN+1,1);FCHK=zeros(1,NN);KCHK=zeros(1,NN);hCHK=zeros(1,NN);
