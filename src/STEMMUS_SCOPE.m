@@ -475,11 +475,14 @@ run StartInit;   % Initialize Temperature, Matric potential and soil air pressur
 diary([Output_dir,'log.txt'])
 fprintf('This is Scenario -- %s for %s_%d-%d\n',...
     Scenario,SiteProperties.siteName,SiteProperties.startyear,SiteProperties.endyear);
+fprintf('Folder          :  %s\n',Output_dir);
+fprintf('R_depth: 50 --> 30\n');
 fprintf('SaturatedK(cm/d):  %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedK.*3600.*24);
 fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedMC);
 fprintf('ResidualMC:        %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',ResidualMC);
 fprintf('Coefficient_n:     %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_n);
 fprintf('Coefficient_Alpha: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_Alpha);
+fprintf('Porosity         : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',porosity);
 
 fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 InitND2 InitND3 InitND4 InitND5 InitND6 Tot_Depth]);
 fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
