@@ -930,3 +930,4 @@ save([Output_dir,'output.mat'])
 %  plot.plots(Output_dir)
 %end  
 run comparison_ECT_Sim_SM
+plotStressFactor(xyt.t, sfactortot, TestPHS.phwsfTot)
