@@ -117,7 +117,7 @@ soilThickness = DeltZ_R';  % the direction of soilThickness is from surface to b
 % %+++++++++++++++++++++ end of debug ++++++++++++++++++++++
 Rl = RootProperties.lengthDensity; % direction: bottom to surface
 ri = RootProperties.frac; % direction: bottom to surface
-
+soilDepthB2T = flipud(soilDepth); % soil depth from bottom to surface
 
 % --------- initial plant water stress factor--------
 phwsf = 1;
