@@ -184,6 +184,8 @@ psiLeaf = TestPHS.psiLeafIni(KT);
 PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 
+phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.ckLeaf);
+
 %% 2. Energy balance iteration loop
 
 %'Energy balance loop (Energy balance and radiative transfer)
@@ -244,6 +246,7 @@ while CONT                          % while energy balance does not close
     biochem_in.BallBerry0   = leafbio.BallBerry0;
     biochem_in.O            = meteo.Oa;
     biochem_in.Rdparam      = leafbio.Rdparam;
+    biochem_in.phwsf        = phwsf;
 %     biochem_in.PSI          = PSI;
 
     if options.Fluorescence_model==2    % specific for the v.Caemmerer-Magnani model

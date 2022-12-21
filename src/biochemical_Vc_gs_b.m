@@ -139,7 +139,8 @@ eb            = biochem_in.eb;
 O             = biochem_in.O;
 p             = biochem_in.p;
 % PSI           = biochem_in.PSI; % plant water potential
-ei            = biochem_in.ei;  % leaf intercellular vapour pressure														
+ei            = biochem_in.ei;  % leaf intercellular vapour pressure	
+phwsf         = biochem_in.phwsf;
  % physiological
 Type          = biochem_in.Type;
 if isfield(biochem_in, 'Vcmax25')
