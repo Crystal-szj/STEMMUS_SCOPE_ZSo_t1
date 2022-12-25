@@ -460,13 +460,13 @@ if isequal(sitename, 'CH-HTC')
     InitND5=60;
     InitND6=80;
     
-    InitT0= 26.33;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
-    InitT1= 25.94;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
-    InitT2= 25.87;%ncread([InitialConditionPath,Initial_path(2).name],'stl1')-273.15;
-    InitT3=	25.24;%ncread([InitialConditionPath,Initial_path(3).name],'stl2')-273.15;
-    InitT4=	23.89;%ncread([InitialConditionPath,Initial_path(4).name],'stl3')-273.15;
-    InitT5=	23.18;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
-    InitT6=	23.18;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
+    InitT0= 5.569;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
+    InitT1= 6.445;%ncread([InitialConditionPath,Initial_path(1).name],'skt')-273.15;  %-1.75estimated soil surface temperature-1.762
+    InitT2= 6.837;%ncread([InitialConditionPath,Initial_path(2).name],'stl1')-273.15;
+    InitT3=	7.3;%ncread([InitialConditionPath,Initial_path(3).name],'stl2')-273.15;
+    InitT4=	8.12;%ncread([InitialConditionPath,Initial_path(4).name],'stl3')-273.15;
+    InitT5=	8.88;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
+    InitT6=9.64;%ncread([InitialConditionPath,Initial_path(5).name],'stl4')-273.15;
     Tss = 17.5;   % average yearly air temparature
 
 %%%%% 0101-0801
@@ -479,14 +479,14 @@ if isequal(sitename, 'CH-HTC')
 %     InitT6=	13.7571;
 %     Tss = 17.5;
     
-    InitX0=	0.1990;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1');  %0.0793
-    InitX1=	0.1633;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1'); % Measured soil liquid moisture content
-    InitX2=	0.1990;%ncread([InitialConditionPath,Initial_path(7).name],'swvl2'); %0.182
-    InitX3=	0.2186;%ncread([InitialConditionPath,Initial_path(8).name],'swvl3');
-    InitX4= 0.3412;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4'); %0.14335
-    InitX5=	0.3762;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
-    InitX6=	0.3997;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
-    BtmX  = 0.3997;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');%0.05;    % The initial moisture content at the bottom of the column.
+    InitX0=	0.2767;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1');  %0.0793
+    InitX1=	0.2300;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1'); % Measured soil liquid moisture content
+    InitX2=	0.3200;%ncread([InitialConditionPath,Initial_path(7).name],'swvl2'); %0.182
+    InitX3=	0.3000;%ncread([InitialConditionPath,Initial_path(8).name],'swvl3');
+    InitX4= 0.3253;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4'); %0.14335
+    InitX5=	0.3500;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
+    InitX6=	0.3695;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');
+    BtmX  = 0.3700;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');%0.05;    % The initial moisture content at the bottom of the column.
 %     InitX0=	0.2767;  %0.0793
 %     InitX1=	0.2200; % Measured soil liquid moisture content
 %     InitX2=	0.2659; %0.182

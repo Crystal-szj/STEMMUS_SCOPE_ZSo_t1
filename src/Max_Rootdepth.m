@@ -22,7 +22,7 @@ Todo:
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%% Root lenth distribution %%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    R_depth=50; %inital root length
+    R_depth=30; %inital root length
     Elmn_Lnth=0;   
     for ML=1:NL
         Elmn_Lnth=Elmn_Lnth+DeltZ(ML);
