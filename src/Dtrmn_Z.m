@@ -5,20 +5,20 @@ function Dtrmn_Z
     Elmn_Lnth=0;
 
 if strcmp(sitename,'CH-HTC')
-    for ML=1:3
+    for ML=1:6
         DeltZ_R(ML)=1;%4
     end
-        DeltZ_R(4)=2;%4
-    for ML=5:14
+%         DeltZ_R(6)=1;%4
+    for ML=7:13
         DeltZ_R(ML)=2;%5
     end
-    for ML=15:18
+    for ML=14:21
         DeltZ_R(ML)=2.5;%5
     end
-    for ML=19:23
+    for ML=22:25
         DeltZ_R(ML)=5;
     end
-    for ML=24:27
+    for ML=26:29
         DeltZ_R(ML)=10;
     end
     NL= ML;
