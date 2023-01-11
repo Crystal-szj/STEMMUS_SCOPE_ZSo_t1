@@ -10,7 +10,7 @@
 %             Sim_Temp(KT,1:7)=TTT(Moni_Depth,KT);
   global sitename
   if strcmp(sitename,'CH-HTC')
-      NL=27;
+      NL=29;
   else
       NL=54;
   end
