@@ -447,7 +447,7 @@ Ja          = Ag ./ CO2_per_electron;        % actual electron transport rate
 %     rcw(A<=0 & rcw~=0)   = 0.625*1E6;
 % end
 %rcw         = (1./gs) *rhoa/Mair*1E3  ./ ppm2bar; %  * 1e6 ./ p .* 1E3;
-rcw      =  (rhoa./(Mair*1E-3))./gs;
+rcw      =  (rhoa./(Mair*1E-3))./gs;   % gs: mol/m2/s
 
 %% fluorescence (Replace this part by Magnani or other model if needed)
 ps          = po0.*Ja./Je;               % this is the photochemical yield
