@@ -482,7 +482,7 @@ fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedMC);
 fprintf('ResidualMC:        %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',ResidualMC);
 fprintf('Coefficient_n:     %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_n);
 fprintf('Coefficient_Alpha: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_Alpha);
-fprintf('FieldMC:           %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',FieldMC);
+fprintf('FieldMC:           %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',fieldMC);
 fprintf('Porosity         : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',porosity);
 
 fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 InitND2 InitND3 InitND4 InitND5 InitND6 Tot_Depth]);
