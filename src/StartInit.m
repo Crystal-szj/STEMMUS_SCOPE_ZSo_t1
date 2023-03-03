@@ -71,6 +71,7 @@ Ksh0=Ksh(1);
         for ML=1:NL
             Elmn_Lnth=Elmn_Lnth+DeltZ(ML);
             InitLnth(ML)=Tot_Depth-Elmn_Lnth    
+            
             if abs(InitLnth(ML)-InitND5)<1e-10
                 for MN=1:(ML+1)
                     IS(MN)=6;   %%%%%% Index of soil type %%%%%%%
@@ -576,6 +577,11 @@ DSTOR0=DSTOR;              % Dept of depression storage at start of current time
 RS=0;                             % Rate of surface runoff;
 DSTMAX=0;                     % Depression storage capacity;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%
+% DeltZ_R = flipud(DeltZ');
+% soilDepth = cumsum(DeltZ_R);
+% dataTemp = [flipud(soilDepth), Ks'.*3600*24, Theta_s', Theta_r', n', Alpha', POR', Theta_f']
 
 
 
