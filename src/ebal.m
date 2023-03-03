@@ -106,7 +106,7 @@ Ta              = meteo.Ta;
 ea              = meteo.ea;
 Ca              = meteo.Ca;
 Ts              = soil.Ts;
-p               = meteo.p;
+p               = meteo.p; % air pressure [hPa]
 RH              = meteo.RH;
 if options.soil_heat_method < 2 && options.simulation ==1
     if k>1
@@ -183,7 +183,7 @@ canopyHeight = SiteProperties.canopyHeight(KT);
 psiLeaf = TestPHS.psiLeafIni(KT);
 PSI = 0;
 psiAir = air_water_potential(RH, Ta);
-
+airPress_m = meteo.p .*1e2 ./9810;
 phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.ckLeaf);
 
 %% 2. Energy balance iteration loop
@@ -388,7 +388,7 @@ while CONT                          % while energy balance does not close
         % canopy conductance = 1/(stomatal resistance + aerodynamic resistance)
         canopyConduct  = 1./(canopyStoResis + rac);
         
-        phsTrans = canopyConduct .* LAI .* (psiLeaf - psiAir);
+        phsTrans = canopyConduct .* LAI .* (psiLeaf - psiAir)./airPress_m;
         
         TestPHS.psiStemTot(KT) = psiStem;
         TestPHS.psiRootTot(KT) = psiRoot;
