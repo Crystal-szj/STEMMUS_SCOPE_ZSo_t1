@@ -489,6 +489,16 @@ fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 I
 fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
 fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
 
+fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
+fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
+fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
+fprintf('ckLeaf: %5.2f\n',ParaPlant.ckLeaf);
+fprintf('ckStem: %5.2f\n',ParaPlant.ckStem);
+fprintf('ckRoot: %5.2f\n',ParaPlant.ckRoot);
+fprintf('Krootmax: %5.1e\n',ParaPlant.Krootmax);
+fprintf('Kstemmax: %5.1e\n',ParaPlant.Kstemmax);
+fprintf('Kleafmax: %5.1e\n',ParaPlant.Kleafmax);
+
 fprintf('\n The calculations start now \r')
 calculate = 1;
 TIMEOLD=0;SAVEhh_frez=zeros(NN+1,1);FCHK=zeros(1,NN);KCHK=zeros(1,NN);hCHK=zeros(1,NN);
@@ -930,5 +940,6 @@ save([Output_dir,'output.mat'])
 %if options.makeplots
 %  plot.plots(Output_dir)
 %end  
-run comparison_ECT_Sim_SM
-plotStressFactor(xyt.t, sfactortot, TestPHS.phwsfTot)
+% run comparison_ECT_Sim_SM
+% plotStressFactor(xyt.t, sfactortot, TestPHS.phwsfTot)
+plot.HTC_results_visualization
