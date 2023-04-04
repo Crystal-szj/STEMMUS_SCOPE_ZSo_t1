@@ -16,7 +16,7 @@ function ParaPlant = define_plant_constants(SiteProperties)
     ParaPlant.B2C            = 0.488;     % ratio of biomass to carbon [gC / g biomass]
     ParaPlant.rootRadius     = 1.5*1e-3;  % root radius [m] (2.9e-4 in CLM5),  (0.5-6e-3 m)in STEMMUS_SCOPE_GMD
     ParaPlant.rootDensity    = 250*1000;  % Root density Jackson et al., 1997 [gDM / m^3] 
-    pa2m                     = 1/9810;    % 1Pa = rho g h = 1000 kg/m3 * 9.81 m/s2 * m = 9810 m
+    pa2m                     = 1/9810;    % Pressure = rho g h = 1000kg m-3 * 9.81 m s-2 *1 m = 9810 Pa. 1m = 9810Pa
     
     %% ----------------------- define IGBP vegetation type ----------------------
     igbpVegLong = SiteProperties.igbpVegLong;
