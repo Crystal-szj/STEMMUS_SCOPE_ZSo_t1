@@ -1,7 +1,7 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
 
 function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
-                                                         RootProperties, soilDepth, lai, sfactor, psiSoil, canopyHeight)
+                                                         RootProperties, soilDepth, lai, sfactor, psiSoil, canopyHeight, bbx)
 % Calculation of plant hydraulic conductance among plant components
 
 % Input:
@@ -87,14 +87,14 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     % root area index
     % rai = (sai + lai) * f_{root-shoot} * r_i (Kennedy et al. 2019 JAMES)
     rai = (sai + lai).* rootFrac .* froot2leaf;
-    
+
     %% =================== soil to root conductance =====================
     soilConductance = min(Ks' , Ksoil) ./100 ./ rootSpac ; % 100 is a transfer factor from [cm/s] to [m/s]
     
     phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, ckRoot);
 
     rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + soilDepth./100); % unit [m/s]
-    
+
     soilConductance = max(soilConductance, 1e-16);
     rootConductance = max(rootConductance, 1e-16);
     kSoil2Root = 1./(1./soilConductance + 1./rootConductance); % unit [m/s]
@@ -106,7 +106,8 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
         psiRoot = sum((psiSoil - soilDepth./100)) / numSoilLayer;
     else
         % for unsaturated condition
-        psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepth./100)) - qSoil2Root) / sum(kSoil2Root);
+        psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepth./100).*bbx) - qSoil2Root) / sum(kSoil2Root.*bbx);
+
     end
 
     %% =================== stem water potential ========================
