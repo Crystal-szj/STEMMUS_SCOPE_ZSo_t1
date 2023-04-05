@@ -165,7 +165,7 @@ for i = 1:nl
 end
 
 LAI = canopy.LAI;
-canopyHeight = canopy.hc;
+% canopyHeight = canopy.hc;
 % PSI=0;
 % psiLeaf = 0;
 eih = equations.satvap(Tch);
@@ -359,7 +359,7 @@ while CONT                          % while energy balance does not close
 
             %% PHS
             [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf] = calPlantWaterPotential(Trans,Ks, ...
-                Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight);
+                Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight, bbx);
             %%
     %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
     %         AA2=1./(rsss+rrr+rxx);          % conductance
