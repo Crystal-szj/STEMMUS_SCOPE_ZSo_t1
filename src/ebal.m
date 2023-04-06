@@ -393,10 +393,10 @@ while CONT                          % while energy balance does not close
         TestPHS.psiStemTot(KT) = psiStem;
         TestPHS.psiRootTot(KT) = psiRoot;
         TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
-        TestPHS.psiSoilTotMean(KT) = mean(psiSoil.*bbx);
+        TestPHS.psiSoilTotMean(KT) = sum(psiSoil.*bbx)/sum(bbx);
         TestPHS.psiLeafTot(KT) = psiLeaf;
         TestPHS.kSoil2RootTot(:,KT) = kSoil2Root;
-        TestPHS.kSoil2RootTotMean(KT) = mean(kSoil2Root .* bbx);
+        TestPHS.kSoil2RootTotMean(KT) = sum(kSoil2Root .* bbx)/sum(bbx);
         TestPHS.kRoot2StemTot(KT) = kRoot2Stem;
         TestPHS.kStem2LeafTot(KT) = kStem2Leaf;
         TestPHS.phwsfTot(KT) = phwsf;
