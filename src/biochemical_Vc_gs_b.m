@@ -296,7 +296,7 @@ end
 if plantHydraulics == 1        % PHS open, use phwsf
     Vcmax = Vcmax .*phwsf;
 else                           % PHS close, use sfactor
-    Vcmax = Vcmax .*sfractor;
+    Vcmax = Vcmax .*sfactor;
 end
     
 % specificity (tau in Collatz e.a. 1991)
