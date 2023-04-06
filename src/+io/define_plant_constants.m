@@ -1,7 +1,8 @@
-function ParaPlant = define_plant_constants(SiteProperties)
+function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
 % define parameters used in plant hydraulic pathway
 % Input: 
 %     SiteProperties
+%     phwsf_method: define phwsf_method
 
 % Output:
 %     ParaPlant: A structure contains all of parameters used in plant hydraulic pathway.
@@ -20,165 +21,190 @@ function ParaPlant = define_plant_constants(SiteProperties)
     
     %% ----------------------- define IGBP vegetation type ----------------------
     igbpVegLong = SiteProperties.igbpVegLong;
-    
-    %% ----------------------- Plant hydraulics -----------------------
-	if strcmp(igbpVegLong(1:18)', 'Permanent Wetlands') 
-            ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m] 
-            ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m] 
-            ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m] 
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule in CLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-
-    elseif strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
-            ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-
-    elseif strcmp(igbpVegLong(1:19)', 'Deciduous Broadleaf')
-            ParaPlant.p50Leaf        = -270;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -270;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -270;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-
-    elseif strcmp(igbpVegLong(1:13)', 'Mixed Forests') 
-            ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-
-    elseif strcmp(igbpVegLong(1:20)', 'Evergreen Needleleaf') 
-            ParaPlant.p50Leaf        = -465;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -465;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -465;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-    
-    elseif strcmp(igbpVegLong(1:9)', 'Croplands')
-            ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-    
-    elseif strcmp(igbpVegLong(1:15)', 'Open Shrublands')
-            ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m].
-            ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
-            
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-    
-    elseif strcmp(igbpVegLong(1:17)', 'Closed Shrublands') 
-            ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-    
-    elseif strcmp(igbpVegLong(1:8)', 'Savannas')  
-            ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-            
-    elseif strcmp(igbpVegLong(1:14)', 'Woody Savannas')
-            ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
-    
-    elseif strcmp(igbpVegLong(1:9)', 'Grassland')    
-            ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
-            ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
-
-            ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-            ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-            ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-
-            ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
-            ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
-            ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
-            ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+    if nargin < 2
+        phwsf_method = 'CLM5';
     else
-        warning("Don't find IGBP vegetation type! \n")
+        phwsf_method = phwsf_method;
     end
     
+    switch phwsf_method
+        case 'CLM5'
+            %% ----------------------- Plant hydraulics -----------------------
+            if strcmp(igbpVegLong(1:18)', 'Permanent Wetlands') 
+                    ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m] 
+                    ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m] 
+                    ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m] 
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule in CLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
+                    ParaPlant.p50Leaf        = -67.67;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -300;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 0.87;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 0.87;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 0.87;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =1.28e-7;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =3.88e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =1.77e-10;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:19)', 'Deciduous Broadleaf')
+                    ParaPlant.p50Leaf        = -270;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -270;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -270;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:13)', 'Mixed Forests') 
+                    ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:20)', 'Evergreen Needleleaf') 
+                    ParaPlant.p50Leaf        = -465;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -465;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -465;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:9)', 'Croplands')
+                    ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:15)', 'Open Shrublands')
+                    ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m].
+                    ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:17)', 'Closed Shrublands') 
+                    ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:8)', 'Savannas')  
+                    ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:14)', 'Woody Savannas')
+                    ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+
+            elseif strcmp(igbpVegLong(1:9)', 'Grassland')    
+                    ParaPlant.p50Leaf        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =2e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+            else
+                warning("Don't find IGBP vegetation type! \n")
+            end
+        case 'ED2'
+                if strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
+                    ParaPlant.p50Leaf        = -67.67;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -342.51;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.ckLeaf         = 1.98;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.ckStem         = 1.98;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.ckRoot         = 1.98;      % parameter of plant hydraulic pathway [unitless]
+                    
+                    ParaPlant.Krootmax          =1.28e-7;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =3.88e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =1.77e-10;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+                end
+        otherwise
+                phwsf = NaN;
+                fprintf('phwsf method need to be defined.')
+    end
     
     
     
