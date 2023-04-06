@@ -11,12 +11,9 @@
 
 %%
 close all;
-% clc; clear all; close all;
-% load('../../CH_HTC_2022/CH_HTC_output_PHS/CH-HTC_2023-01-08-2358_Vc_gs_b_HTC_EvergreenBroadleaf_v3_Vcmax_phwsf/output.mat','xyt','Output_dir', 'TestPHS', 'sfactortot','V', 'meteo');
-
 %% directionary and data
 % ---------- obs directionary -------------
-data_obs_dir = '../../CH_HTC_2022/Processed/Forcing_data_template_for_STEMMUS_SCOPE_CH-HTC_2022_0101_0809_v3.xlsx';
+data_obs_dir = '../../CH_HTC_2022/Processed/Forcing_data_template_for_STEMMUS_SCOPE_CH-HTC_2022_0101_0809_v4.xlsx';
 psiLeaf_obs_dir = '../../CH_HTC_2022/Observed/plant_water_potential.xlsx';
 
 % ---------- output directionary -------------
@@ -84,7 +81,29 @@ xlimRange = [0, 221];
 [plotColor, plotStyleLine, plotStyleScatter] = plot.f_plot_style();
 
 %% plot 30 min SM
-
+data_obs_sm = [data_obs.Ms_5cm_Avg, data_obs.Ms_10cm_Avg, data_obs.Ms_20cm_Avg, data_obs.Ms_40cm_Avg, data_obs.Ms_60cm_Avg, data_obs.Ms_80cm_Avg]./100;
+data_sim_sm = [sm_sim.x5, sm_sim.x10, sm_sim.x20,sm_sim.x40,sm_sim.x60,sm_sim.x80];
+legendText = {'Obs\_5cm','Sim\_5cm';
+              'Obs\_10cm','Sim\_10cm';
+              'Obs\_20cm','Sim\_20cm';
+              'Obs\_40cm','Sim\_40cm';
+              'Obs\_60cm','Sim\_60cm';
+              'Obs\_80cm','Sim\_80cm'};
+%%
+f = f_plot_soilMoisture_precipitation(doy, data_obs_sm, doy, data_sim_sm, plotStyleLine.SM_sim, doy, data_obs.Precip .*1800, ...
+                       legendText, 'Soil moisture (m^3 m^{-3})', 'Precipitation (mm)',xlimRange, [0.1,0.55], [0,20],figure_dir,'SM' );
+%%                   
+data_obs_st = [data_obs.Ts_5cm_Avg,data_obs.Ts_10cm_Avg,data_obs.Ts_20cm_Avg,data_obs.Ts_40cm_Avg,data_obs.Ts_60cm_Avg,data_obs.Ts_80cm_Avg];
+data_sim_st = [st_sim.x5, st_sim.x10, st_sim.x20,st_sim.x40,st_sim.x60,st_sim.x80];                   
+legendText = {'Obs\_5cm','Sim\_5cm';
+              'Obs\_10cm','Sim\_10cm';
+              'Obs\_20cm','Sim\_20cm';
+              'Obs\_40cm','Sim\_40cm';
+              'Obs\_60cm','Sim\_60cm';
+              'Obs\_80cm','Sim\_80cm'};              
+f = f_plot_soilTemperature(doy, data_obs_st, doy, data_sim_st, plotStyleLine.ST_sim,  ...
+                       legendText, 'Soil temperature (^\circC)',xlimRange, [0, 55],figure_dir,'ST' );
+					   
 % f = f_plot_YObsSim_Ybar(obsDateTime, obs, 
 %                           simDateTime, sim, simPlotStyle, 
 %                           ybarDatetime, ybar, 
@@ -144,6 +163,14 @@ f_sm80 = plot.f_plot_YObsSim_Ybar(doy, data_obs.Ms_80cm_Avg./100, ...
                         figure_dir,'SM 80cm' );                    
 %% plot 30 min ST
 fp_st2 = plot.f_plotObsSim(doy, lsf1, doy, st_sim.x2, plotStyleLine.ST_sim, {'Retrived LST','ST\_2cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
+%%
+fp_st2 = f_plotObsSim(doy, data_obs.Ts_2cm_Avg,  doy, st_sim.x2,  plotStyleLine.ST_sim, {'Obs\_2cm','Sim\_2cm',   'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
+fp_st5 = f_plotObsSim(doy, data_obs.Ts_5cm_Avg,  doy, st_sim.x5,  plotStyleLine.ST_sim, {'Obs\_5cm','Sim\_5cm', '  box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 5cm');
+fp_st10 = f_plotObsSim(doy, data_obs.Ts_10cm_Avg, doy, st_sim.x10, plotStyleLine.ST_sim, {'Obs\_10cm','Sim\_10cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 10cm');
+fp_st20 = f_plotObsSim(doy, data_obs.Ts_20cm_Avg, doy, st_sim.x20, plotStyleLine.ST_sim, {'Obs\_20cm','Sim\_20cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 20cm');
+fp_st40 = f_plotObsSim(doy, data_obs.Ts_40cm_Avg, doy, st_sim.x40, plotStyleLine.ST_sim, {'Obs\_40cm','Sim\_40cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 40cm');
+fp_st60 = f_plotObsSim(doy, data_obs.Ts_60cm_Avg, doy, st_sim.x60, plotStyleLine.ST_sim, {'Obs\_60cm','Sim\_60cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 60cm');
+fp_st80 = f_plotObsSim(doy, data_obs.Ts_80cm_Avg, doy, st_sim.x80, plotStyleLine.ST_sim, {'Obs\_80cm','Sim\_80cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 80cm');  																																																  
 
 %% =====================================================================================
 %% scatter 30 min Rn
@@ -381,7 +408,17 @@ saveas(f_rad,[figure_dir,'radiation',],'png')
 close(f_rad)
 
 
+%% daily ET
+daily = table;
+daily.DoY = (0:1:220)';
+lambda = 2.453*1e6;
+data_obs.ET = data_obs.LE./lambda;
 
+daily.obsET = nansum(reshape(data_obs.ET,48,[]),1)' .* 3600;    % unit: mm/d
+daily.simET = nansum(reshape(flux_sim.lEtot ./ lambda, 48, []),1)' .* 3600;  % unit: mm/d
+
+plot.f_plotObsSim(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, {'Obs ET','Sim ET','box','off'}, 'ET (mm d^{-1})', xlimRange, [0,15], figure_dir, 'plot_ET');
+plot.f_plotObsSim(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, {'Obs ET','Sim ET','box','off'}, 'ET (mm d^{-1})', xlimRange, [0,15], figure_dir, 'plot_ET');
 
 
 
