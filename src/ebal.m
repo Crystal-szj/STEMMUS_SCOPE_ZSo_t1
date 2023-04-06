@@ -185,7 +185,7 @@ PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 airPress_m = meteo.p .*1e2 ./9810;
 phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.ckLeaf);
-
+plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
 %% 2. Energy balance iteration loop
 
 %'Energy balance loop (Energy balance and radiative transfer)
@@ -247,6 +247,7 @@ while CONT                          % while energy balance does not close
     biochem_in.O            = meteo.Oa;
     biochem_in.Rdparam      = leafbio.Rdparam;
     biochem_in.phwsf        = phwsf;
+    biochem_in.plantHydraulics = plantHydraulics;
 %     biochem_in.PSI          = PSI;
 
     if options.Fluorescence_model==2    % specific for the v.Caemmerer-Magnani model
@@ -317,7 +318,7 @@ while CONT                          % while energy balance does not close
     
     
     % Check convergency of leaf water potential loop
-    plantHydraulics = 1;
+
     rcw_t = Fc*rcwh + equations.meanleaf(canopy,rcwu,'angles_and_layers',Ps);
     Tc_t = Fc*Tch + equations.meanleaf(canopy,Tcu,'angles_and_layers',Ps);
     Ci_t = Fc*Cih + equations.meanleaf(canopy,Ciu,'angles_and_layers',Ps);
@@ -393,10 +394,10 @@ while CONT                          % while energy balance does not close
         TestPHS.psiStemTot(KT) = psiStem;
         TestPHS.psiRootTot(KT) = psiRoot;
         TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
-        TestPHS.psiSoilTotMean(KT) = mean(psiSoil.*bbx);
+        TestPHS.psiSoilTotMean(KT) = sum(psiSoil.*bbx)/sum(bbx);
         TestPHS.psiLeafTot(KT) = psiLeaf;
         TestPHS.kSoil2RootTot(:,KT) = kSoil2Root;
-        TestPHS.kSoil2RootTotMean(KT) = mean(kSoil2Root .* bbx);
+        TestPHS.kSoil2RootTotMean(KT) = sum(kSoil2Root .* bbx)/sum(bbx);
         TestPHS.kRoot2StemTot(KT) = kRoot2Stem;
         TestPHS.kStem2LeafTot(KT) = kStem2Leaf;
         TestPHS.phwsfTot(KT) = phwsf;
@@ -448,7 +449,9 @@ while CONT                          % while energy balance does not close
             end
             psiLeaf  = 0.5 * (psiLeaf + psiLeaf_temp);
         end
- 
+        TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
+        TestPHS.psiSoilTotMean(KT) = sum(psiSoil.*bbx)/sum(bbx);
+        TestPHS.psiLeafTot(KT) = psiLeaf;
     end 
     PSItot(KT)=psiLeaf;
     % ======================================================================
