@@ -57,7 +57,8 @@ function f = f_plot_YObsSim_Ybar(obsDateTime, obs, simDateTime, sim, simPlotStyl
     text(tx2,ty2,['RMSE = ', num2str(RMSE,'%.2f')],textFormat{:})
     
     saveas(f, fullfile(outputDir, outputName),'png')
-%     close(f)
+    saveas(f, fullfile(outputDir, outputName),'fig')
+    close(f)
 
 end
 
