@@ -292,6 +292,7 @@ ylabel('Water stress')
 xlim([0,225])
 legend('sfactor','phwsf', 'box','off','location','best')
 saveas(f_wsf,fullfile(figure_dir,'waterStressFactors'),'png')
+saveas(f_wsf,fullfile(figure_dir,'waterStressFactors'),'fig')
 
 %% resistance
 
