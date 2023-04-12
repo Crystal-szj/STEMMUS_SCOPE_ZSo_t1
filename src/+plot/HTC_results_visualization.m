@@ -261,9 +261,11 @@ ylabel('Water potantial (m)',labelFormat{:})
 set(gca,'FontName','Times New Roman','FontSize',12)
 
 saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_8month'),'png')
+saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_8month'),'fig')
 
 xlim([193,225])
 saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_July'),'png')
+saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_July'),'fig')
 
 close(f_lwp2)
 %% plant hydraulic conductance
@@ -417,9 +419,9 @@ data_obs.ET = data_obs.LE./lambda;
 
 daily.obsET = nansum(reshape(data_obs.ET,48,[]),1)' .* 3600;    % unit: mm/d
 daily.simET = nansum(reshape(flux_sim.lEtot ./ lambda, 48, []),1)' .* 3600;  % unit: mm/d
+daily.obsPrec = nansum(reshape(data_obs.Precip .*1800, 48, []),1)'./10;    % unit cm/d
 
-plot.f_plotObsSim(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, {'Obs ET','Sim ET','box','off'}, 'ET (mm d^{-1})', xlimRange, [0,15], figure_dir, 'plot_ET');
-plot.f_plotObsSim(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, {'Obs ET','Sim ET','box','off'}, 'ET (mm d^{-1})', xlimRange, [0,15], figure_dir, 'plot_ET');
+plot.f_plot_YObsSim_Ybar(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, daily.DoY, daily.obsPrec,{'Obs ET','Sim ET','Prec','box','off'}, 'ET (mm d^{-1})', 'Prec (cm d^{-1})', xlimRange, [0,15], [0,15], figure_dir, 'plot_ET_Prec');
 
 
 
