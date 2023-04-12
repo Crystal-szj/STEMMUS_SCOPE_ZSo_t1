@@ -36,7 +36,7 @@ else
     
     Precip_msr(KT)=min(Precip_msr(KT),Ks0/(3600*24)*DELT*10);
     if strcmp(sitename,'CH-HTC')
-        Precip_msr(KT)=min(Precip_msr(KT),theta_s0*50-DeltZ(24:27)*Theta_UU(24:27,1)*10);
+        Precip_msr(KT)=min(Precip_msr(KT),theta_s0*50-DeltZ(26:29)*Theta_UU(26:29,1)*10);
     else 
         Precip_msr(KT)=min(Precip_msr(KT),theta_s0*50-DeltZ(51:54)*Theta_UU(51:54,1)*10);
     end
