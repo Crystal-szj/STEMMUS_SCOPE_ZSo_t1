@@ -90,7 +90,7 @@ legendText = {'Obs\_5cm','Sim\_5cm';
               'Obs\_60cm','Sim\_60cm';
               'Obs\_80cm','Sim\_80cm'};
 %%
-f = f_plot_soilMoisture_precipitation(doy, data_obs_sm, doy, data_sim_sm, plotStyleLine.SM_sim, doy, data_obs.Precip .*1800, ...
+f = plot.f_plot_soilMoisture_precipitation(doy, data_obs_sm, doy, data_sim_sm, plotStyleLine.SM_sim, doy, data_obs.Precip .*1800, ...
                        legendText, 'Soil moisture (m^3 m^{-3})', 'Precipitation (mm)',xlimRange, [0.1,0.55], [0,20],figure_dir,'SM' );
 %%                   
 data_obs_st = [data_obs.Ts_5cm_Avg,data_obs.Ts_10cm_Avg,data_obs.Ts_20cm_Avg,data_obs.Ts_40cm_Avg,data_obs.Ts_60cm_Avg,data_obs.Ts_80cm_Avg];
@@ -101,7 +101,7 @@ legendText = {'Obs\_5cm','Sim\_5cm';
               'Obs\_40cm','Sim\_40cm';
               'Obs\_60cm','Sim\_60cm';
               'Obs\_80cm','Sim\_80cm'};              
-f = f_plot_soilTemperature(doy, data_obs_st, doy, data_sim_st, plotStyleLine.ST_sim,  ...
+f = plot.f_plot_soilTemperature(doy, data_obs_st, doy, data_sim_st, plotStyleLine.ST_sim,  ...
                        legendText, 'Soil temperature (^\circC)',xlimRange, [0, 55],figure_dir,'ST' );
 					   
 % f = f_plot_YObsSim_Ybar(obsDateTime, obs, 
@@ -164,13 +164,13 @@ f_sm80 = plot.f_plot_YObsSim_Ybar(doy, data_obs.Ms_80cm_Avg./100, ...
 %% plot 30 min ST
 fp_st2 = plot.f_plotObsSim(doy, lsf1, doy, st_sim.x2, plotStyleLine.ST_sim, {'Retrived LST','ST\_2cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
 %%
-fp_st2 = f_plotObsSim(doy, data_obs.Ts_2cm_Avg,  doy, st_sim.x2,  plotStyleLine.ST_sim, {'Obs\_2cm','Sim\_2cm',   'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
-fp_st5 = f_plotObsSim(doy, data_obs.Ts_5cm_Avg,  doy, st_sim.x5,  plotStyleLine.ST_sim, {'Obs\_5cm','Sim\_5cm', '  box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 5cm');
-fp_st10 = f_plotObsSim(doy, data_obs.Ts_10cm_Avg, doy, st_sim.x10, plotStyleLine.ST_sim, {'Obs\_10cm','Sim\_10cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 10cm');
-fp_st20 = f_plotObsSim(doy, data_obs.Ts_20cm_Avg, doy, st_sim.x20, plotStyleLine.ST_sim, {'Obs\_20cm','Sim\_20cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 20cm');
-fp_st40 = f_plotObsSim(doy, data_obs.Ts_40cm_Avg, doy, st_sim.x40, plotStyleLine.ST_sim, {'Obs\_40cm','Sim\_40cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 40cm');
-fp_st60 = f_plotObsSim(doy, data_obs.Ts_60cm_Avg, doy, st_sim.x60, plotStyleLine.ST_sim, {'Obs\_60cm','Sim\_60cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 60cm');
-fp_st80 = f_plotObsSim(doy, data_obs.Ts_80cm_Avg, doy, st_sim.x80, plotStyleLine.ST_sim, {'Obs\_80cm','Sim\_80cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 80cm');  																																																  
+fp_st2  = plot.f_plotObsSim(doy, data_obs.Ts_2cm_Avg,  doy, st_sim.x2,  plotStyleLine.ST_sim, {'Obs\_2cm', 'Sim\_2cm',  'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
+fp_st5  = plot.f_plotObsSim(doy, data_obs.Ts_5cm_Avg,  doy, st_sim.x5,  plotStyleLine.ST_sim, {'Obs\_5cm', 'Sim\_5cm',  'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 5cm');
+fp_st10 = plot.f_plotObsSim(doy, data_obs.Ts_10cm_Avg, doy, st_sim.x10, plotStyleLine.ST_sim, {'Obs\_10cm','Sim\_10cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 10cm');
+fp_st20 = plot.f_plotObsSim(doy, data_obs.Ts_20cm_Avg, doy, st_sim.x20, plotStyleLine.ST_sim, {'Obs\_20cm','Sim\_20cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 20cm');
+fp_st40 = plot.f_plotObsSim(doy, data_obs.Ts_40cm_Avg, doy, st_sim.x40, plotStyleLine.ST_sim, {'Obs\_40cm','Sim\_40cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 40cm');
+fp_st60 = plot.f_plotObsSim(doy, data_obs.Ts_60cm_Avg, doy, st_sim.x60, plotStyleLine.ST_sim, {'Obs\_60cm','Sim\_60cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 60cm');
+fp_st80 = plot.f_plotObsSim(doy, data_obs.Ts_80cm_Avg, doy, st_sim.x80, plotStyleLine.ST_sim, {'Obs\_80cm','Sim\_80cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 80cm');  																																																  
 
 %% =====================================================================================
 %% scatter 30 min Rn
@@ -204,7 +204,20 @@ fp_G = plot.f_plotObsSim(doy, data_obs.G_cor_avg, doy, flux_sim.Gtot, plotStyleL
 fp_GPP = plot.f_plotObsSim(doy, gpp.GPP_uStar_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPP');
 fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE, doy, flux_sim.NEE, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEE');
 
-%% plot plant water potential of components
+%% daily ET
+daily = table;
+daily.DoY = (0:1:220)';
+lambda = 2.453*1e6;
+data_obs.ET = data_obs.LE./lambda;
+
+daily.obsET = nansum(reshape(data_obs.ET,48,[]),1)' .* 3600;    % unit: mm/d
+daily.simET = nansum(reshape(flux_sim.lEtot ./ lambda, 48, []),1)' .* 3600;  % unit: mm/d
+daily.obsPrec = nansum(reshape(data_obs.Precip .*1800, 48, []),1)'./10;    % unit cm/d
+
+plot.f_plot_YObsSim_Ybar(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, daily.DoY, daily.obsPrec,{'Obs ET','Sim ET','Prec','box','off'}, 'ET (mm d^{-1})', 'Prec (cm d^{-1})', xlimRange, [0,15], [0,15], figure_dir, 'plot_ET_Prec');
+
+
+% plot plant water potential of components
 labelFormat = {'FontWeight','bold'};
 f_lwp = figure('color','white','Units','centimeter','Position',[2,2,20,13]);
 
@@ -410,18 +423,6 @@ set(gca,'FontName','Times New Roman','FontSize',12)
 saveas(f_rad,[figure_dir,'radiation',],'png')
 close(f_rad)
 
-
-%% daily ET
-daily = table;
-daily.DoY = (0:1:220)';
-lambda = 2.453*1e6;
-data_obs.ET = data_obs.LE./lambda;
-
-daily.obsET = nansum(reshape(data_obs.ET,48,[]),1)' .* 3600;    % unit: mm/d
-daily.simET = nansum(reshape(flux_sim.lEtot ./ lambda, 48, []),1)' .* 3600;  % unit: mm/d
-daily.obsPrec = nansum(reshape(data_obs.Precip .*1800, 48, []),1)'./10;    % unit cm/d
-
-plot.f_plot_YObsSim_Ybar(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, daily.DoY, daily.obsPrec,{'Obs ET','Sim ET','Prec','box','off'}, 'ET (mm d^{-1})', 'Prec (cm d^{-1})', xlimRange, [0,15], [0,15], figure_dir, 'plot_ET_Prec');
 
 
 

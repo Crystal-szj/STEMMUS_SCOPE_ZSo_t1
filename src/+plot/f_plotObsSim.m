@@ -32,7 +32,7 @@ function f = f_plotObsSim(obsDateTime, obs, simDateTime, sim, simPlotStyle, lege
     xlabel('DoY',labelFormat{:})
     ylabel(ylabelText,labelFormat{:})
     
-    legend(legendText{:},'box','off')
+    legend(legendText{:})
     
     % ------ set text location --------
     tpre1 = [0.05,0.95];           % text location precent
