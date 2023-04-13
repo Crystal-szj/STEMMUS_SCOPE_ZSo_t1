@@ -13,7 +13,7 @@
 close all;
 %% directionary and data
 % ---------- obs directionary -------------
-data_obs_dir = '../../CH_HTC_2022/Processed/Forcing_data_template_for_STEMMUS_SCOPE_CH-HTC_2022_0101_0809_v4.xlsx';
+data_obs_dir = '../../CH_HTC_2022/Processed/CH-HTC_2022_0101_0809_v4.xlsx';
 psiLeaf_obs_dir = '../../CH_HTC_2022/Observed/plant_water_potential.xlsx';
 
 % ---------- output directionary -------------
@@ -64,11 +64,8 @@ psiLeaf_obs.DoY = dateTimeNum - datenum(datetime(2022,1,1,0,0,0));
 psiLeaf_obs.PSY50K_m = psiLeaf_obs.PSY1M50K_cor_psiLeaf .* 1000000 ./9810;
 psiLeaf_obs.PSY50H_m = psiLeaf_obs.PSY1M50H_cor_psiLeaf .* 1000000 ./9810;
 
-GPPDir = '../../CH_HTC_2022/Processed/REddyResults_CH-HTC_20221219_852810190_Tair/output.txt';
-gpp = readtable(GPPDir);
-gpp.GPP_uStar_f(gpp.GPP_uStar_fqc ==0) = NaN;
 %%
-lsf1 = f_land_surface_temperature(data_obs.LWup, data_obs.LWdown, 0.96)-273.15;
+lsf1 = data_obs.lst;
 dateTimeNum = (datenum(datetime(2022,1,1,0,0,0)):1/48:datenum(datetime(2022,8,9,23,30,0)))';
 dateTime = datetime(dateTimeNum,'ConvertFrom','datenum');
 % doy = dateTimeNum - datenum(datetime(2022,1,1,0,0,0));
@@ -181,19 +178,27 @@ fs_LE = plot.f_scatterObsSim(data_obs.LE, flux_sim.lEtot,[-1000,1500,-1000,1500]
 fs_LE2 = plot.f_scatterObsSim(data_obs.LE_cor_redi, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_cor_redi');
 fs_LE3 = plot.f_scatterObsSim(data_obs.LE_cor, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_cor');
 
+fs_LE = plot.f_scatterObsSim(data_obs.LE_fall, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall');
+fs_LE2 = plot.f_scatterObsSim(data_obs.LE_fall_cor_redi, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall_cor_redi');
+fs_LE3 = plot.f_scatterObsSim(data_obs.LE_fall_cor, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall_cor');
 %% scatter 30 min H
 fs_H  = plot.f_scatterObsSim(data_obs.H,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H');
 fs_H3  = plot.f_scatterObsSim(data_obs.H_cor,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H_cor');
 
+fs_H  = plot.f_scatterObsSim(data_obs.H_fall,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H_fall');
+fs_H3  = plot.f_scatterObsSim(data_obs.H_fall_cor,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H_fall_cor');
 %% scatter 30 min G
 fs_G  = plot.f_scatterObsSim(data_obs.G_cor_avg, flux_sim.Gtot,[-500,1500,-500,1500], plotStyleScatter.G_sim,'G\_obs (W m^{-2})','G\_sim (W m^{-2})', figure_dir, 'Scatter_G');
 
 %% scatter 30 min NEE
-fs_NEE = plot.f_scatterObsSim(data_obs.NEE.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEE');
-
+fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U05_fall.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU05');
+fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U50_fall.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU50');
+fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U95_fall.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU95');
 %% scatter 30 min GPP
 flux_sim.GPP_umol = flux_sim.GPP .* 1e9 ./12;  % units tansfer from Kg m-2 s-1 to umol m-2 s-1
-fs_GPP = plot.f_scatterObsSim(gpp.GPP_uStar_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPP');
+fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U05_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU05');
+fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U50_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU50');
+fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U95_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU95');
 
 %% ======================================================================================
 %% plot 30 min Rn, LE, H, G, GPP, H
@@ -201,14 +206,21 @@ fp_Rn = plot.f_plotObsSim(doy, data_obs.Rn, doy, flux_sim.Rntot, plotStyleLine.R
 fp_LE = plot.f_plotObsSim(doy, data_obs.LE, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE');
 fp_H = plot.f_plotObsSim(doy, data_obs.H, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H');
 fp_G = plot.f_plotObsSim(doy, data_obs.G_cor_avg, doy, flux_sim.Gtot, plotStyleLine.G_sim, {'Obs G','Sim G','box','off'}, 'G (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_G');
-fp_GPP = plot.f_plotObsSim(doy, gpp.GPP_uStar_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPP');
-fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE, doy, flux_sim.NEE, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEE');
+
+fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U05_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU05');
+fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U50_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU50');
+fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U95_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU95');
+
+fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U05_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEEU05');
+fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U50_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEEU50');
+fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U95_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEEU95');
+
 
 %% daily ET
 daily = table;
 daily.DoY = (0:1:220)';
 lambda = 2.453*1e6;
-data_obs.ET = data_obs.LE./lambda;
+data_obs.ET = data_obs.LE_fall./lambda;
 
 daily.obsET = nansum(reshape(data_obs.ET,48,[]),1)' .* 3600;    % unit: mm/d
 daily.simET = nansum(reshape(flux_sim.lEtot ./ lambda, 48, []),1)' .* 3600;  % unit: mm/d
