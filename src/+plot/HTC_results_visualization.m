@@ -204,7 +204,19 @@ fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U95_f, flux_sim.GPP_umol,[-50,100, -5
 %% plot 30 min Rn, LE, H, G, GPP, H
 fp_Rn = plot.f_plotObsSim(doy, data_obs.Rn, doy, flux_sim.Rntot, plotStyleLine.Rn_sim, {'Obs Rn','Sim Rn','box','off'}, 'Rn (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_Rn');
 fp_LE = plot.f_plotObsSim(doy, data_obs.LE, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE');
+fp_LE = plot.f_plotObsSim(doy, data_obs.LE_cor_redi, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE_cor_redi');
+fp_LE = plot.f_plotObsSim(doy, data_obs.LE_cor, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE_cor');
+
+fp_LE = plot.f_plotObsSim(doy, data_obs.LE_fall, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE_fall');
+fp_LE = plot.f_plotObsSim(doy, data_obs.LE_fall_cor_redi, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE_fall_cor_redi');
+fp_LE = plot.f_plotObsSim(doy, data_obs.LE_fall_cor, doy, flux_sim.lEtot, plotStyleLine.LE_sim, {'Obs LE','Sim LE','box','off'}, 'LE (W m^{-2})', xlimRange, [-1000,1500], figure_dir, 'plot_LE_fall_cor');
+
 fp_H = plot.f_plotObsSim(doy, data_obs.H, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H');
+fp_H = plot.f_plotObsSim(doy, data_obs.H_cor, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H_cor');
+
+fp_H = plot.f_plotObsSim(doy, data_obs.H_fall, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H_fall');
+fp_H = plot.f_plotObsSim(doy, data_obs.H_fall_cor, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H_fall_cor');
+
 fp_G = plot.f_plotObsSim(doy, data_obs.G_cor_avg, doy, flux_sim.Gtot, plotStyleLine.G_sim, {'Obs G','Sim G','box','off'}, 'G (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_G');
 
 fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U05_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU05');
