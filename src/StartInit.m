@@ -70,7 +70,7 @@ Ksh0=Ksh(1);
 %%%%%%%%%%%%%%%%%% considering soil hetero effect modify date: 20170103 %%%%       
         for ML=1:NL
             Elmn_Lnth=Elmn_Lnth+DeltZ(ML);
-            InitLnth(ML)=Tot_Depth-Elmn_Lnth    
+            InitLnth(ML)=Tot_Depth-Elmn_Lnth;    
             
             if abs(InitLnth(ML)-InitND5)<1e-10
                 for MN=1:(ML+1)
