@@ -185,7 +185,8 @@ PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 airPress_m = meteo.p .*1e2 ./9810;
 phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.ckLeaf);
-plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
+% options.plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
+
 %% 2. Energy balance iteration loop
 
 %'Energy balance loop (Energy balance and radiative transfer)
@@ -244,10 +245,14 @@ while CONT                          % while energy balance does not close
     biochem_in.p            = p;
     biochem_in.m            = leafbio.m;
     biochem_in.BallBerry0   = leafbio.BallBerry0;
+    biochem_in.g1Med        = leafbio.g1Med;
+    biochem_in.g0Med        = leafbio.g0Med;
+    
     biochem_in.O            = meteo.Oa;
     biochem_in.Rdparam      = leafbio.Rdparam;
     biochem_in.phwsf        = phwsf;
-    biochem_in.plantHydraulics = plantHydraulics;
+    biochem_in.plantHydraulics = options.plantHydraulics;
+    biochem_in.gsMethod     = options.gsMethod;
 %     biochem_in.PSI          = PSI;
 
     if options.Fluorescence_model==2    % specific for the v.Caemmerer-Magnani model
@@ -322,7 +327,7 @@ while CONT                          % while energy balance does not close
     rcw_t = Fc*rcwh + equations.meanleaf(canopy,rcwu,'angles_and_layers',Ps);
     Tc_t = Fc*Tch + equations.meanleaf(canopy,Tcu,'angles_and_layers',Ps);
     Ci_t = Fc*Cih + equations.meanleaf(canopy,Ciu,'angles_and_layers',Ps);
-    if plantHydraulics == 1
+    if options.plantHydraulics == 1
     % ====================== PHS open ==============================
         for i=1:30
     %         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);

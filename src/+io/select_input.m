@@ -39,6 +39,8 @@ leafbio.beta          = V(56).Val(vi(56));
 leafbio.kNPQs         = V(57).Val(vi(57));
 leafbio.qLs           = V(58).Val(vi(58));
 leafbio.stressfactor  = V(59).Val(vi(59));
+leafbio.g1Med         = V(66).Val(vi(66));  % Medlyn gs g1
+leafbio.g0Med         = V(67).Val(vi(67));  % Medlyn gs g0
 
 canopy.LAI  = V(22).Val(vi(22));
 canopy.hc  = V(23).Val(vi(23));
