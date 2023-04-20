@@ -479,9 +479,9 @@ if isequal(sitename, 'CH-HTC')
 %     InitT6=	13.7571;
 %     Tss = 17.5;
     
-    InitX0=	0.2767;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1');  %0.0793
-    InitX1=	0.2300;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1'); % Measured soil liquid moisture content
-    InitX2=	0.3200;%ncread([InitialConditionPath,Initial_path(7).name],'swvl2'); %0.182
+    InitX0=	0.200;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1');  %0.0793
+    InitX1=	0.2200;%ncread([InitialConditionPath,Initial_path(6).name],'swvl1'); % Measured soil liquid moisture content
+    InitX2=	0.2551;%ncread([InitialConditionPath,Initial_path(7).name],'swvl2'); %0.182
     InitX3=	0.3000;%ncread([InitialConditionPath,Initial_path(8).name],'swvl3');
     InitX4= 0.3253;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4'); %0.14335
     InitX5=	0.3500;%ncread([InitialConditionPath,Initial_path(9).name],'swvl4');

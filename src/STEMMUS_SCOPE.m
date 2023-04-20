@@ -164,7 +164,7 @@ end
 if options.simulation>2 || options.simulation<0, fprintf('\n simulation option should be between 0 and 2 \r'); return, end
 
 options.plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
-options.gsMethod = 2; % 1 for BallBerry; 2 for Medlyn
+options.gsMethod = 1; % 1 for BallBerry; 2 for Medlyn
 
 %% 3. file names
 if ~useXLSX

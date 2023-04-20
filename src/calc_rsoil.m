@@ -1,4 +1,4 @@
-function [psiSoil,Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha, NL)
+function [psiSoil,psiSoilTemp,Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha, NL)
 % calculation of soil water potential and soil, root and xylem resistance.
 % Input:
 %     Rl      : root length density [m/m3]
@@ -27,7 +27,8 @@ l=0.5;          % empirical parameter
 SMC=Theta_LL(1:NL,2);
 Se  = (SMC-Theta_r')./(Theta_s'-Theta_r');
 Ksoil=Ks'.*Se.^l.*(1-(1-Se.^(1./m')).^(m')).^2;
-psiSoil=-((Se.^(-1./m')-1).^(1./n'))./(Alpha*100)'.*bbx;
+psiSoilTemp=-((Se.^(-1./m')-1).^(1./n'))./(Alpha*100)';
+psiSoil = psiSoilTemp.*bbx;
 % -------------------------------------------------
 %                        1
 %   r_s = -------------------------------- 
