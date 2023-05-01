@@ -1,7 +1,7 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
 
 function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
-                                                         RootProperties, soilDepth, lai, sfactor, psiSoil, canopyHeight, bbx)
+                                                         RootProperties, soilDepthB2T, lai, sfactor, psiSoil, canopyHeight, bbx)
 % Calculation of plant hydraulic conductance among plant components
 
 % Input:
@@ -10,8 +10,8 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
 %     Ksoil: unsaturated soil hydraulic conductivity [m s-1]
 %     ParaPlant: A structure contains plant parameters
 %     RootProperties: A structure contains root properties
-%     soilDepth: An array contains soil depth of each soil layer to soil
-%           surface. (direction: from surface to bottom)
+%     soilDepthB2T: An array contains soil depth of each soil layer to soil
+%           surface. (direction: from bottom to top)
 %            
 %     lai: An array contains LAI
 %     sfactor: soil water stress factor, WSF
@@ -62,7 +62,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     rootFrac = RootProperties.frac;
     
     % inverse soilDepth 
-    soilDepth = flipud(soilDepth);
+%     soilDepthflip = flipud(soilDepth);
     
     % Q_soil2root = Q_root2stem = Q_stem2leaf = Transpiration
     qSoil2Root = Trans;  % unit [m/s]
@@ -93,7 +93,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     
     phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, ckRoot);
 
-    rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + soilDepth./100); % unit [m/s]
+    rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + soilDepthB2T./100); % unit [m/s]
 
     soilConductance = max(soilConductance, 1e-16);
     rootConductance = max(rootConductance, 1e-16);
@@ -103,10 +103,10 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     % Q_soil2root = Q_root2stem = Q_stem2leaf = Transpiration
     if (abs(sum(kSoil2Root,1)) == 0)
         % for saturated condition
-        psiRoot = sum((psiSoil - soilDepth./100)) / numSoilLayer;
+        psiRoot = sum((psiSoil - soilDepthB2T./100)) / numSoilLayer;
     else
         % for unsaturated condition
-        psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepth./100).*bbx) - qSoil2Root) / sum(kSoil2Root.*bbx);
+        psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepthB2T./100).*bbx) - qSoil2Root) / sum(kSoil2Root.*bbx);
 
     end
 

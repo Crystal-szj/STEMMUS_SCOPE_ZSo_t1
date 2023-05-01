@@ -685,7 +685,7 @@ for i = 1:1:Dur_tot
             case 1
                 [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, PSIs,eih,eiu,ech,ecu, TestPHS]                          ...
                     = ebal(iter,options,spectral,rad,gap,                       ...
-                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepth, TestPHS);
+                    leafopt,angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties,ParaPlant,RootProperties, soilDepthB2T, TestPHS);
             
                 if options.calc_fluor
                     if options.calc_vert_profiles

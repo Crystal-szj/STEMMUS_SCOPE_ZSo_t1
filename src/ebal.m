@@ -1,6 +1,6 @@
 function [iter,fluxes,rad,thermal,profiles,soil,RWU,frac,rcwh,rcwu, VPDh,VPDu, psiSoil,eih, eiu, ech,ecu, TestPHS]             ...  
          = ebal(iter,options,spectral,rad,gap,leafopt,  ...
-                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepth, TestPHS)
+                angles,meteo,soil,canopy,leafbio,xyt,k,profiles,Delt_t,biochemical, SiteProperties, ParaPlant, RootProperties, soilDepthB2T, TestPHS)
  global Rl DeltZ Ks Theta_s Theta_r Theta_LL bbx NL KT sfactor  PSItot sfactortot Theta_f
  global  m n Alpha TT
  global rroot frac  
@@ -184,6 +184,7 @@ psiLeaf = TestPHS.psiLeafIni(KT);
 PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 airPress_m = meteo.p .*1e2 ./9810;
+airPress_hPa = meteo.p;
 phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.ckLeaf);
 % options.plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
 
@@ -364,8 +365,12 @@ while CONT                          % while energy balance does not close
             Trans_t = lEct .* LAI./lambda1./1000;
 
             %% PHS
+%             lEchtot    = LAI*(Fc*lEch);
+%             lEcutot    = LAI*equations.meanleaf(canopy,lEcu,'angles_and_layers',Ps);
+
+
             [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf] = calPlantWaterPotential(Trans,Ks, ...
-                Ksoil, ParaPlant, RootProperties, soilDepth, LAI, sfactor, psiSoil, canopyHeight, bbx);
+                Ksoil, ParaPlant, RootProperties, soilDepthB2T, LAI, sfactor, psiSoil, canopyHeight, bbx);
             %%
     %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
     %         AA2=1./(rsss+rrr+rxx);          % conductance
@@ -394,7 +399,10 @@ while CONT                          % while energy balance does not close
         % canopy conductance = 1/(stomatal resistance + aerodynamic resistance)
         canopyConduct  = 1./(canopyStoResis + rac);
         
-        phsTrans = canopyConduct .* LAI .* (psiLeaf - psiAir)./airPress_m;
+        phsTrans = canopyConduct .* LAI .* VPDu./airPress_hPa;
+        %% ====================== root water uptake =====================
+        rootWaterUptake = kSoil2Root .* (psiSoil - psiRoot - soilDepthB2T./100).*bbx;
+        
         
         TestPHS.psiStemTot(KT) = psiStem;
         TestPHS.psiRootTot(KT) = psiRoot;
@@ -653,20 +661,21 @@ thermal.Tch   = Tch;
 
 fluxes.Au     = Au;
 fluxes.Ah     = Ah;
-RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
+% RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
+RWU = rootWaterUptake;
 nn=numel(RWU);
 for i=1:nn
     if isnan(RWU(i))
         RWU(i)=0;
     end
 end
-for i=1:nn
-    if RWU(i)<0
-        RWU(i)=1*1e-20;
-    end
-end
+% for i=1:nn
+%     if RWU(i)<0
+%         RWU(i)=1*1e-20;
+%     end
+% end
 frac = RWU./abs(sum(sum(RWU)));
-RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
+% RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
 RWU =real(RWU);
 for i=1:nn
     if isnan(RWU(i))
