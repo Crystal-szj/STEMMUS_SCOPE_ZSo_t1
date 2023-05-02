@@ -46,10 +46,16 @@ opts_sim_sm.DataLines = [4,10611];
 sm_sim  = readtable(sm_sim_dir,opts_sim_sm);
 
 % sim flux
-flux_sim = readtable(flux_sim_dir);
+opts_sim_flux = detectImportOptions(flux_sim_dir);
+opts_sim_flux.VariableNamesLine = 1;
+opts_sim_flux.VariableUnitsLine = 2;
+flux_sim = readtable(flux_sim_dir, opts_sim_flux);
 
 % obs
-data_obs = readtable(data_obs_dir);
+opts_data_obs = detectImportOptions(data_obs_dir);
+opts_sim_sm.VariableNamesLine = 1;
+opts_sim_sm.DataLines = [2,10609];
+data_obs = readtable(data_obs_dir, opts_data_obs);
 
 opts_psiLeaf = detectImportOptions(psiLeaf_obs_dir);
 opts_psiLeaf.VariableNamesRange = 1;
