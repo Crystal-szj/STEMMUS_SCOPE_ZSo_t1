@@ -135,7 +135,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     
     %% ==================== set complex value ======================
     if ~isreal(psiRoot)
-        psiRoot = mean(psiSoil(rootFrac > 0.001));
+        psiRoot = sum(psiSoil.*bbx)/sum(bbx);   % root zone averaged soil water potential
     end
     if ~isreal(psiStem)
         psiStem = psiRoot;
