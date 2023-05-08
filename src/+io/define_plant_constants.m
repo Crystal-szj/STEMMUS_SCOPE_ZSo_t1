@@ -18,6 +18,7 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
     ParaPlant.rootRadius     = 1.5*1e-3;  % root radius [m] (2.9e-4 in CLM5),  (0.5-6e-3 m)in STEMMUS_SCOPE_GMD
     ParaPlant.rootDensity    = 250*1000;  % Root density Jackson et al., 1997 [gDM / m^3] 
     pa2m                     = 1/9810;    % Pressure = rho g h = 1000kg m-3 * 9.81 m s-2 *1 m = 9810 Pa. 1m = 9810Pa
+    ParaPlant.s2l            = 0.1;       % The ratio of stem area index to leaf area index: SAI = s2l * LAI;
     
     %% ----------------------- define IGBP vegetation type ----------------------
     igbpVegLong = SiteProperties.igbpVegLong;

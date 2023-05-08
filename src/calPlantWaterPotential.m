@@ -57,6 +57,8 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     ckStem = ParaPlant.ckStem;
     ckLeaf = ParaPlant.ckLeaf;
     rootLateralLength = ParaPlant.rootLateralLength;
+    s2l    = ParaPlant.s2l;
+    
     
     rootSpac = RootProperties.spac;    
     rootFrac = RootProperties.frac;
@@ -82,7 +84,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     froot2leaf=max(0.001, froot2leaf);
     
     % stem area index
-    sai = 0.1.*lai;  
+    sai = s2l .*lai;  
     
     % root area index
     % rai = (sai + lai) * f_{root-shoot} * r_i (Kennedy et al. 2019 JAMES)
