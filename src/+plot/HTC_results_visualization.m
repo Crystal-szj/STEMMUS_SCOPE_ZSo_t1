@@ -84,29 +84,29 @@ xlimRange = [0, 221];
 [plotColor, plotStyleLine, plotStyleScatter] = plot.f_plot_style();
 
 %% plot 30 min SM
-data_obs_sm = [data_obs.Ms_5cm_Avg, data_obs.Ms_10cm_Avg, data_obs.Ms_20cm_Avg, data_obs.Ms_40cm_Avg, data_obs.Ms_60cm_Avg, data_obs.Ms_80cm_Avg]./100;
-data_sim_sm = [sm_sim.x5, sm_sim.x10, sm_sim.x20,sm_sim.x40,sm_sim.x60,sm_sim.x80];
-legendText = {'Obs\_5cm','Sim\_5cm';
-              'Obs\_10cm','Sim\_10cm';
-              'Obs\_20cm','Sim\_20cm';
-              'Obs\_40cm','Sim\_40cm';
-              'Obs\_60cm','Sim\_60cm';
-              'Obs\_80cm','Sim\_80cm'};
-%%
-f = plot.f_plot_soilMoisture_precipitation(doy, data_obs_sm, doy, data_sim_sm, plotStyleLine.SM_sim, doy, data_obs.Precip .*1800, ...
-                       legendText, 'Soil moisture (m^3 m^{-3})', 'Precipitation (mm)',xlimRange, [0.1,0.55], [0,20],figure_dir,'SM' );
-%%                   
-data_obs_st = [data_obs.Ts_5cm_Avg,data_obs.Ts_10cm_Avg,data_obs.Ts_20cm_Avg,data_obs.Ts_40cm_Avg,data_obs.Ts_60cm_Avg,data_obs.Ts_80cm_Avg];
-data_sim_st = [st_sim.x5, st_sim.x10, st_sim.x20,st_sim.x40,st_sim.x60,st_sim.x80];                   
-legendText = {'Obs\_5cm','Sim\_5cm';
-              'Obs\_10cm','Sim\_10cm';
-              'Obs\_20cm','Sim\_20cm';
-              'Obs\_40cm','Sim\_40cm';
-              'Obs\_60cm','Sim\_60cm';
-              'Obs\_80cm','Sim\_80cm'};              
-f = plot.f_plot_soilTemperature(doy, data_obs_st, doy, data_sim_st, plotStyleLine.ST_sim,  ...
-                       legendText, 'Soil temperature (^\circC)',xlimRange, [0, 55],figure_dir,'ST' );
-					   
+% % data_obs_sm = [data_obs.Ms_5cm_Avg, data_obs.Ms_10cm_Avg, data_obs.Ms_20cm_Avg, data_obs.Ms_40cm_Avg, data_obs.Ms_60cm_Avg, data_obs.Ms_80cm_Avg]./100;
+% % data_sim_sm = [sm_sim.x5, sm_sim.x10, sm_sim.x20,sm_sim.x40,sm_sim.x60,sm_sim.x80];
+% % legendText = {'Obs\_5cm','Sim\_5cm';
+% %               'Obs\_10cm','Sim\_10cm';
+% %               'Obs\_20cm','Sim\_20cm';
+% %               'Obs\_40cm','Sim\_40cm';
+% %               'Obs\_60cm','Sim\_60cm';
+% %               'Obs\_80cm','Sim\_80cm'};
+% % %%
+% % f = plot.f_plot_soilMoisture_precipitation(doy, data_obs_sm, doy, data_sim_sm, plotStyleLine.SM_sim, doy, data_obs.Precip .*1800, ...
+% %                        legendText, 'Soil moisture (m^3 m^{-3})', 'Precipitation (mm)',xlimRange, [0.1,0.55], [0,20],figure_dir,'SM' );
+% % %%                   
+% % data_obs_st = [data_obs.Ts_5cm_Avg,data_obs.Ts_10cm_Avg,data_obs.Ts_20cm_Avg,data_obs.Ts_40cm_Avg,data_obs.Ts_60cm_Avg,data_obs.Ts_80cm_Avg];
+% % data_sim_st = [st_sim.x5, st_sim.x10, st_sim.x20,st_sim.x40,st_sim.x60,st_sim.x80];                   
+% % legendText = {'Obs\_5cm','Sim\_5cm';
+% %               'Obs\_10cm','Sim\_10cm';
+% %               'Obs\_20cm','Sim\_20cm';
+% %               'Obs\_40cm','Sim\_40cm';
+% %               'Obs\_60cm','Sim\_60cm';
+% %               'Obs\_80cm','Sim\_80cm'};              
+% % f = plot.f_plot_soilTemperature(doy, data_obs_st, doy, data_sim_st, plotStyleLine.ST_sim,  ...
+% %                        legendText, 'Soil temperature (^\circC)',xlimRange, [0, 55],figure_dir,'ST' );
+% % 					   
 % f = f_plot_YObsSim_Ybar(obsDateTime, obs, 
 %                           simDateTime, sim, simPlotStyle, 
 %                           ybarDatetime, ybar, 
@@ -197,14 +197,14 @@ fs_H3  = plot.f_scatterObsSim(data_obs.H_fall_cor,  flux_sim.Htot, [-500,1500,-5
 fs_G  = plot.f_scatterObsSim(data_obs.G_cor_avg, flux_sim.Gtot,[-500,1500,-500,1500], plotStyleScatter.G_sim,'G\_obs (W m^{-2})','G\_sim (W m^{-2})', figure_dir, 'Scatter_G');
 
 %% scatter 30 min NEE
-fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U05_fall.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU05');
-fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U50_fall.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU50');
-fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U95_fall.*(-1), flux_sim.NEE.*1e9./12,[-50,100, -50,100], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU95');
+fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U05_fall.*(-1), flux_sim.NEE.*1e9./12,[-10,50, -10,50], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU05');
+fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U50_fall.*(-1), flux_sim.NEE.*1e9./12,[-10,50, -10,50], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU50');
+fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U95_fall.*(-1), flux_sim.NEE.*1e9./12,[-10,50, -10,50], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU95');
 %% scatter 30 min GPP
 flux_sim.GPP_umol = flux_sim.GPP .* 1e9 ./12;  % units tansfer from Kg m-2 s-1 to umol m-2 s-1
-fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U05_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU05');
-fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U50_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU50');
-fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U95_f, flux_sim.GPP_umol,[-50,100, -50,100], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU95');
+fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U05_f, flux_sim.GPP_umol,[-10,50, -10,50], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU05');
+fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U50_f, flux_sim.GPP_umol,[-10,50, -10,50], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU50');
+fs_GPP = plot.f_scatterObsSim(data_obs.GPP_U95_f, flux_sim.GPP_umol,[-10,50, -10,50], plotStyleScatter.GPP_sim,'GPP\_obs (umol m^{-2} s^{-1})','GPP\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_GPPU95');
 
 %% ======================================================================================
 %% plot 30 min Rn, LE, H, G, GPP, H
@@ -223,15 +223,15 @@ fp_H = plot.f_plotObsSim(doy, data_obs.H_cor, doy, flux_sim.Htot, plotStyleLine.
 fp_H = plot.f_plotObsSim(doy, data_obs.H_fall, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H_fall');
 fp_H = plot.f_plotObsSim(doy, data_obs.H_fall_cor, doy, flux_sim.Htot, plotStyleLine.H_sim, {'Obs H','Sim H','box','off'}, 'H (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_H_fall_cor');
 
-fp_G = plot.f_plotObsSim(doy, data_obs.G_cor_avg, doy, flux_sim.Gtot, plotStyleLine.G_sim, {'Obs G','Sim G','box','off'}, 'G (W m^{-2})', xlimRange, [-500,1500], figure_dir, 'plot_G');
+fp_G = plot.f_plotObsSim(doy, data_obs.G_cor_avg, doy, flux_sim.Gtot, plotStyleLine.G_sim, {'Obs G','Sim G','box','off'}, 'G (W m^{-2})', xlimRange, [-100,300], figure_dir, 'plot_G');
 
-fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U05_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU05');
-fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U50_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU50');
-fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U95_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_GPPU95');
+fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U05_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-10,50], figure_dir, 'plot_GPPU05');
+fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U50_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-10,50], figure_dir, 'plot_GPPU50');
+fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U95_f, doy, flux_sim.GPP_umol, plotStyleLine.GPP_sim, {'Obs GPP','Sim GPP','box','off'}, 'GPP (umol m^{-2} s^{-1})', xlimRange, [-10,50], figure_dir, 'plot_GPPU95');
 
-fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U05_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEEU05');
-fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U50_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEEU50');
-fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U95_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-50,100], figure_dir, 'plot_NEEU95');
+fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U05_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-20,50], figure_dir, 'plot_NEEU05');
+fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U50_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-20,50], figure_dir, 'plot_NEEU50');
+fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U95_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-20,50], figure_dir, 'plot_NEEU95');
 
 
 %% daily ET
@@ -336,6 +336,8 @@ xlabel('DoY')
 ylabel('Water stress')
 xlim([0,225])
 legend('sfactor','phwsf', 'box','off','location','best')
+set(gca,'FontName','Times New Roman','FontSize',12)
+
 saveas(f_wsf,fullfile(figure_dir,'waterStressFactors'),'png')
 saveas(f_wsf,fullfile(figure_dir,'waterStressFactors'),'fig')
 
