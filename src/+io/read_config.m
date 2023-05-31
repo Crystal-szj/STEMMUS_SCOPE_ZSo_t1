@@ -1,4 +1,4 @@
-function [DataPaths, forcingFileName, durationSize, startDate, endDate, Scenario,RunningMessages] = read_config(config_file)
+function [DataPaths, forcingFileName, durationSize, startDate, endDate, gsOption, phsOption, RunningMessages] = read_config(config_file)
 
     file_id = fopen(config_file);
     config = textscan(file_id,'%s %s', 'HeaderLines',0, 'Delimiter', '=');
@@ -38,12 +38,20 @@ function [DataPaths, forcingFileName, durationSize, startDate, endDate, Scenario
     indx = find(strcmp(config_vars,'EndDate'));
     endDate = config_paths{indx};
 
-    indx = find(strcmp(config_vars, 'Scenario'));
+    indx = find(strcmp(config_vars, 'gsOption'));
     if isempty(indx)
-        Scenario = [];
+        gsOption = [];
     else
-        Scenario = config_paths{indx};
+        gsOption = config_paths{indx};
     end
+    
+    indx = find(strcmp(config_vars, 'phsOption'));
+    phsOption = str2double(config_paths{indx});
+%     if isempty(indx)
+%         phsOption = [];
+%     else
+%         phsOption = config_paths{indx};
+%     end
     
     indx = find(strcmp(config_vars,'RunningMessages'));
     if ~isempty(indx)
