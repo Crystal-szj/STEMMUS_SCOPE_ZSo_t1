@@ -10,7 +10,9 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsfMetho
 %         phwsf_method : phwsf_method, the default approah is weibull method
 % 
 %     Output:
-%         phwsf: plant hydraulic water stress factor, scale from 0 to 1;
+%         phwsf: plant hydraulic water stress factor, scale from 0 to 1.
+%         The value of 0 means that a severe water stress, and the value of
+%         1 means there is no water stress.
 %
 %     References:
 %         1. D. Kennedy et al_2019_JAMESM_Implementing Plant Hydraulics in the Community Land Model, Version 5, DOI: https://doi.org/10.1029/2018MS001500
@@ -18,7 +20,7 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsfMetho
 
 
 
-    % ========== define phwsf method ===============
+    %% ========== define phwsf method ===============
     if nargin < 4
         phwsfMethod = 'CLM5';
     else
@@ -28,13 +30,61 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsfMetho
     % ========= calculate phwsf ===================
     switch phwsfMethod
         case 'CLM5'
-            phwsf = 2.^(-(psi./psi50)).^fittingPara;
-            phwsf(phwsf < 5e-5) = 0;
+            phwsf = CLM5(psi, psi50, fittingPara.ck);
         case 'ED2'
-            phwsf = (1+(psi./psi50).^fittingPara).^-1;
-%         case ''
+            phwsf = ED2(psi, psi50, fittingPara.a);
+        case 'PHS'
+            phwsf = PHS(psi, psi50, fittingPara.m);  % based on soil water stress factor
         otherwise
             phwsf = NaN;
             fprintf('phwsf method need to be defined.')
     end
 end
+
+function phwsf = CLM5(psi, psi50, ck)
+%{
+    This function calculated plant hydraulic water stress factor based on
+    the scheme of CLM5
+    Input:
+        psi      : leaf water potential (m)
+        psi50    : P50 value            (m)
+        ck       : shape factor         (-)
+    Output:
+        phwsf    : plant hydraulic water stress factor, range from 0 to 1.
+%}
+    phwsf = 2.^(-(psi./psi50)).^ck;
+    phwsf(phwsf < 5e-5) = 0;
+    
+end
+
+function phwsf = ED2(psi, psi50, a)
+%{
+    This function calculated plant water stress factor based on the scheme
+    of ED2. (Xu, Xiangtao_2016_new phytologist)
+%}
+    m2MPa = 1*9810/1e6;
+    psiMPa = psi .* m2MPa;
+    psi50  = psi50 .* m2MPa;
+    
+    phwsf = (1+(psiMPa./psi50).^a).^-1;
+end
+
+
+function phwsf = PHS(psi, psi50, m)
+%{
+    A new plant water stress function format based on soil water stress
+    factor. Since the observed plant water potential with the unit of MPa,
+    thus, we translate the unit from m to MPa at first. Then use curve
+    fitting to retrive the parameters.
+%}
+    m2MPa = 1*9810/1e6;
+    psiMPa = psi .* m2MPa;
+    psi50MPa  = psi50 .* m2MPa;
+    psi0  = -0.33; % psi0 is p0, we use the soil water potential at the field capacity to represent this value.
+    
+    phwsf = (1+exp(-m .* psi0 * (psiMPa - psi50MPa))).^-1;
+end
+
+
+
+

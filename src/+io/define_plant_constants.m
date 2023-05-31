@@ -197,8 +197,22 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsfMethod)
                     ParaPlant.Kleafmax          =1.77e-10;%2e-7;       % maximum leaf conductance [s-1]
                     ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
                 end
+        case 'PHS'
+                if strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
+                    ParaPlant.p50Leaf        = -67.67;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -342.51;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.shapeFactorLeaf         = 1.98;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 1.98;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 1.98;      % parameter of plant hydraulic pathway [unitless]
+                    
+                    ParaPlant.Krootmax          =1.28e-7;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =3.88e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =1.77e-10;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+                end
         otherwise
-                phwsf = NaN;
                 fprintf('phwsf method need to be defined.')
     end
     
