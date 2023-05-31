@@ -1,8 +1,8 @@
-function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
+function ParaPlant = define_plant_constants(SiteProperties, phwsfMethod)
 % define parameters used in plant hydraulic pathway
 % Input: 
 %     SiteProperties
-%     phwsf_method: define phwsf_method
+%     phwsfMethod: define phwsf method
 
 % Output:
 %     ParaPlant: A structure contains all of parameters used in plant hydraulic pathway.
@@ -22,13 +22,8 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
     
     %% ----------------------- define IGBP vegetation type ----------------------
     igbpVegLong = SiteProperties.igbpVegLong;
-    if nargin < 2
-        phwsf_method = 'CLM5';
-    else
-        phwsf_method = phwsf_method;
-    end
-    
-    switch phwsf_method
+    ParaPlant.phwsfMethod = phwsfMethod;
+    switch phwsfMethod
         case 'CLM5'
             %% ----------------------- Plant hydraulics -----------------------
             if strcmp(igbpVegLong(1:18)', 'Permanent Wetlands') 
@@ -36,9 +31,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m] 
                     ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m] 
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule in CLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule in CLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -50,9 +45,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -300;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 0.87;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 0.87;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 0.87;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 0.87;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 0.87;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 0.87;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =1.28e-7;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =3.88e-8;%2e-8;       % stem conductivity [m s-1]
@@ -64,9 +59,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -270;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -270;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -78,9 +73,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -92,9 +87,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -465;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -465;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -106,9 +101,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -120,9 +115,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -134,9 +129,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -260;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -260;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -148,9 +143,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -162,9 +157,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -176,9 +171,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -340;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -340;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 3.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 3.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 3.95;      % parameter of plant hydraulic pathway [unitless]
 
                     ParaPlant.Krootmax          =2e-8;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =2e-8;%2e-8;       % stem conductivity [m s-1]
@@ -193,9 +188,9 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsf_method)
                     ParaPlant.p50Stem        = -342.51;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.ckLeaf         = 1.98;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.ckStem         = 1.98;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.ckRoot         = 1.98;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 1.98;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 1.98;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 1.98;      % parameter of plant hydraulic pathway [unitless]
                     
                     ParaPlant.Krootmax          =1.28e-7;%2e-9;       % root conductivity [m s-1]
                     ParaPlant.Kstemmax          =3.88e-8;%2e-8;       % stem conductivity [m s-1]

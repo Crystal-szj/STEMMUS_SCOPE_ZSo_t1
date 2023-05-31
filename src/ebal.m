@@ -185,7 +185,7 @@ PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 airPress_m = meteo.p .*1e2 ./9810;
 airPress_hPa = meteo.p;
-phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.ckLeaf);
+phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.shapeFactorLeaf, ParaPlant.phwsfMethod);
 % options.plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
 
 %% 2. Energy balance iteration loop

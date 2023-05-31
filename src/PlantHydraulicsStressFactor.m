@@ -1,6 +1,6 @@
 % psi50 = ParaPlant.psi50;
 % ck = ParaPlant.ck;
-function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsf_method)
+function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsfMethod)
 % This function is to calculate water stress factor based on plant
 % hydraulisc theory.
 %     Input:
@@ -20,13 +20,13 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsf_meth
 
     % ========== define phwsf method ===============
     if nargin < 4
-        phwsf_method = 'CLM5';
+        phwsfMethod = 'CLM5';
     else
-        phwsf_method = phwsf_method;
+        phwsfMethod = phwsfMethod;
     end
     
     % ========= calculate phwsf ===================
-    switch phwsf_method
+    switch phwsfMethod
         case 'CLM5'
             phwsf = 2.^(-(psi./psi50)).^fittingPara;
             phwsf(phwsf < 5e-5) = 0;

@@ -33,7 +33,7 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
-[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, Scenario, RunningMessages] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages] = io.read_config(CFG);
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
@@ -58,7 +58,7 @@ else
 end
 
 % set Scenario 
-[biochemical,Scenario] = setScenario(Scenario);
+[biochemical, gsOption, phwsfMethod] = setScenario(gsOption, phsOption);
 %%
 run Constants %input soil parameters
 global i tS KT Delt_t TEND TIME MN NN NL ML ND hOLD TOLD h hh T TT P_gOLD P_g P_gg Delt_t0 g
@@ -97,7 +97,7 @@ global HR Precip Precipp Tss frac sfactortot sfactor fluxes lEstot lEctot NoTime
 [constants] = io.define_constants();
 % [Rl,ri] = Initial_root_biomass(RTB,DeltZ_R,rroot,ML);
 % [Rl, ri, Ztot] = InitialRootBiomass(RTB,DeltZ_R,rroot,ML,SiteProperties);
-ParaPlant = io.define_plant_constants(SiteProperties, 'CLM5');
+ParaPlant = io.define_plant_constants(SiteProperties, phwsfMethod);
 
 numSoilLayer = ML;
 soilThickness = DeltZ_R';  % the direction of soilThickness is from surface to bottom. 
@@ -491,6 +491,7 @@ atmfile     = [path_input 'radiationdata/' char(F(4).FileName(1))];
 atmo.M      = helpers.aggreg(atmfile,spectral.SCOPEspec);
 
 %% 13. create output files
+Scenario = [gsOption,'_',phwsfMethod];
 [Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario, RunningMessages);
 run StartInit;   % Initialize Temperature, Matric potential and soil air pressure.
 
@@ -515,9 +516,9 @@ fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 Init
 fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
 fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
 fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
-fprintf('ckLeaf: %5.2f\n',ParaPlant.ckLeaf);
-fprintf('ckStem: %5.2f\n',ParaPlant.ckStem);
-fprintf('ckRoot: %5.2f\n',ParaPlant.ckRoot);
+fprintf('shapeFactorLeaf: %5.2f\n',ParaPlant.shapeFactorLeaf);
+fprintf('shapeFactorStem: %5.2f\n',ParaPlant.shapeFactorStem);
+fprintf('shapeFactorRoot: %5.2f\n',ParaPlant.shapeFactorRoot);
 fprintf('Krootmax: %5.1e\n',ParaPlant.Krootmax);
 fprintf('Kstemmax: %5.1e\n',ParaPlant.Kstemmax);
 fprintf('Kleafmax: %5.1e\n',ParaPlant.Kleafmax);

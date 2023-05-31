@@ -53,12 +53,12 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     p50Root  = ParaPlant.p50Root;
     p50Stem  = ParaPlant.p50Stem;
     p50Leaf  = ParaPlant.p50Leaf;
-    ckRoot = ParaPlant.ckRoot;
-    ckStem = ParaPlant.ckStem;
-    ckLeaf = ParaPlant.ckLeaf;
+    shapeFactorRoot = ParaPlant.shapeFactorRoot;
+    shapeFactorStem = ParaPlant.shapeFactorStem;
+    shapeFactorLeaf = ParaPlant.shapeFactorLeaf;
     rootLateralLength = ParaPlant.rootLateralLength;
     s2l    = ParaPlant.s2l;
-    
+    phwsfMethod = ParaPlant.phwsfMethod;
     
     rootSpac = RootProperties.spac;    
     rootFrac = RootProperties.frac;
@@ -93,7 +93,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     %% =================== soil to root conductance =====================
     soilConductance = min(Ks' , Ksoil) ./100 ./ rootSpac ; % 100 is a transfer factor from [cm/s] to [m/s]
     
-    phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, ckRoot);
+    phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, shapeFactorRoot, phwsfMethod);
 
     rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + soilDepthB2T./100); % unit [m/s]
 
@@ -113,7 +113,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     end
 
     %% =================== stem water potential ========================
-    phwsfStem = PlantHydraulicsStressFactor(psiRoot, p50Stem, ckStem);
+    phwsfStem = PlantHydraulicsStressFactor(psiRoot, p50Stem, shapeFactorStem, phwsfMethod);
 
     if ( sai>0 && phwsfStem >0 ) 
         % stem hydraulic conductance
@@ -124,7 +124,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     end
     
     %% ===================== leaf water potential ====================
-    phwsfLeaf = PlantHydraulicsStressFactor(psiStem, p50Leaf, ckLeaf);
+    phwsfLeaf = PlantHydraulicsStressFactor(psiStem, p50Leaf, shapeFactorLeaf, phwsfMethod);
     if (lai>0 && phwsfLeaf>0)
         % leaf hydraulic conductance
         kStem2Leaf = ParaPlant.Kleafmax .* phwsfLeaf;
