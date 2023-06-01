@@ -1,12 +1,15 @@
 % psi50 = ParaPlant.psi50;
 % ck = ParaPlant.ck;
-function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsfMethod)
+function phwsf = PlantHydraulicsStressFactor(psi, psi50, shapeFactor, phwsfMethod)
 % This function is to calculate water stress factor based on plant
 % hydraulisc theory.
 %     Input:
 %         psi: water potential
 %         psi50: parameter of plant hydraulic pathway
-%         fittingPara: parameter of plant hydraulic pathway
+%         shapeFactor: a empirical parameter of plant hydraulic pathway:
+%                      ck for CLM5
+%                      a for ED2
+%                      m for PHS
 %         phwsf_method : phwsf_method, the default approah is weibull method
 % 
 %     Output:
@@ -18,26 +21,19 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, fittingPara, phwsfMetho
 %         1. D. Kennedy et al_2019_JAMESM_Implementing Plant Hydraulics in the Community Land Model, Version 5, DOI: https://doi.org/10.1029/2018MS001500
 %         2. X. Xu et al_2016_New Phytol_Diversity in plant hydraulic traits explains seasonal and inter-annual variations of vegetation dynamics in seasonally dry tropical forests, DOI: 10.1111/nph.14009
 
-
-
-    %% ========== define phwsf method ===============
-    if nargin < 4
-        phwsfMethod = 'CLM5';
-    else
-        phwsfMethod = phwsfMethod;
-    end
+    phwsfMethod = phwsfMethod;
     
     % ========= calculate phwsf ===================
     switch phwsfMethod
         case 'CLM5'
-            phwsf = CLM5(psi, psi50, fittingPara.ck);
+            phwsf = CLM5(psi, psi50, shapeFactor);
         case 'ED2'
-            phwsf = ED2(psi, psi50, fittingPara.a);
+            phwsf = ED2(psi, psi50, shapeFactor);
         case 'PHS'
-            phwsf = PHS(psi, psi50, fittingPara.m);  % based on soil water stress factor
+            phwsf = PHS(psi, psi50, shapeFactor);  % based on soil water stress factor
         otherwise
             phwsf = NaN;
-            fprintf('phwsf method need to be defined.')
+            fprintf('phwsf method need to be defined\n.')
     end
 end
 
