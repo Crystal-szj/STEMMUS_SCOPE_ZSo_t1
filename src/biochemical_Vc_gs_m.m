@@ -140,6 +140,9 @@ O             = biochem_in.O;
 p             = biochem_in.p;
 % PSI           = biochem_in.PSI;
 ei            = biochem_in.ei;
+phwsf         = biochem_in.phwsf;
+plantHydraulics = biochem_in.plantHydraulics;
+gsMethod      = biochem_in.gsMethod;
  % physiological
 Type          = biochem_in.Type;
 if isfield(biochem_in, 'Vcmax25')
@@ -283,11 +286,16 @@ kpepcase = Kpep25.* exp(log(1.8).*qt);  % "pseudo first order rate constant for 
 
 % jak 2014-12-04: Add TL for C3 as well, works much better with our cotton temperature dataset (A-T)
 if strcmpi(Type, 'C3') && ~useTLforC3
-   Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./TH * sfactor;
+   Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./TH; 
 else
-   Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./(TL.*TH) * sfactor;
+   Vcmax = Vcmax25 .* exp(log(QTVc).*qt) ./(TL.*TH);
 end
 
+if plantHydraulics == 1        % PHS open, use phwsf
+    Vcmax = Vcmax .*phwsf;
+else                           % PHS close, use sfactor
+    Vcmax = Vcmax .*sfactor;
+end
 % specificity (tau in Collatz e.a. 1991)
 spfy        = spfy25 * exp(log(0.75).*qt);
 
