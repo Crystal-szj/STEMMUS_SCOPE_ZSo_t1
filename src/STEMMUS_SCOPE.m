@@ -163,8 +163,8 @@ end
 
 if options.simulation>2 || options.simulation<0, fprintf('\n simulation option should be between 0 and 2 \r'); return, end
 
-options.plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
-options.gsMethod = 1; % 1 for BallBerry; 2 for Medlyn
+options.plantHydraulics = phsOption;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
+options.gsMethod = 2; % 1 for BallBerry; 2 for Medlyn
 
 %% 3. file names
 if ~useXLSX
@@ -284,8 +284,8 @@ elseif strcmp(IGBP_veg_long(1:19)', 'Evergreen Broadleaf')
     V(10).Val= [9];
     V(11).Val= [0];
     V(28).Val= [0.05];
-    V(66).Val = [6.06]; % g1Med
-    V(67).Val = [-0.004]; % g0Me
+    V(66).Val = [9]; % g1Med
+    V(67).Val = [0.001]; % g0Me
 elseif strcmp(IGBP_veg_long(1:19)', 'Deciduous Broadleaf') 
     V(14).Val= [0.2 0.3 283 311 328];
     V(9).Val= [80];
