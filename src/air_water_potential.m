@@ -1,7 +1,7 @@
 function [psiAir_m] = air_water_potential(RH, Ta)
 % input:
-%     RH: relative humidity (-)
-%     T:  air temperature (K)
+%     RH: relative humidity (%)
+%     T:  air temperature (Celsius degree)
 % output:
 %     psiAir: air water potential (m)
 %   
