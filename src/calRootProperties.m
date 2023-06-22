@@ -24,34 +24,34 @@ function [RootProperties, soilDepth] = calRootProperties(SiteProperties, ParaPla
     rootRadius = ParaPlant.rootRadius; %[m]
     rootDensity = ParaPlant.rootDensity; %[gDM / m^3]
     igbpVegLong = SiteProperties.igbpVegLong;
-    
+    beta       = ParaPlant.beta;
     %% Jackson et al. (1996), it is refered to CLM5.0 document. 
-    if strcmp(igbpVegLong(1:18), 'Permanent Wetlands')
-        beta = 0.993; 
-    elseif strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
-        beta = 0.993; 
-    elseif strcmp(igbpVegLong(1:19)', 'Deciduous Broadleaf') 
-        beta = 0.993; 
-    elseif strcmp(igbpVegLong(1:13)', 'Mixed Forests') 
-        beta = 0.993; 
-    elseif strcmp(igbpVegLong(1:20)', 'Evergreen Needleleaf') 
-        beta = 0.993; 
-    elseif strcmp(igbpVegLong(1:9)', 'Croplands') 
-        beta = 0.943; 
-    elseif strcmp(igbpVegLong(1:15)', 'Open Shrublands')
-        beta = 0.966; 
-    elseif strcmp(igbpVegLong(1:17)', 'Closed Shrublands') 
-        beta = 0.966; 
-    elseif strcmp(igbpVegLong(1:8)', 'Savannas') 
-        beta = 0.943; 
-    elseif strcmp(igbpVegLong(1:14)', 'Woody Savannas') 
-        beta = 0.943; 
-    elseif strcmp(igbpVegLong(1:9)', 'Grassland') 
-        beta = 0.943; 
-    else 
-        beta = 0.943; 
-        warning('IGBP vegetation name unknown, "%s" is not recognized. Falling back to default value for beta', IGBP_veg_long)
-    end
+%     if strcmp(igbpVegLong(1:18), 'Permanent Wetlands')
+%         beta = 0.993; 
+%     elseif strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
+%         beta = 0.993; 
+%     elseif strcmp(igbpVegLong(1:19)', 'Deciduous Broadleaf') 
+%         beta = 0.993; 
+%     elseif strcmp(igbpVegLong(1:13)', 'Mixed Forests') 
+%         beta = 0.993; 
+%     elseif strcmp(igbpVegLong(1:20)', 'Evergreen Needleleaf') 
+%         beta = 0.993; 
+%     elseif strcmp(igbpVegLong(1:9)', 'Croplands') 
+%         beta = 0.943; 
+%     elseif strcmp(igbpVegLong(1:15)', 'Open Shrublands')
+%         beta = 0.966; 
+%     elseif strcmp(igbpVegLong(1:17)', 'Closed Shrublands') 
+%         beta = 0.966; 
+%     elseif strcmp(igbpVegLong(1:8)', 'Savannas') 
+%         beta = 0.943; 
+%     elseif strcmp(igbpVegLong(1:14)', 'Woody Savannas') 
+%         beta = 0.943; 
+%     elseif strcmp(igbpVegLong(1:9)', 'Grassland') 
+%         beta = 0.943; 
+%     else 
+%         beta = 0.943; 
+%         warning('IGBP vegetation name unknown, "%s" is not recognized. Falling back to default value for beta', IGBP_veg_long)
+%     end
 
     %% ======= calculate the depth of each soil layer to land surface =====
     % change the unit from cm to m

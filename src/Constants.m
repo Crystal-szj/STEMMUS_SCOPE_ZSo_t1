@@ -424,8 +424,8 @@ c_i=2.0455;                        % Specific heat capacity of ice (Jï¿½ï¿�
 Gsc=1360;                         % The solar constant (1360 Wï¿½ï¿½m^-2)
 Sigma_E=4.90*10^(-9);       % The stefan-Boltzman constant.(=4.90*10^(-9) MJï¿½ï¿½m^-2ï¿½ï¿½Cels^-4ï¿½ï¿½d^-1)
 P_g0=95197.850;%951978.50;               % The mean atmospheric pressure (Should be given in new simulation period subroutine.)
-rroot=1.5*1e-3; 
-RTB=300;                    %initial root total biomass (g m-2) root total biomass
+% rroot=1.5*1e-3; 
+% RTB=300;                    %initial root total biomass (g m-2) root total biomass
 Precipp=0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Input for producing initial soil moisture and soil temperature profile
