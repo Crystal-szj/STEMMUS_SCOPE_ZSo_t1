@@ -35,9 +35,9 @@ if isempty(CFG)
     CFG = '../config_file_crib.txt';
 end
 disp (['Reading config from ',CFG])
-[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages,paraFile] = io.read_config(CFG);
+[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages,ParameterSettingPath] = io.read_config(CFG);
 % para_sens = readtable('../../O2_para_lists/para_value_SS001.xlsx');
-para_sens = readtable(paraFile);
+para_sens = readtable(ParameterSettingPath);
 % para_sens.Properties.VariableNames = {'RTB','rootDensity','rootRadius','beta','rootLateralLength','s2l','Krootmax','Kstemmax','P50', 'ck', ...
 %     'SaturatedK','SaturatedMC','ResidualMC', 'Coefficient_n', 'Coefficient_Alpha', 'fieldMC', 'g1Med','g0Med'};
 

@@ -1,4 +1,4 @@
-function [DataPaths, forcingFileName, durationSize, startDate, endDate, gsOption, phsOption, RunningMessages, paraFile] = read_config(config_file)
+function [DataPaths, forcingFileName, durationSize, startDate, endDate, gsOption, phsOption, RunningMessages, ParameterSettingPath] = read_config(config_file)
 
     file_id = fopen(config_file);
     config = textscan(file_id,'%s %s', 'HeaderLines',0, 'Delimiter', '=');
@@ -59,5 +59,5 @@ function [DataPaths, forcingFileName, durationSize, startDate, endDate, gsOption
     end
     
     indx = find(strcmp(config_vars,'ParameterSettingPath'));
-    paraFile = config_paths{indx};
+    ParameterSettingPath = config_paths{indx};
 end
