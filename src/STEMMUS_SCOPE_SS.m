@@ -25,6 +25,17 @@
 % clear all; clc;
 
 %%
+% We replaced the filereads (old) script with a function named prepareForcingData, see issue #86,
+% but there still global variables here, because we not sure which
+% progresses related to these global variables.
+
+% Read the configPath file. Due to using MATLAB compiler, we cannot use run(CFG)
+global CFG
+if isempty(CFG)
+    CFG = '../config_file_crib.txt';
+end
+disp (['Reading config from ',CFG])
+[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages,paraFile] = io.read_config(CFG);
 % para_sens = readtable('../../O2_para_lists/para_value_SS001.xlsx');
 para_sens = readtable(paraFile);
 % para_sens.Properties.VariableNames = {'RTB','rootDensity','rootRadius','beta','rootLateralLength','s2l','Krootmax','Kstemmax','P50', 'ck', ...
@@ -66,18 +77,7 @@ pa2m                     = 1/9810;    % Pressure = rho g h = 1000kg m-3 * 9.81 m
 porosity        = SaturatedMC;
 
 
-%%
-% We replaced the filereads (old) script with a function named prepareForcingData, see issue #86,
-% but there still global variables here, because we not sure which
-% progresses related to these global variables.
 
-% Read the configPath file. Due to using MATLAB compiler, we cannot use run(CFG)
-global CFG
-if isempty(CFG)
-    CFG = '../config_file_crib.txt';
-end
-disp (['Reading config from ',CFG])
-[DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages] = io.read_config(CFG);
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
