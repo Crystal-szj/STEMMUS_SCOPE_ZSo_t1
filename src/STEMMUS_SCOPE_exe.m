@@ -8,4 +8,4 @@ warning('off','all')
 CFG = config_file;
 
 % run STEMMUS_SCOPE main code
-run STEMMUS_SCOPE
+run STEMMUS_SCOPE_SS
