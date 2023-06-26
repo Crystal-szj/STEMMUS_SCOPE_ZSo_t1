@@ -11,7 +11,8 @@ from PyStemmusScope import StemmusScope
 from PyStemmusScope import save
 
 
-def run_model(ncfile_index, job_id):
+# def run_model(ncfile_index, job_id):
+def run_model_local(ncfile_index):
     """Workflow executer.
 
     Run StemmusScope model with PyStemmusScope.
@@ -22,12 +23,14 @@ def run_model(ncfile_index, job_id):
     # create an instance of the model
     model = StemmusScope(config_file=path_to_config_file, model_src_path=path_to_exe_file)
 
-    # get the forcing file
-    forcing_filenames_list = [
-        file.name for file in Path(model.config["ForcingPath"]).iterdir()
-    ]
+    nc_file = 'AR-SLu_2010-2010_FLUXNET2015_Met.nc'
+
+    # # get the forcing file
+    # forcing_filenames_list = [
+    #     file.name for file in Path(model.config["ForcingPath"]).iterdir()
+    # ]
     # note that index starts from 1 from bash input, so ncfile_index-1
-    nc_file = forcing_filenames_list[ncfile_index - 1]
+    # nc_file = forcing_filenames_list[ncfile_index - 1]
     station_name = nc_file.split("_")[0]
 
     # feed model with the correct forcing file
@@ -47,13 +50,13 @@ def run_model(ncfile_index, job_id):
         f"model outputs are in {netcdf_file_name}",
     ]
 
-    slurm_file_name = (
-        Path(model.config["OutputPath"])
-        / f"slurm_{job_id}_{ncfile_index}_{station_name}.out"
-    )
+    # slurm_file_name = (
+    #     Path(model.config["OutputPath"])
+    #     / f"slurm_{job_id}_{ncfile_index}_{station_name}.out"
+    # )
 
     # create slurm log
-    slurm_log(slurm_file_name, slurm_log_msg)
+    # slurm_log(slurm_file_name, slurm_log_msg)
 
 
 def slurm_log(slurm_file_name, slurm_log_msg):
@@ -65,25 +68,26 @@ def slurm_log(slurm_file_name, slurm_log_msg):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    # parser = argparse.ArgumentParser()
+    #
+    # parser.add_argument(
+    #     "-n",
+    #     "--ncfile_index",
+    #     required=True,
+    #     type=int,
+    #     default=0,
+    #     help="index of netCDF file",
+    # )
+    # parser.add_argument(
+    #     "-j",
+    #     "--job_id",
+    #     required=True,
+    #     type=int,
+    #     default=0,
+    #     help="slurm job id from snellius",
+    # )
+    # # get arguments
+    # args = parser.parse_args()
 
-    parser.add_argument(
-        "-n",
-        "--ncfile_index",
-        required=True,
-        type=int,
-        default=0,
-        help="index of netCDF file",
-    )
-    parser.add_argument(
-        "-j",
-        "--job_id",
-        required=True,
-        type=int,
-        default=0,
-        help="slurm job id from snellius",
-    )
-    # get arguments
-    args = parser.parse_args()
-
-    run_model(args.ncfile_index, args.job_id)
+    # run_model_local(args.ncfile_index)
+    run_model_local(0)
