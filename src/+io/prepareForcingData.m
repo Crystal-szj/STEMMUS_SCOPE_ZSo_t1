@@ -59,7 +59,7 @@ T6=datenum(T);
 T7=datenum(T5);
 T8=T6-T7;       % DOY 
 time=T8;        % DOY
-T10=year(T);    % year
+T10=year(datetime(T));    % year
 
 startLoc = [1 1 1];
 readNcCount = [1 1 forcingTimeLength];
