@@ -26,15 +26,15 @@ fnames.aerodyn_file       = fullfile(Output_dir,'aerodyn.bin');
 fnames.radiation_file          = fullfile(Output_dir,'radiation.bin');
 fnames.fluorescence_file       = fullfile(Output_dir,'fluorescence.bin');
 fnames.wl_file       = fullfile(Output_dir,'wl.bin');              % wavelength
-fnames.irradiance_spectra_file        = fullfile(Output_dir,'irradiance_spectra.bin');     % Fluorescence
-fnames.spectrum_hemis_optical_file            = fullfile(Output_dir,'spectrum_hemis.bin');
-fnames.spectrum_obsdir_optical_file           = fullfile(Output_dir,'spectrum_obsdir.bin');
-fnames.reflectance_file           = fullfile(Output_dir,'reflectance.bin');   % reflectance spectrum
-fnames.BOC_irradiance_file           = fullfile(Output_dir,'BOC_irradiance.bin');   % reflectance spectrum
+% fnames.irradiance_spectra_file        = fullfile(Output_dir,'irradiance_spectra.bin');     % Fluorescence
+% fnames.spectrum_hemis_optical_file            = fullfile(Output_dir,'spectrum_hemis.bin');
+% fnames.spectrum_obsdir_optical_file           = fullfile(Output_dir,'spectrum_obsdir.bin');
+% fnames.reflectance_file           = fullfile(Output_dir,'reflectance.bin');   % reflectance spectrum
+% fnames.BOC_irradiance_file           = fullfile(Output_dir,'BOC_irradiance.bin');   % reflectance spectrum
 fnames.Sim_Theta_file           = fullfile(Output_dir,'Sim_Theta.bin');   % soil moisture
 fnames.Sim_Temp_file           = fullfile(Output_dir,'Sim_Temp.bin');   % soil temperature
 if options.calc_ebal
-    fnames.spectrum_obsdir_BlackBody_file           = fullfile(Output_dir,'spectrum_obsdir_BlackBody.bin');  % spectrum observation direction
+%     fnames.spectrum_obsdir_BlackBody_file           = fullfile(Output_dir,'spectrum_obsdir_BlackBody.bin');  % spectrum observation direction
 end
 
 %if ~(options.simulation==1)
@@ -99,8 +99,8 @@ if options.calc_directional
 end
 
 if options.calc_planck && options.calc_ebal
-    fnames.spectrum_obsdir_thermal_file    = fullfile(Output_dir,'spectrum_obsdir_thermal.bin');  % spectrum observation direction
-    fnames.spectrum_hemis_thermal_file     = fullfile(Output_dir,'spectrum_hemis_thermal.bin');   % spectrum hemispherically integrated
+%     fnames.spectrum_obsdir_thermal_file    = fullfile(Output_dir,'spectrum_obsdir_thermal.bin');  % spectrum observation direction
+%     fnames.spectrum_hemis_thermal_file     = fullfile(Output_dir,'spectrum_hemis_thermal.bin');   % spectrum hemispherically integrated
 end
 %% Open files for writing
 f = structfun(@(x) fopen(x, 'w'), fnames, 'UniformOutput',false);

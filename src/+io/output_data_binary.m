@@ -43,17 +43,17 @@ fwrite(f.Sim_Temp_file,Sim_Temp_out,'double');
 %% spectrum (added on 19 September 2008)
 spectrum_hemis_optical_out =  rad.Eout_;
 n_col.spectrum_hemis_optical = length(spectrum_hemis_optical_out);
-fwrite(f.spectrum_hemis_optical_file,spectrum_hemis_optical_out,'double');
+% fwrite(f.spectrum_hemis_optical_file,spectrum_hemis_optical_out,'double');
 
 spectrum_obsdir_optical_out =  [rad.Lo_'];
 n_col.spectrum_obsdir_optical = length(spectrum_obsdir_optical_out);
-fwrite(f.spectrum_obsdir_optical_file,spectrum_obsdir_optical_out,'double');
+% fwrite(f.spectrum_obsdir_optical_file,spectrum_obsdir_optical_out,'double');
 
 if options.calc_ebal
 
     spectrum_obsdir_BlackBody_out =  [rad.LotBB_'];
     n_col.spectrum_obsdir_BlackBody = length(spectrum_obsdir_BlackBody_out);
-    fwrite(f.spectrum_obsdir_BlackBody_file,spectrum_obsdir_BlackBody_out,'double');
+%     fwrite(f.spectrum_obsdir_BlackBody_file,spectrum_obsdir_BlackBody_out,'double');
     
     if options.calc_planck
         
@@ -70,13 +70,13 @@ end
 
       irradiance_spectra_out =  [meteo.Rin*(rad.fEsuno+rad.fEskyo)'];
       n_col.irradiance_spectra = length(irradiance_spectra_out);
-      fwrite(f.irradiance_spectra_file,irradiance_spectra_out,'double');
+%       fwrite(f.irradiance_spectra_file,irradiance_spectra_out,'double');
       
       reflectance = pi*rad.Lo_./(rad.Esun_+rad.Esky_);
       reflectance(spectral.wlS>3000) = NaN;
       reflectance_out =  [reflectance'];
       n_col.reflectance = length(reflectance_out);
-      fwrite(f.reflectance_file,reflectance_out,'double');
+%       fwrite(f.reflectance_file,reflectance_out,'double');
 %% input and parameter values (added June 2012)
 
 for i = 1:length(V)
@@ -186,7 +186,7 @@ if options.calc_fluor% && options.calc_ebal
 end
         BOC_irradiance_out  =  [rad.Emin_(canopy.nlayers+1,:),rad.Emin_(canopy.nlayers+1,:)+(rad.Esun_*gap.Ps(canopy.nlayers+1)')'];
         n_col.BOC_irradiance = length(BOC_irradiance_out);
-        fwrite(f.BOC_irradiance_file,BOC_irradiance_out,'double');       
+%         fwrite(f.BOC_irradiance_file,BOC_irradiance_out,'double');       
 
 %%
 if options.calc_directional && options.calc_ebal

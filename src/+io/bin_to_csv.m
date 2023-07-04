@@ -53,15 +53,15 @@ fnames.Sim_Temp_file, n_col.Sim_Temp, ns, true)
 
 spectrum_hemis_optical_names = {'hemispherically integrated radiation spectrum'};
 spectrum_hemis_optical_units = {'W m-2 um-1'};
-write_output(spectrum_hemis_optical_names, spectrum_hemis_optical_units, fnames.spectrum_hemis_optical_file, n_col.spectrum_hemis_optical, ns, true)
+% write_output(spectrum_hemis_optical_names, spectrum_hemis_optical_units, fnames.spectrum_hemis_optical_file, n_col.spectrum_hemis_optical, ns, true)
 
 spectrum_obsdir_optical_names = {'radiance spectrum in observation direction'};
 spectrum_obsdir_optical_units = {'W m-2 sr-1 um-1'};
-write_output(spectrum_obsdir_optical_names, spectrum_obsdir_optical_units, fnames.spectrum_obsdir_optical_file, n_col.spectrum_obsdir_optical, ns, true)
+% write_output(spectrum_obsdir_optical_names, spectrum_obsdir_optical_units, fnames.spectrum_obsdir_optical_file, n_col.spectrum_obsdir_optical, ns, true)
 
 if options.calc_ebal
-    write_output({'thermal BlackBody emission spectrum in observation direction'}, {'W m-2 sr-1 um-1'}, ...
-        fnames.spectrum_obsdir_BlackBody_file, n_col.spectrum_obsdir_BlackBody, ns, true)
+%     write_output({'thermal BlackBody emission spectrum in observation direction'}, {'W m-2 sr-1 um-1'}, ...
+%         fnames.spectrum_obsdir_BlackBody_file, n_col.spectrum_obsdir_BlackBody, ns, true)
      if options.calc_planck
          write_output({'thermal emission spectrum in hemispherical direction'}, {'W m-2 sr-1 um-1'}, ...
          fnames.spectrum_hemis_thermal_file, n_col.spectrum_hemis_thermal, ns, true)
@@ -69,10 +69,10 @@ if options.calc_ebal
          fnames.spectrum_obsdir_thermal_file, n_col.spectrum_obsdir_thermal, ns, true)
      end
 end
-         write_output({'irradiance'}, {'W m-2 um-1'}, ...
-         fnames.irradiance_spectra_file, n_col.irradiance_spectra, ns, true)
-         write_output({'reflectance'}, {'fraction of radiation in observation direction *pi / irradiance'}, ...
-         fnames.reflectance_file, n_col.reflectance, ns, true)
+%          write_output({'irradiance'}, {'W m-2 um-1'}, ...
+%          fnames.irradiance_spectra_file, n_col.irradiance_spectra, ns, true)
+%          write_output({'reflectance'}, {'fraction of radiation in observation direction *pi / irradiance'}, ...
+%          fnames.reflectance_file, n_col.reflectance, ns, true)
 %% input and parameter values (added June 2012)
 %write_output(fnames.pars_and_input_file, true)
 %write_output(fnames.pars_and_input_short_file, true)
@@ -126,8 +126,8 @@ if options.calc_fluor
     write_output({'TOC fluorescence contribution from from leaves and soil after scattering for wavelenghts of 640 to 850 nm, with 1 nm resolution'}, {'W m-2 um-1 sr-1'}, ...
     fnames.fluorescence_scattered_file, n_col.fluorescence_scattered, ns, true)
 end
-write_output({'Bottom of canopy irradiance in the shaded fraction, and average BOC irradiance'}, {'First 2162 columns: shaded fraction. Last 2162 columns: average BOC irradiance. Unit: Wm-2 um-1'}, ...
-fnames.BOC_irradiance_file, n_col.BOC_irradiance, ns, true)
+% write_output({'Bottom of canopy irradiance in the shaded fraction, and average BOC irradiance'}, {'First 2162 columns: shaded fraction. Last 2162 columns: average BOC irradiance. Unit: Wm-2 um-1'}, ...
+% fnames.BOC_irradiance_file, n_col.BOC_irradiance, ns, true)
 
 fclose('all');
 
