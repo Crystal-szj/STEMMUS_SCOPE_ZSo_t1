@@ -2,7 +2,7 @@ function [Output_dir, f, fnames] = create_output_files_binary(parameter_file, si
 %% Create Output dir
 string          = clock;
 simulation_name = char(sitename);
-outdir_name     = sprintf('%s_%4.0f-%02.0f-%02.0f-%02.0f%02.0f_%s_%s', simulation_name, string(1:5),Scenario,RunningMessages);
+outdir_name     = sprintf('%s_%s_%4.0f-%02.0f-%02.0f-%02.0f%02.0f_%s', RunningMessages, simulation_name, string(1:5),Scenario);
 Output_dir = [fullfile(output_path, outdir_name) filesep];
 
 warning('off','MATLAB:DELETE:FileNotFound')

@@ -37,6 +37,7 @@ end
 disp (['Reading config from ',CFG])
 [DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages,ParameterSettingPath] = io.read_config(CFG);
 % para_sens = readtable('../../O2_para_lists/para_value_SS001.xlsx');
+RunningMessages = ParameterSettingPath(end-9:end-5);
 para_sens = readtable(ParameterSettingPath);
 % para_sens.Properties.VariableNames = {'RTB','rootDensity','rootRadius','beta','rootLateralLength','s2l','Krootmax','Kstemmax','P50', 'ck', ...
 %     'SaturatedK','SaturatedMC','ResidualMC', 'Coefficient_n', 'Coefficient_Alpha', 'fieldMC', 'g1Med','g0Med'};
@@ -561,23 +562,23 @@ fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 I
 fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
 fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
 
-fprintf('RTB    : %5.3f\n',RTB);
-fprintf('rootDensity    : %5.3f\n',ParaPlant.rootDensity);
-fprintf('rootRadius     : %5.3f\n',ParaPlant.rootRadius);
-fprintf('beta           : %5.3f\n',ParaPlant.beta);
-fprintf('rootLateralLength: %5.3f\n',ParaPlant.rootLateralLength);
-fprintf('s2l    : %5.3f\n',ParaPlant.s2l);
-fprintf('g1Med  : %5.3f\n',g1Med);
-fprintf('g0Med  : %5.4f\n',g0Med);
-fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
-fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
-fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
-fprintf('shapeFactorLeaf: %5.2f\n',ParaPlant.shapeFactorLeaf);
-fprintf('shapeFactorStem: %5.2f\n',ParaPlant.shapeFactorStem);
-fprintf('shapeFactorRoot: %5.2f\n',ParaPlant.shapeFactorRoot);
-fprintf('Krootmax: %5.1e\n',ParaPlant.Krootmax);
-fprintf('Kstemmax: %5.1e\n',ParaPlant.Kstemmax);
-fprintf('Kleafmax: %5.1e\n',ParaPlant.Kleafmax);
+fprintf('RTB               : %7.5f\n',RTB);
+fprintf('rootDensity       : %7.5f\n',ParaPlant.rootDensity);
+fprintf('rootRadius        : %7.5f\n',ParaPlant.rootRadius);
+fprintf('beta              : %7.5f\n',ParaPlant.beta);
+fprintf('rootLateralLength : %7.5f\n',ParaPlant.rootLateralLength);
+fprintf('s2l               : %7.5f\n',ParaPlant.s2l);
+fprintf('g1Med             : %7.5f\n',g1Med);
+fprintf('g0Med             : %7.5f\n',g0Med);
+fprintf('p50Leaf           : %7.5f\n',ParaPlant.p50Leaf);
+fprintf('p50Stem           : %7.5f\n',ParaPlant.p50Stem);
+fprintf('p50Root           : %7.5f\n',ParaPlant.p50Root);
+fprintf('shapeFactorLeaf   : %5.2f\n',ParaPlant.shapeFactorLeaf);
+fprintf('shapeFactorStem   : %5.2f\n',ParaPlant.shapeFactorStem);
+fprintf('shapeFactorRoot   : %5.2f\n',ParaPlant.shapeFactorRoot);
+fprintf('Krootmax          : %5.1e\n',ParaPlant.Krootmax);
+fprintf('Kstemmax          : %5.1e\n',ParaPlant.Kstemmax);
+fprintf('Kleafmax          : %5.1e\n',ParaPlant.Kleafmax);
 
 fprintf('\n The calculations start now \r')
 calculate = 1;
