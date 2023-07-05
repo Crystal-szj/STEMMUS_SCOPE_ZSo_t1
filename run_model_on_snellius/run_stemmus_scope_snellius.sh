@@ -29,20 +29,21 @@ set -euo pipefail
 ncores=32 
 
 # number of forcing files
-nfiles=170
+nfiles=380
 
 # some indices for loop
 k=0
 i=0
 
-for k in `seq 0 5`; do
-  for j in `seq 1 $ncores` ; do
-  (
-    i=$(( ncores * k + j ))
-    if [[ $i -le $nfiles ]]; then
-      python run_model.py -n $i -j ${SLURM_JOB_ID}
-    fi
-  )&
-  done
-  wait
-done
+python run_model_on_snellius_sensitivity_analysis -n 5 -j {SLURM_JOB_ID}
+#for k in `seq 0 0`; do
+#  for j in `seq 1 $ncores` ; do
+#  (
+#    i=$(( ncores * k + j ))
+#    if [[ $i -le $nfiles ]]; then
+#      python run_model.py -n $i -j ${SLURM_JOB_ID}
+#    fi
+#  )&
+#  done
+#  wait
+#done
