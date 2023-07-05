@@ -35,7 +35,7 @@ nfiles=380
 k=0
 i=0
 
-python run_model_on_snellius_sensitivity_analysis.py -n 5 -j {SLURM_JOB_ID}
+python run_model_on_snellius_sensitivity_analysis.py -n 5 -j ${SLURM_JOB_ID}
 #for k in `seq 0 0`; do
 #  for j in `seq 1 $ncores` ; do
 #  (
