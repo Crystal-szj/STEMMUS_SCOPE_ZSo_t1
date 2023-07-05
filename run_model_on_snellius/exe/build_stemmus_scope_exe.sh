@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a batch script for Snellius at Surf
-# usage: cd STEMMUS_SCOPE; sbatch run_model_on_snellius/exe/build_stemmus_scope_exe.sh
+# usage: cd STEMMUS_SCOPE_SS; sbatch run_model_on_snellius/exe/build_stemmus_scope_exe.sh
 
 # SLURM settings
 #SBATCH -J stemmus_scope
@@ -16,11 +16,11 @@
 set -euo pipefail
 
 ############ Use module MATLAB/2021a-upd3 to either run the source code or build the executable file ############
-############ This needs a matlab license, make sure yuor account is added to the license pool ############
+############ This needs a matlab license, make sure your account is added to the license pool ############
 # Load matlab module
 # On Snellius Try: "module spider MATLAB" to see how to load the module(s).
 module load 2021
 module load MATLAB/2021a-upd3
 
 # Create executable file
-mcc -m ./src/STEMMUS_SCOPE_exe.m -a ./src -d ./run_model_on_snellius/exe -o STEMMUS_SCOPE -R nodisplay -R singleCompThread
+mcc -m ./src/STEMMUS_SCOPE_exe.m -a ./src -d ./run_model_on_snellius/exe -o STEMMUS_SCOPE_SS -R nodisplay -R singleCompThread
