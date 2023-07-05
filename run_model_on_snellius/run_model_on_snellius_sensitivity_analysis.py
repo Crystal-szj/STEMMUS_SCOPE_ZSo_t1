@@ -35,8 +35,6 @@ def run_model_sensitivity_analysis(parameter_file_index, job_id):
 
     # update parameter file information
     parameter_filename = parameter_filenames_list[parameter_file_index -1]
-    print(parameter_filename)
-    print(parameter_filenames_list)
     parameter_setting_path = model.config["ParameterSettingPath"] + parameter_filename
     model.config["ParameterSettingPath"] = parameter_setting_path
 
