@@ -8,7 +8,7 @@ import argparse
 
 def run_model_sensitivity_analysis(parameter_file_index):
     # user must provide the correct path
-    path_to_config_file ='/media/geo/Crystal/P1/sensitivity_analysis_CLM5_scheme/STEMMUS_SCOPE_SS/run_model_on_snellius/config_file_snellius_sensitivity_analysis.txt'
+    path_to_config_file ='/media/geo/Crystal/P1/sensitivity_analysis_CLM5_scheme/STEMMUS_SCOPE_SS/run_model_on_snellius/config_file_local_sensitivity_analysis.txt'
     path_to_exe_file  = '/media/geo/Crystal/P1/sensitivity_analysis_CLM5_scheme/STEMMUS_SCOPE_SS/run_model_on_snellius/exe/STEMMUS_SCOPE_SS'
 
     # Set LD_LIBRARY_PATH in pycharm
@@ -30,7 +30,7 @@ def run_model_sensitivity_analysis(parameter_file_index):
 
     # get the parameter file
     parameter_filenames_list = [
-        file.name for file in Path(model.config["ParameterSettingPath"]).iterdir()
+        file.name for file in sorted(Path(model.config["ParameterSettingPath"]).iterdir())
     ]
 
     # update parameter file information
