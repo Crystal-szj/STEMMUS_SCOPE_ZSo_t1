@@ -36,7 +36,7 @@ k=0
 i=0
 
 for k in `seq 0 0`; do
-  for j in `seq 1 1` ; do
+  for j in `seq 1 2` ; do
   (
     i=$(( ncores * k + j ))
     if [[ $i -le $nfiles ]]; then
