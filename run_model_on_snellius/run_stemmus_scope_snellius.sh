@@ -43,7 +43,7 @@ for k in `seq 0 0`; do
       python run_model_on_snellius_sensitivity_analysis.py -n $i -j ${SLURM_JOB_ID}
     fi
   )&
-  # sleep 90
+  sleep 90
   done
   wait
 done
