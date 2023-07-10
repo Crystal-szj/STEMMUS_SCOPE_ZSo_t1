@@ -41,9 +41,9 @@ for k in `seq 0 0`; do
     i=$(( ncores * k + j ))
     if [[ $i -le $nfiles ]]; then
       python run_model_on_snellius_sensitivity_analysis.py -n $i -j ${SLURM_JOB_ID}
-      sleep 60
     fi
   )&
+  sleep 90
   done
   wait
 done
