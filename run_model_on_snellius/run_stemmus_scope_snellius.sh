@@ -4,7 +4,7 @@
 
 # SLURM settings
 #SBATCH -J stemmus_scope
-#SBATCH -t 00:10:00
+#SBATCH -t 20:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=32
 #SBATCH -p thin
@@ -35,12 +35,8 @@ nfiles=380
 k=0
 i=0
 
-#python run_model_on_snellius_sensitivity_analysis.py -n 1 -j ${SLURM_JOB_ID} &
-#python run_model_on_snellius_sensitivity_analysis.py -n 2 -j ${SLURM_JOB_ID} &
-#wait
-
 for k in `seq 0 0`; do
-  for j in `seq 1 2` ; do
+  for j in `seq 1 $ncores` ; do
   (
     i=$(( ncores * k + j ))
     if [[ $i -le $nfiles ]]; then
