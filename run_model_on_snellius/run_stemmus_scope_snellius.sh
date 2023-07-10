@@ -36,11 +36,12 @@ k=0
 i=0
 
 for k in `seq 0 0`; do
-  for j in `seq 1 $ncores` ; do
+  for j in `seq 1 2` ; do
   (
     i=$(( ncores * k + j ))
     if [[ $i -le $nfiles ]]; then
       python run_model_on_snellius_sensitivity_analysis.py -n $i -j ${SLURM_JOB_ID}
+      sleep 60
     fi
   )&
   done
