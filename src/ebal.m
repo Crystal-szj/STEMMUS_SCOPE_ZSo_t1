@@ -369,7 +369,7 @@ while CONT                          % while energy balance does not close
 %             lEcutot    = LAI*equations.meanleaf(canopy,lEcu,'angles_and_layers',Ps);
 
 
-            [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf] = calPlantWaterPotential(Trans,Ks, ...
+            [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf, TempVar] = calPlantWaterPotential(Trans,Ks, ...
                 Ksoil, ParaPlant, RootProperties, soilDepthB2T, LAI, sfactor, psiSoil, canopyHeight, bbx);
             %%
     %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
@@ -425,6 +425,12 @@ while CONT                          % while energy balance does not close
         TestPHS.racTot(KT) = rac;
         TestPHS.LAI(KT) = LAI;
         TestPHS.canopyConductTot(KT) = canopyConduct;
+        
+        TestPHS.froot2leafTot(KT) = TempVar.froot2leaf;
+        TestPHS.saiTot(KT) = TempVar.sai;
+        TestPHS.raiTot(KT) = TempVar.rai;
+        TestPHS.soilConductanceTot(KT) = TempVar.soilConductance;
+        TestPHS.rootConductanceTot(KT) = TempVar.rootConductance;
     % ===================== PHS close ==============================
     else
         for i=1:30

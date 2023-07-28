@@ -1,6 +1,6 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
 
-function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
+function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf, TempVar] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
                                                          RootProperties, soilDepthB2T, lai, sfactor, psiSoil, canopyHeight, bbx)
 % Calculation of plant hydraulic conductance among plant components
 
@@ -156,4 +156,12 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     if~exist('kStem2Leaf', 'var')
         kStem2Leaf = NaN;
     end
+    
+    %% ======================= Temp ==================================
+    TempVar.froot2leaf = froot2leaf;
+    TempVar.sai = sai;
+    TempVar.rai = rai;
+    TempVar.soilConductance = soilConductance;
+    TempVar.rootConductance = rootConductance;
+    
 end
