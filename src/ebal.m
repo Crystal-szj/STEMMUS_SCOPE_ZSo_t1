@@ -173,6 +173,11 @@ eiu = equations.satvap(Tcu);
 %[bbx]=Max_Rootdepth(bbx,TIME,NL,KT);
 [bbx]=Max_Rootdepth(bbx,NL,KT,TT);
 [psiSoil, TestPHS.psiSoilAll(:,KT), Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha, NL);
+
+TestPHS.rsssTot(KT) = rsss;
+TestPHS.rrrTot(KT) = rrr;
+TestPHS.rxxTot(KT) = rxx;
+
 [sfactor, TestPHS] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f, NL, TestPHS);
 PSIss=psiSoil(NL,1);
 
