@@ -174,9 +174,9 @@ eiu = equations.satvap(Tcu);
 [bbx]=Max_Rootdepth(bbx,NL,KT,TT);
 [psiSoil, TestPHS.psiSoilAll(:,KT), Ksoil, rsss,rrr,rxx] = calc_rsoil(Rl,DeltZ,Ks,Theta_s,Theta_r,Theta_LL,bbx,m,n,Alpha, NL);
 
-TestPHS.rsssTot(KT) = rsss;
-TestPHS.rrrTot(KT) = rrr;
-TestPHS.rxxTot(KT) = rxx;
+TestPHS.rsssTot(:,KT) = rsss;
+TestPHS.rrrTot(:,KT) = rrr;
+TestPHS.rxxTot(:,KT) = rxx;
 
 [sfactor, TestPHS] = calc_sfactor(Rl,Theta_s,Theta_r,Theta_LL,bbx,Ta,Theta_f, NL, TestPHS);
 PSIss=psiSoil(NL,1);
@@ -433,9 +433,14 @@ while CONT                          % while energy balance does not close
         
         TestPHS.froot2leafTot(KT) = TempVar.froot2leaf;
         TestPHS.saiTot(KT) = TempVar.sai;
-        TestPHS.raiTot(KT) = TempVar.rai;
-        TestPHS.soilConductanceTot(KT) = TempVar.soilConductance;
-        TestPHS.rootConductanceTot(KT) = TempVar.rootConductance;
+        TestPHS.raiTot(:,KT) = TempVar.rai;
+        
+        TestPHS.soilConductanceTot(:,KT) = TempVar.soilConductance;
+        TestPHS.rootConductanceTot(:,KT) = TempVar.rootConductance;
+        
+        TestPHS.raiTotMean(KT) = sum(TempVar.rai .* bbx)/sum(bbx);
+        TestPHS.soilConductanceTotMean(KT) = sum(TempVar.soilConductance .* bbx)/sum(bbx);
+        TestPHS.rootConductanceTotMean(KT) = sum(TempVar.rootConductance .* bbx)/sum(bbx);
     % ===================== PHS close ==============================
     else
         for i=1:30
