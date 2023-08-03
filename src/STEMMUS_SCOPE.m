@@ -967,4 +967,4 @@ save([Output_dir,'output.mat'])
 % run comparison_ECT_Sim_SM
 % plotStressFactor(xyt.t, sfactortot, TestPHS.phwsfTot)
 plot.HTC_results_visualization
-save([Output_dir, 'output.mat'], 'psiLeaf_obs');
+save([Output_dir, 'output.mat'], 'psiLeaf_obs', '-append');
