@@ -190,7 +190,11 @@ PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 airPress_m = meteo.p .*1e2 ./9810;
 airPress_hPa = meteo.p;
-phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.shapeFactorLeaf, ParaPlant.phwsfMethod);
+if options.plantHydraulics ==1
+    phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.shapeFactorLeaf, ParaPlant.phwsfMethod);
+else
+    phwsf = 1;
+end
 % options.plantHydraulics = 1;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
 
 %% 2. Energy balance iteration loop
@@ -375,7 +379,7 @@ while CONT                          % while energy balance does not close
 
 
             [psiLeaf_temp, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsf, TempVar] = calPlantWaterPotential(Trans,Ks, ...
-                Ksoil, ParaPlant, RootProperties, soilDepthB2T, LAI, sfactor, psiSoil, canopyHeight, bbx);
+                Ksoil, ParaPlant, RootProperties, soilDepthB2T, LAI, sfactor, psiSoil, canopyHeight, bbx, TestPHS, KT);
             %%
     %         AA1=psiSoil./(rsss+rrr+rxx);       % flux
     %         AA2=1./(rsss+rrr+rxx);          % conductance
@@ -431,12 +435,15 @@ while CONT                          % while energy balance does not close
         TestPHS.LAI(KT) = LAI;
         TestPHS.canopyConductTot(KT) = canopyConduct;
         
+        TestPHS.froot2leaf = TempVar.froot2leaf;
         TestPHS.froot2leafTot(KT) = TempVar.froot2leaf;
         TestPHS.saiTot(KT) = TempVar.sai;
         TestPHS.raiTot(:,KT) = TempVar.rai;
         
         TestPHS.soilConductanceTot(:,KT) = TempVar.soilConductance;
         TestPHS.rootConductanceTot(:,KT) = TempVar.rootConductance;
+        TestPHS.phwsfRootTot(:,KT) = TempVar.phwsfRoot;
+        TestPHS.phwsfStemTot(KT) = TempVar.phwsfStem;
         
         TestPHS.raiTotMean(KT) = sum(TempVar.rai .* bbx)/sum(bbx);
         TestPHS.soilConductanceTotMean(KT) = sum(TempVar.soilConductance .* bbx)/sum(bbx);
@@ -677,8 +684,13 @@ thermal.Tch   = Tch;
 
 fluxes.Au     = Au;
 fluxes.Ah     = Ah;
-% RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
+
+if options.plantHydraulics ==1
 RWU = rootWaterUptake;
+else 
+    RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
+end
+
 nn=numel(RWU);
 for i=1:nn
     if isnan(RWU(i))
