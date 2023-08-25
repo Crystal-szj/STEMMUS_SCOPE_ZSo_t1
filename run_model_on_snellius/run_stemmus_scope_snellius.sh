@@ -35,8 +35,8 @@ nfiles=380
 k=0
 i=0
 
-for k in `seq 0 0`; do
-  for j in `seq 1 4` ; do
+for k in `seq 0 11`; do
+  for j in `seq 1 32` ; do
   (
     i=$(( ncores * k + j ))
     if [[ $i -le $nfiles ]]; then
