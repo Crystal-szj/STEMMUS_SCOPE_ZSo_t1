@@ -1,7 +1,7 @@
 % Ksoil = Ksoil; (Output of calc_rsoil)
 
 function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLeaf, TempVar] = calPlantWaterPotential(Trans,Ks, Ksoil, ParaPlant,...
-                                                         RootProperties, soilDepthB2T, lai, sfactor, psiSoil, canopyHeight, bbx)
+                                                         RootProperties, soilDepthB2T, lai, sfactor, psiSoil, canopyHeight, bbx, TestPHS, iTimeStep)
 % Calculation of plant hydraulic conductance among plant components
 
 % Input:
@@ -63,6 +63,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     rootSpac = RootProperties.spac;    
     rootFrac = RootProperties.frac;
     
+    endOfSeason = TestPHS.endOfSeason;
     % inverse soilDepth 
 %     soilDepthflip = flipud(soilDepth);
     
@@ -77,9 +78,16 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
 %     KsR = flipud(Ks);
     %% =================== root area index =====================
     % new fine-root carbon to new foliage carbon ratio
-    froot2leaf=0.3*3*exp(-0.15*lai)/(exp(-0.15*lai)+2*sfactor);
-    if froot2leaf<0.15
-        froot2leaf=0.15;
+    if iTimeStep <= endOfSeason  % during growth season
+        froot2leaf=0.3*3*exp(-0.15*lai)/(exp(-0.15*lai)+2*sfactor);
+        if froot2leaf<0.15
+            froot2leaf=0.15;
+        end
+        if froot2leaf>0.3
+            froot2leaf = 0.3;
+        end
+    else  % when leaves start desiccation, set carbon allocation for roots growth as a constant 
+        froot2leaf = TestPHS.froot2leaf;
     end
     froot2leaf=max(0.001, froot2leaf);
     
@@ -94,7 +102,8 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     soilConductance = min(Ks' , Ksoil) ./100 ./ rootSpac ; % 100 is a transfer factor from [cm/s] to [m/s]
     
     phwsfRoot = PlantHydraulicsStressFactor(psiSoil, p50Root, shapeFactorRoot, phwsfMethod);
-
+    phwsfRoot = max(phwsfRoot, 1e-2);
+    
     rootConductance = phwsfRoot .* rai .* Krootmax./(rootLateralLength + soilDepthB2T./100); % unit [m/s]
 
     soilConductance = max(soilConductance, 1e-16);
@@ -109,12 +118,11 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     else
         % for unsaturated condition
         psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepthB2T./100).*bbx) - qSoil2Root) / sum(kSoil2Root.*bbx);
-
     end
 
     %% =================== stem water potential ========================
     phwsfStem = PlantHydraulicsStressFactor(psiRoot, p50Stem, shapeFactorStem, phwsfMethod);
-
+    phwsfStem = max(phwsfStem, 0.1);
     if ( sai>0 && phwsfStem >0 ) 
         % stem hydraulic conductance
         kRoot2Stem = ParaPlant.Kstemmax ./ canopyHeight .* phwsfStem; 
@@ -161,6 +169,8 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     TempVar.froot2leaf = froot2leaf;
     TempVar.sai = sai;
     TempVar.rai = rai;
+    TempVar.phwsfRoot = phwsfRoot;
+    TempVar.phwsfStem = phwsfStem;
     TempVar.soilConductance = soilConductance;
     TempVar.rootConductance = rootConductance;
     
