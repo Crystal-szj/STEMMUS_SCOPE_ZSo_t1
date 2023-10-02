@@ -22,7 +22,10 @@
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 %% 0. globals
+
 clear all; clc;
+% dbstop in calPlantWaterPotential at 104 if iTimeStep>10080
+tic
 % We replaced the filereads (old) script with a function named prepareForcingData, see issue #86,
 % but there still global variables here, because we not sure which
 % progresses related to these global variables.
@@ -513,15 +516,17 @@ fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 I
 fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
 fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
 
-fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
-fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
-fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
-fprintf('shapeFactorLeaf: %5.2f\n',ParaPlant.shapeFactorLeaf);
-fprintf('shapeFactorStem: %5.2f\n',ParaPlant.shapeFactorStem);
-fprintf('shapeFactorRoot: %5.2f\n',ParaPlant.shapeFactorRoot);
-fprintf('Krootmax: %5.1e\n',ParaPlant.Krootmax);
-fprintf('Kstemmax: %5.1e\n',ParaPlant.Kstemmax);
-fprintf('Kleafmax: %5.1e\n',ParaPlant.Kleafmax);
+if phsOption ==1
+    fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
+    fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
+    fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
+    fprintf('shapeFactorLeaf: %5.2f\n',ParaPlant.shapeFactorLeaf);
+    fprintf('shapeFactorStem: %5.2f\n',ParaPlant.shapeFactorStem);
+    fprintf('shapeFactorRoot: %5.2f\n',ParaPlant.shapeFactorRoot);
+    fprintf('Krootmax: %5.1e\n',ParaPlant.Krootmax);
+    fprintf('Kstemmax: %5.1e\n',ParaPlant.Kstemmax);
+    fprintf('Kleafmax: %5.1e\n',ParaPlant.Kleafmax);
+end
 
 fprintf('\n The calculations start now \r')
 calculate = 1;
@@ -531,6 +536,7 @@ SAVEtS=tS; kk=0;   %DELT=Delt_t;
 
 %PHS
 TestPHS.psiLeafIni = 0 - SiteProperties.canopyHeight;
+TestPHS.endOfSeason = find(V(22).Val == max(V(22).Val)); % identify end of season according to LAI
 
 for i = 1:1:Dur_tot
     KT=KT+1                         % Counting Number of timesteps
@@ -968,3 +974,4 @@ save([Output_dir,'output.mat'])
 % plotStressFactor(xyt.t, sfactortot, TestPHS.phwsfTot)
 plot.HTC_results_visualization
 save([Output_dir, 'output.mat'], 'psiLeaf_obs', '-append');
+toc
