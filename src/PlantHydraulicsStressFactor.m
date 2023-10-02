@@ -6,7 +6,7 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, shapeFactor, phwsfMetho
 %     Input:
 %         psi: water potential
 %         psi50: parameter of plant hydraulic pathway
-%         shapeFactor: a empirical parameter of plant hydraulic pathway:
+%         shapeFactor: a struct contains parameter of plant hydraulic pathway
 %                      ck for CLM5
 %                      a for ED2
 %                      m for PHS
@@ -21,16 +21,28 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, shapeFactor, phwsfMetho
 %         1. D. Kennedy et al_2019_JAMESM_Implementing Plant Hydraulics in the Community Land Model, Version 5, DOI: https://doi.org/10.1029/2018MS001500
 %         2. X. Xu et al_2016_New Phytol_Diversity in plant hydraulic traits explains seasonal and inter-annual variations of vegetation dynamics in seasonally dry tropical forests, DOI: 10.1111/nph.14009
 
-    phwsfMethod = phwsfMethod;
+    
+    % ========== define phwsf method ===============
+    if nargin < 4
+        phwsfMethod = 'CLM5';
+    else
+        phwsfMethod = phwsfMethod;
+    end
     
     % ========= calculate phwsf ===================
     switch phwsfMethod
         case 'CLM5'
-            phwsf = CLM5(psi, psi50, shapeFactor);
+            ckCLM = shapeFactor;  % shape factor in CLM5 scheme
+            phwsf = CLM5(psi, psi50, ckCLM);
+            phwsf(phwsf < 5e-5) = 0;
         case 'ED2'
-            phwsf = ED2(psi, psi50, shapeFactor);
-        case 'PHS'
-            phwsf = PHS(psi, psi50, shapeFactor);  % based on soil water stress factor
+            aED2  = shapeFactor;   % shape factor in ED2 scheme
+            phwsf =  ED2(psi, psi50, aED2);
+        case 'STEMMUS-SCOPE'
+            mPHS  = shapeFactor;   % shape factor in STEMMUS-SCOPE-PHS
+            p0 = -0.33; 
+            phwsf = PHS(psi, psi50, mPHS)       
+%         case ''
         otherwise
             phwsf = NaN;
             fprintf('phwsf method need to be defined\n.')
