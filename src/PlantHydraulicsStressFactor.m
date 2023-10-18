@@ -70,11 +70,8 @@ function phwsf = ED2(psi, psi50, a)
     This function calculated plant water stress factor based on the scheme
     of ED2. (Xu, Xiangtao_2016_new phytologist)
 %}
-    m2MPa = 1*9810/1e6;
-    psiMPa = psi .* m2MPa;
-    psi50  = psi50 .* m2MPa;
-    
-    phwsf = (1+(psiMPa./psi50).^a).^-1;
+
+    phwsf = (1+(psi./psi50).^a).^-1;
 end
 
 
