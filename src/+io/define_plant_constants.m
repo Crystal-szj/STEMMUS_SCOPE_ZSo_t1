@@ -41,17 +41,17 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsfMethod)
                     ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
 
             elseif strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
-                    ParaPlant.p50Leaf        = -67.67;       % parameter of plant hydraulic pathway [m]
-                    ParaPlant.p50Stem        = -300;       % parameter of plant hydraulic pathway [m]
-                    ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Leaf        = -260;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -175;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -175;       % parameter of plant hydraulic pathway [m]
 
-                    ParaPlant.shapeFactorLeaf         = 0.87;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
-                    ParaPlant.shapeFactorStem         = 0.87;      % parameter of plant hydraulic pathway [unitless]
-                    ParaPlant.shapeFactorRoot         = 0.87;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorLeaf         = 1.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 1.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 1.95;      % parameter of plant hydraulic pathway [unitless]
 
-                    ParaPlant.Krootmax          =1.28e-7;%2e-9;       % root conductivity [m s-1]
-                    ParaPlant.Kstemmax          =3.88e-8;%2e-8;       % stem conductivity [m s-1]
-                    ParaPlant.Kleafmax          =1.77e-10;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.Krootmax          =6e-9;%1.28e-7;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =4e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =4e-8;%2e-7;       % maximum leaf conductance [s-1]
                     ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
 
             elseif strcmp(igbpVegLong(1:19)', 'Deciduous Broadleaf')
@@ -183,7 +183,21 @@ function ParaPlant = define_plant_constants(SiteProperties, phwsfMethod)
                 warning("Don't find IGBP vegetation type! \n")
             end
         case 'ED2'
-                if strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf') 
+                if strcmp(igbpVegLong(1:19)', 'Evergreen Broadleaf')
+                    ParaPlant.p50Leaf        = -67.67;  %-175;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Stem        = -342; %-60; %-175;       % parameter of plant hydraulic pathway [m]
+                    ParaPlant.p50Root        = -30;    %-175;       % parameter of plant hydraulic pathway [m]
+
+                    ParaPlant.shapeFactorLeaf         = 1.98; %2.95;      % parameter  of plant hydraulic pathway, 2.95 is the default vaule inCLM
+                    ParaPlant.shapeFactorStem         = 1.98; %0.8; %2.95;      % parameter of plant hydraulic pathway [unitless]
+                    ParaPlant.shapeFactorRoot         = 0.8; %2.95;      % parameter of plant hydraulic pathway [unitless]
+
+                    ParaPlant.Krootmax          =2e-9;%1.28e-7;%2e-9;       % root conductivity [m s-1]
+                    ParaPlant.Kstemmax          =4e-8;%2e-8;       % stem conductivity [m s-1]
+                    ParaPlant.Kleafmax          =4e-8;%2e-7;       % maximum leaf conductance [s-1]
+                    ParaPlant.rootLateralLength = 0.25;      % average coarse root length [m]
+                else
+                    
                     ParaPlant.p50Leaf        = -67.67;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Stem        = -342.51;       % parameter of plant hydraulic pathway [m]
                     ParaPlant.p50Root        = -300;       % parameter of plant hydraulic pathway [m]
