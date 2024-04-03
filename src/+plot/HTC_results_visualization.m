@@ -15,6 +15,7 @@ close all;
 % ---------- obs directionary -------------
 data_obs_dir = '../../CH_HTC_2022/Processed/CH-HTC_2022_0101_0809_v4.xlsx';
 psiLeaf_obs_dir = '../../CH_HTC_2022/Observed/plant_water_potential.xlsx';
+sif_obs_dir = '../../CH_HTC_2022/Observed/2022_SIF.xlsx';
 
 % ---------- output directionary -------------
 figure_dir = fullfile(Output_dir, 'figures/');
@@ -29,6 +30,7 @@ surfTemp = fullfile(Output_dir, 'surftemp.csv');  % surface soil temperature
 sm_sim_dir = fullfile(Output_dir, 'Sim_Theta.csv'); % all layers of sm
 st_sim_dir = fullfile(Output_dir,'Sim_Temp.csv');   % all layers of st   
 
+sif_sim_dir = fullfile(Output_dir, 'fluorescence.csv');
 
 % ----------- read data ----------------------
 % sim st
@@ -51,6 +53,12 @@ opts_sim_flux.VariableNamesLine = 1;
 opts_sim_flux.VariableUnitsLine = 2;
 flux_sim = readtable(flux_sim_dir, opts_sim_flux);
 
+% sim fluorescence
+opts_sim_sif = detectImportOptions(sif_sim_dir);
+opts_sim_sif.VariableNamesLine = 1;
+opts_sim_sif.VariableUnitsLine = 2;
+sif_sim = readtable(sif_sim_dir, opts_sim_sif);
+
 % obs
 opts_data_obs = detectImportOptions(data_obs_dir);
 opts_sim_sm.VariableNamesLine = 1;
@@ -69,6 +77,22 @@ psiLeaf_obs.Datetime = datetime(dateTimeNum,'ConvertFrom','datenum');
 psiLeaf_obs.DoY = dateTimeNum - datenum(datetime(2022,1,1,0,0,0));
 psiLeaf_obs.PSY50K_m = psiLeaf_obs.PSY1M50K_cor_psiLeaf .* 1000000 ./9810;
 psiLeaf_obs.PSY50H_m = psiLeaf_obs.PSY1M50H_cor_psiLeaf .* 1000000 ./9810;
+
+opts_sif_obs = detectImportOptions(sif_obs_dir);
+opts_sif_obs.VariableNames = {'V1','V2','Date','SIF'};
+opts_sif_obs.VariableUnitsRange = 'A2';
+sif_obs = readtable(sif_obs_dir, opts_sif_obs);
+
+sif_data = table;
+sif_data.dateStr = datestr(data_obs.dateTime);
+sif_data.dateTime = datetime(datenum(sif_data.dateStr),'ConvertFrom','datenum');
+sif_obs.dateStr = datestr(sif_obs.Date, 'dd-mmm-yyyy HH:MM:SS');
+sif_obs.dateTime = datetime(datenum(sif_obs.dateStr),'ConvertFrom','datenum');
+
+sif_data= outerjoin(sif_data, sif_obs,'LeftKeys', 2,'RightKeys',6, 'MergeKeys',true); % check missing data    
+sif_data = sif_data(1:10608,[2,6]);
+% sif_data.SIF(find(isnan(sif_data.SIF))) =0;
+  
 
 %%
 lsf1 = data_obs.lst;
@@ -165,7 +189,7 @@ f_sm80 = plot.f_plot_YObsSim_Ybar(doy, data_obs.Ms_80cm_Avg./100, ...
                         xlimRange, [0.1,0.5], [0,20], ...
                         figure_dir,'SM 80cm' );                    
 %% plot 30 min ST
-fp_st2 = plot.f_plotObsSim(doy, lsf1, doy, st_sim.x2, plotStyleLine.ST_sim, {'Retrived LST','ST\_2cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
+fp_st2 = plot.f_plotObsSim(doy, lsf1, doy, st_sim.x2, plotStyleLine.ST_sim, {'Retrived LST','ST\_2cm', 'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'LST_ST2cm');
 %%
 fp_st2  = plot.f_plotObsSim(doy, data_obs.Ts_2cm_Avg,  doy, st_sim.x2,  plotStyleLine.ST_sim, {'Obs\_2cm', 'Sim\_2cm',  'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 2cm');
 fp_st5  = plot.f_plotObsSim(doy, data_obs.Ts_5cm_Avg,  doy, st_sim.x5,  plotStyleLine.ST_sim, {'Obs\_5cm', 'Sim\_5cm',  'box','off'}, 'Temperture (^\circC)', xlimRange, [0,55], figure_dir,'ST 5cm');
@@ -180,13 +204,13 @@ fp_st80 = plot.f_plotObsSim(doy, data_obs.Ts_80cm_Avg, doy, st_sim.x80, plotStyl
 fp_Rn = plot.f_scatterObsSim(data_obs.Rn, flux_sim.Rntot,[-500,1500,-500,1500], plotStyleScatter.Rn_sim,'Rn\_obs (W m^{-2})','Rn\_sim (W m^{-2})', figure_dir, 'Scatter_Rn');
 
 %% scatter 30 min LE
-fs_LE = plot.f_scatterObsSim(data_obs.LE, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE');
-fs_LE2 = plot.f_scatterObsSim(data_obs.LE_cor_redi, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_cor_redi');
-fs_LE3 = plot.f_scatterObsSim(data_obs.LE_cor, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_cor');
+fs_LE = plot.f_scatterObsSim(data_obs.LE, flux_sim.lEtot,[-100,800,-100,800], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE');
+fs_LE2 = plot.f_scatterObsSim(data_obs.LE_cor_redi, flux_sim.lEtot,[-100,800,-100,800], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_cor_redi');
+fs_LE3 = plot.f_scatterObsSim(data_obs.LE_cor, flux_sim.lEtot,[-100,800,-100,800], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_cor');
 
-fs_LE = plot.f_scatterObsSim(data_obs.LE_fall, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall');
-fs_LE2 = plot.f_scatterObsSim(data_obs.LE_fall_cor_redi, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall_cor_redi');
-fs_LE3 = plot.f_scatterObsSim(data_obs.LE_fall_cor, flux_sim.lEtot,[-1000,1500,-1000,1500], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall_cor');
+fs_LE = plot.f_scatterObsSim(data_obs.LE_fall, flux_sim.lEtot,[-100,800,-100,800], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall');
+fs_LE2 = plot.f_scatterObsSim(data_obs.LE_fall_cor_redi, flux_sim.lEtot,[-100,800,-100,800], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall_cor_redi');
+fs_LE3 = plot.f_scatterObsSim(data_obs.LE_fall_cor, flux_sim.lEtot,[-100,800,-100,800], plotStyleScatter.LE_sim, 'LE\_obs (W m^{-2})','LE\_sim (W m^{-2})', figure_dir, 'Scatter_LE_fall_cor');
 %% scatter 30 min H
 fs_H  = plot.f_scatterObsSim(data_obs.H,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H');
 fs_H3  = plot.f_scatterObsSim(data_obs.H_cor,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H_cor');
@@ -194,7 +218,7 @@ fs_H3  = plot.f_scatterObsSim(data_obs.H_cor,  flux_sim.Htot, [-500,1500,-500,15
 fs_H  = plot.f_scatterObsSim(data_obs.H_fall,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H_fall');
 fs_H3  = plot.f_scatterObsSim(data_obs.H_fall_cor,  flux_sim.Htot, [-500,1500,-500,1500], plotStyleScatter.H_sim,'H\_obs (W m^{-2})','H\_sim (W m^{-2})', figure_dir, 'Scatter_H_fall_cor');
 %% scatter 30 min G
-fs_G  = plot.f_scatterObsSim(data_obs.G_cor_avg, flux_sim.Gtot,[-500,1500,-500,1500], plotStyleScatter.G_sim,'G\_obs (W m^{-2})','G\_sim (W m^{-2})', figure_dir, 'Scatter_G');
+fs_G  = plot.f_scatterObsSim(data_obs.G_cor_avg, flux_sim.Gtot,[-100,300,-100,300], plotStyleScatter.G_sim,'G\_obs (W m^{-2})','G\_sim (W m^{-2})', figure_dir, 'Scatter_G');
 
 %% scatter 30 min NEE
 fs_NEE = plot.f_scatterObsSim(data_obs.NEE_U05_fall.*(-1), flux_sim.NEE.*1e9./12,[-10,50, -10,50], plotStyleScatter.NEE_sim,'NEE\_obs (umol m^{-2} s^{-1})','NEE\_sim (umol m^{-2} s^{-1})', figure_dir, 'Scatter_NEEU05');
@@ -232,7 +256,10 @@ fp_GPP = plot.f_plotObsSim(doy, data_obs.GPP_U95_f, doy, flux_sim.GPP_umol, plot
 fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U05_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-20,50], figure_dir, 'plot_NEEU05');
 fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U50_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-20,50], figure_dir, 'plot_NEEU50');
 fp_NEE = plot.f_plotObsSim(doy, data_obs.NEE_U95_fall.*(-1), doy, flux_sim.NEE.*1e9./12, plotStyleLine.NEE_sim, {'Obs NEE','Sim NEE','box','off'}, 'NEE (umol m^{-2} s^{-1})', xlimRange, [-20,50], figure_dir, 'plot_NEEU95');
-
+%% SIF
+index = find(isnan(sif_data.SIF));
+sif_sim{index, 121} = NaN;
+fp_sif = plot.f_plotObsSim(doy, sif_data.SIF, doy, sif_sim{:,121}, plotStyleLine.NEE_sim, {'Obs SIF','Sim SIF','box','off'}, 'SIF (W m^{-2} nm^{-1} sr^{-1})', xlimRange, [0,3], figure_dir, 'plot_SIF');
 
 %% daily ET
 daily = table;
@@ -246,7 +273,68 @@ daily.obsPrec = nansum(reshape(data_obs.Precip .*1800, 48, []),1)'./10;    % uni
 
 plot.f_plot_YObsSim_Ybar(daily.DoY, daily.obsET, daily.DoY, daily.simET, plotStyleLine.LE_sim, daily.DoY, daily.obsPrec,{'Obs ET','Sim ET','Prec','box','off'}, 'ET (mm d^{-1})', 'Prec (cm d^{-1})', xlimRange, [0,15], [0,15], figure_dir, 'plot_ET_Prec');
 
+%% water potential gradient
+ind = find(bbx==1);
+% find root zone soil water potential range
+[maxV, minV] = fun_boundaries(TestPHS.psiSoilTot(ind, :));
+lineStyle = {'LineStyle','-','LineWidth',1};
 
+f1 =  figure('color','white','Units','centimeter','Position',[2,2,22,10])
+% set default color order of axes
+leftColor  = [0,0,0];
+rightColor = [0 0.4470 0.7410];
+set(f1, 'defaultAxesColorOrder',[leftColor; rightColor]);
+
+% axis left
+yyaxis left
+fill([xyt.t',fliplr(xyt.t')], [maxV, fliplr(minV)], [170,93,37]./256, 'FaceAlpha', 0.3, 'EdgeColor', 'none')
+hold on
+plot(xyt.t, TestPHS.psiSoilTotMean, 'color',[170,93,37]./256, lineStyle{:})
+plot(xyt.t, TestPHS.psiRootTot, 'color',[0.9290 0.6940 0.1250], lineStyle{:})
+plot(xyt.t, TestPHS.psiStemTot, 'color',[0.4660 0.6740 0.1880], lineStyle{:})
+plot(xyt.t, TestPHS.psiLeafTot,'-', 'color', [0.3010 0.7450 0.9330], lineStyle{:})
+% plot(xyt.t, TestPHS.psiAirTot , 'color', [0.3010 0.7450 0.9330], lineStyle{:})
+% plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50K_m)
+plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50H_m,'k-^','MarkerIndices',1:10:length(psiLeaf_obs.PSY50K_m), 'MarkerFaceColor',[0,0,0], 'Markersize',2)
+ylim([-1000,0])
+ylabel('Soil and plant water potential (m)')
+
+yyaxis right
+plot(xyt.t, TestPHS.psiAirTot,'color', [0 0.4470 0.7410], lineStyle{:})
+ylim([-3e4,2e4])
+legend('psiSoilTot','psiSoilMean','psiRoot','psiStem','psiLeaf','psiStem-obs','psiAir', 'box','off','NumColumns',3,'Location','best')
+
+xlabel('DoY')
+ylabel('Air water potential (m)')
+
+xlim([200,221])
+set(gca,'FontName','Times New Roman','FontSize',12)
+saveas(f1, fullfile(Output_dir,'figures','WaterPotentialGradients'),'fig');
+saveas(f1, fullfile(Output_dir,'figures','WaterPotentialGradients'),'png');
+%% water redistribution
+color_custom = [autumn; flipud(summer)];
+f2 = figure('color','white','Units','centimeter','Position',[2,2,18,8])
+% alphaData = ~isnan(RWUtot);
+alphaData = ~(flipud(RWUtot)==0);
+% imagesc(xyt.t,flipud(soilDepth), RWUtot,'AlphaData', alphaData)
+% imagesc(xyt.t,soilDepth, flipud(RWUtot))%,'AlphaData', alphaData)
+imagesc(xyt.t,[1:29]', flipud(RWUtot),'AlphaData', alphaData)
+yticks([1.5:2:30])
+ylabels ={'1','2','3','4','5','6','8','10','12'...
+    '14','16','18','20','22.5','25','27.5','30','32.5','35',...
+    '37.5','40','45','50','55','60','70','80','90','100'}
+yticklabels(ylabels(1:2:29))
+
+colormap(color_custom)
+caxis([-1e-9, 1e-9]);
+colorbar
+xlim([200,221])
+xlabel('DoY')
+ylabel('Soil Depth (cm)')
+set(gca,'FontName','Times New Roman','FontSize',12)
+saveas(f2, fullfile(Output_dir,'figures','WaterRedistribution'),'fig');
+saveas(f2, fullfile(Output_dir,'figures','WaterRedistribution'),'png');
+%%
 % plot plant water potential of components
 labelFormat = {'FontWeight','bold'};
 f_lwp = figure('color','white','Units','centimeter','Position',[2,2,20,13]);
@@ -259,13 +347,15 @@ plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50H_m,'k-o','MarkerIndices',1:10:length(psi
 plot(doy, TestPHS.psiLeafTot,'r-');
 plot(doy, TestPHS.psiStemTot,'g-');
 plot(doy, TestPHS.psiRootTot,'m-');
-plot(doy, TestPHS.psiSoilTotMean,'b-')
-plot(doy, TestPHS.psiAirTot, 'c-')
+plot(doy, TestPHS.psiSoilTot(24,:),'b-')
+% plot(doy, TestPHS.psiAirTot, 'c-')
 
 
 ylabel('water potential (m)',labelFormat{:})
 xlim([193,225])
-legend('obs1','obs2','psiLeaf','psiStem','psiRoot','psiSoil','psiLeaf','box','off', 'Location','best')
+legend('obs1','obs2','psiLeaf','psiStem','psiRoot','psiSoil','box','off', 'Location','best')
+% legend('obs1','obs2','psiStem','psiRoot','psiSoil','box','off', 'Location','best')
+
 set(gca,'FontName','Times New Roman','FontSize',12)
 
 subplot(3,1,3)
@@ -275,8 +365,8 @@ ylabel('water potential (m)',labelFormat{:})
 legend('psiSoil','box','off')
 xlim([193,225])
 set(gca,'FontName','Times New Roman','FontSize',12)
-saveas(f_lwp,fullfile(figure_dir,'plant_water_potential'),'png')
-
+% saveas(f_lwp,fullfile(figure_dir,'plant_water_potential'),'png')
+% saveas(f_lwp,fullfile(figure_dir,'plant_water_potential'),'fig')
 %%
 % psiAirTot_MPa = TestPHS.psiAirTot.*9810./1e6;
 % psiLeafTot_MPa = TestPHS.psiLeafTot.*9810./1e6;
@@ -356,7 +446,7 @@ title('aerodynamic resistance in soil')
 xlabel('DoY')
 
 f_rcw = figure('color','white','units', 'centimeter','position',[2,2,20,7]);
-plot(doy, TestPHS.rcwTot);
+plot(doy, 1./TestPHS.rcwTot);
 ylabel('rcw (s/m)')
 title('stomatal conductance in canopy')
 xlabel('DoY')
@@ -454,6 +544,66 @@ set(gca,'FontName','Times New Roman','FontSize',12)
 
 saveas(f_rad,[figure_dir,'radiation',],'png')
 close(f_rad)
+%%
+f_psi_phwsf = figure
+subplot(3,3,1)
+plot(xyt.t, TestPHS.psiRootTot)
+ylabel('psiRoot')
+
+subplot(3,3,2)
+plot(xyt.t, TestPHS.psiStemTot)
+ylabel('psiStem')
+
+subplot(3,3,3)
+plot(xyt.t, TestPHS.psiLeafTot)
+ylabel('psiLeaf')
+
+subplot(3,3,4)
+plot(xyt.t, TestPHS.phwsfRootTot)
+ylabel('phwsfRoot')
+
+subplot(3,3,5)
+plot(xyt.t, TestPHS.phwsfStemTot)
+ylabel('phwsfStem')
+
+subplot(3,3,6)
+plot(xyt.t, TestPHS.phwsfTot)
+ylabel('phwsfLeaf')
+
+subplot(3,3,7)
+scatter(TestPHS.psiRootTot, TestPHS.phwsfStemTot, '.')
+xlim([-800,0])
+ylim([0,1])
+xlabel('psiRoot')
+ylabel('phwsfStem')
+
+subplot(3,3,8)
+scatter(TestPHS.psiStemTot, TestPHS.phwsfTot, '.')
+xlim([-800,0])
+ylim([0,1])
+xlabel('psiStem')
+ylabel('phwsf')
+
+subplot(3,3,9)
+scatter(TestPHS.psiLeafTot, TestPHS.phwsfTot, '.')
+xlim([-800,0])
+ylim([0,1])
+xlabel('psiLeaf')
+ylabel('phwsf')
+saveas(f_psi_phwsf,fullfile(Output_dir, 'figures','psi_phwsf'),'png');
+saveas(f_psi_phwsf,fullfile(Output_dir, 'figures','psi_phwsf'),'fig');
+
+
+%% fun_boundaries
+function [maxV, minV] = fun_boundaries(array)
+% Find the max and min value of the array as the upper and lower
+% boundaries.
+    maxV = max(array, [], 1);
+    minV = min(array, [], 1);
+end
+
+
+
 
 
 

@@ -23,7 +23,8 @@ function f = f_plotObsSim(obsDateTime, obs, simDateTime, sim, simPlotStyle, lege
     f = figure('color','white','Units','centimeter','Position',[2,1,20,8]);
     plot(obsDateTime, obs,'k-');   % observation data
     hold on
-    plot(simDateTime, sim, simPlotStyle{:})    % simulation data
+    p = plot(simDateTime, sim, simPlotStyle{:});    % simulation data
+    p.Color(4) = 0.6;
 
     xlim(xlimRange)
     ylim(ylimRange)
