@@ -26,8 +26,13 @@ DeltZ0=DeltZ';
 l=0.5;          % empirical parameter
 SMC=Theta_LL(1:NL,2);
 Se  = (SMC-Theta_r')./(Theta_s'-Theta_r');
+if any(Se<0)
+    Se(Se<0)=0;
+end
+    
 Ksoil=Ks'.*Se.^l.*(1-(1-Se.^(1./m')).^(m')).^2;
 psiSoilTemp=-((Se.^(-1./m')-1).^(1./n'))./(Alpha*100)';
+psiSoilTemp = max(psiSoilTemp, -5e3);
 psiSoil = psiSoilTemp.*bbx;
 % -------------------------------------------------
 %                        1
@@ -48,3 +53,8 @@ rsss          = 1./Ksoil./Rl./DeltZ0/2/pi.*log((pi*Rl).^(-0.5)/(0.5*1e-3))*100.*
 rxx           = 1*1e10*DeltZ0/0.5/0.22./Rl/100.*bbx; % Delta_z*j is the depth of the layer
 rrr           = 4*1e11*(Theta_s'./SMC)./Rl./(DeltZ0/100).*bbx;
 
+if ~isreal(psiSoil)
+    psiSoil = real(psiSoil);
+    psiSoil(psiSoil>0) = 0;
+    psiSoil = max(psiSoil, -5e3);
+end
