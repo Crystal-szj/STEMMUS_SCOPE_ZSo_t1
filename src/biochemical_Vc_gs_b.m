@@ -298,7 +298,7 @@ else
 end
 
 % check it PHS open
-if plantHydraulics == 1        % PHS open, use phwsf
+if plantHydraulics          % PHS open, use phwsf
     Vcmax = Vcmax .*phwsf;
 else                           % PHS close, use sfactor
     Vcmax = Vcmax .*sfactor;

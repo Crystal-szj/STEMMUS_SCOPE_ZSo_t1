@@ -190,7 +190,7 @@ PSI = 0;
 psiAir = air_water_potential(RH, Ta);
 airPress_m = meteo.p .*1e2 ./9810;
 airPress_hPa = meteo.p;
-if options.plantHydraulics ==1
+if options.plantHydraulics
     phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.shapeFactorLeaf, ParaPlant.phwsfMethod);
 else
     phwsf = 1;
@@ -337,7 +337,7 @@ while CONT                          % while energy balance does not close
     rcw_t = Fc*rcwh + equations.meanleaf(canopy,rcwu,'angles_and_layers',Ps);
     Tc_t = Fc*Tch + equations.meanleaf(canopy,Tcu,'angles_and_layers',Ps);
     Ci_t = Fc*Cih + equations.meanleaf(canopy,Ciu,'angles_and_layers',Ps);
-    if options.plantHydraulics == 1
+    if options.plantHydraulics
     % ====================== PHS open ==============================
         for i=1:30
     %         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
@@ -364,7 +364,7 @@ while CONT                          % while energy balance does not close
             Htot        = Hstot + Hctot;
 
             %%%%%% Leaf water potential calculate
-            lambda1      = (2.501-0.002361*Ta)*1E6;
+            lambda1      = (2.501-0.002361*Ta)*1E6;  
             lEctot     = LAI*(Fc*lEch + equations.meanleaf(canopy,lEcu,'angles_and_layers',Ps)); % latent heat leaves
             if (isreal(lEctot) && lEctot<1000 && lEctot>-300)
             else
@@ -443,7 +443,7 @@ while CONT                          % while energy balance does not close
         TestPHS.soilConductanceTot(:,KT) = TempVar.soilConductance;
         TestPHS.rootConductanceTot(:,KT) = TempVar.rootConductance;
         TestPHS.phwsfRootTot(:,KT) = TempVar.phwsfRoot;
-        TestPHS.phwsfStemTot(KT) = TempVar.phwsfStem;
+        TestPHS.phwsfStem2LeafTot(KT) = TempVar.phwsfStem2Leaf;
         
         TestPHS.raiTotMean(KT) = sum(TempVar.rai .* bbx)/sum(bbx);
         TestPHS.soilConductanceTotMean(KT) = sum(TempVar.soilConductance .* bbx)/sum(bbx);
@@ -685,8 +685,8 @@ thermal.Tch   = Tch;
 fluxes.Au     = Au;
 fluxes.Ah     = Ah;
 
-if options.plantHydraulics ==1
-RWU = rootWaterUptake;
+if options.plantHydraulics
+    RWU = rootWaterUptake;
 else 
     RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
 end
