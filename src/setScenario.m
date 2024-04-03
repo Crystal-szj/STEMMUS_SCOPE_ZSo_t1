@@ -1,4 +1,4 @@
-function [biochemical, gsOption, phwsfMethod] = setScenario(gsOption, phsOption)
+function [biochemical, gsMethod, phwsfMethod] = setScenario(gsOption, phsOption)
 %{
     This function is used to set the stomatal conductance scheme and plant
     hydraulic pathway option.
@@ -9,7 +9,9 @@ function [biochemical, gsOption, phwsfMethod] = setScenario(gsOption, phsOption)
 
     output:
         biochemical: a string, indicate which function will be used
-        gsOption: a string indicate gs option
+        gsMethod: a number indicate the stomatal conductance scheme:
+                  1 for BallBerry
+                  2 for Medlyn
         phsOption: a number indicate if open the plant hydraulic pathway.
                    1 for CLM5,
                    2 for ED2,
@@ -18,23 +20,28 @@ function [biochemical, gsOption, phwsfMethod] = setScenario(gsOption, phsOption)
 %}
 
     %% Set scenario
-    if strcmp(gsOption ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
-        biochemical = @biochemical_Vc_gs_b;
-    elseif strcmp(gsOption,'Vcmax_gs_bw')                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
-        biochemical = @biochemical_Vcmax_gs_bw;
-    elseif strcmp(gsOption, 'Vc_gs_bw')                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
-        biochemical = @biochemical_Vc_gs_bw;
-    elseif strcmp(gsOption, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m = MedlynSlope
-        biochemical = @biochemical_Vc_gs_m;
-    elseif strcmp(gsOption,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
-        biochemical = @biochemical_Vcmax_gs_mw;
-    elseif strcmp(gsOption,'Vc_gs_mw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
-        biochemical = @biochemical_Vc_gs_mw;
-    else
-        gsOption = 'Vc_gs_b';
-        biochemical = @biochemical_Vc_gs_b;
+%     if strcmp(gsOption ,'Vc_gs_b')                            % Vc = Vcmax * WSF ; b = BallBerrySlope
+%         biochemical = @biochemical_Vc_gs_b;
+%     elseif strcmp(gsOption,'Vcmax_gs_bw')                    % Vcmax = Vcmax    ; bw = BallBerrySlope * WSF
+%         biochemical = @biochemical_Vcmax_gs_bw;
+%     elseif strcmp(gsOption, 'Vc_gs_bw')                       % Vc = Vcmax * WSF ; bw = BallBerrySlope * WSF
+%         biochemical = @biochemical_Vc_gs_bw;
+%     elseif strcmp(gsOption, 'Vc_gs_m')                        % Vc = Vcmax * WSF ; m = MedlynSlope
+%         biochemical = @biochemical_Vc_gs_m;
+%     elseif strcmp(gsOption,'Vcmax_gs_mw')                   % Vcmax = Vcmax    ; mw = MedlynSlope * WSF
+%         biochemical = @biochemical_Vcmax_gs_mw;
+%     elseif strcmp(gsOption,'Vc_gs_mw')                       % Vc = Vcmax * WSF ; mw = gs_slope * WSF
+%         biochemical = @biochemical_Vc_gs_mw;
+%     else
+%         gsOption = 'Vc_gs_b';
+%         biochemical = @biochemical_Vc_gs_b;
+%     end
+    biochemical = @biochemical_Vc_gs_b;
+    if strcmp(gsOption, 'BallBerry')
+        gsMethod = 1;
+    elseif strcmp(gsOption, 'Medlyn')
+        gsMethod = 2;
     end
-    
     %% PHS setting
     if phsOption      % if phsOption is true, PHS open. Set plant water stress method.
         switch phsOption
