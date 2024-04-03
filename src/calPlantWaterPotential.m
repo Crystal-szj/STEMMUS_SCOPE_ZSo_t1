@@ -62,6 +62,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     
     rootSpac = RootProperties.spac;    
     rootFrac = RootProperties.frac;
+    lengthDensity = RootProperties.lengthDensity;
     
     endOfSeason = TestPHS.endOfSeason;
     % inverse soilDepth 
@@ -117,7 +118,27 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
         psiRoot = sum((psiSoil - soilDepthB2T./100)) / numSoilLayer;
     else
         % for unsaturated condition
-        psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepthB2T./100).*bbx) - qSoil2Root) / sum(kSoil2Root.*bbx);
+%         psiRoot = (sum(kSoil2Root.*(psiSoil - soilDepthB2T./100).*bbx) - qSoil2Root) / sum(kSoil2Root.*bbx);
+        
+        % %-consider the root fraction on calculation of root water potential
+        % -------------------rootFrac------------------------------
+%         rootFracFactor = (rootFrac.*bbx)./sum(rootFrac.*bbx);
+%         psiRoot_temp = ((kSoil2Root.*(psiSoil - soilDepthB2T./100)) - qSoil2Root.*rootFracFactor) ./ (kSoil2Root);
+%         psiRoot = nansum(psiRoot_temp.*rootFracFactor ,1);
+        % ---------------------------------------------------------
+        
+        % consider the root fraction via root length density
+        % ------------------ rootLengthDensityFrac -----------------
+        rootLengthDensityFrac = (lengthDensity.*bbx)./sum(lengthDensity.*bbx);
+        psiRoot_temp = ((kSoil2Root.*(psiSoil - soilDepthB2T./100)) - qSoil2Root.*rootLengthDensityFrac) ./ (kSoil2Root);
+        psiRoot = nansum(psiRoot_temp.*rootLengthDensityFrac ,1);
+
+        if ~isreal(psiRoot)
+%         psiRoot = sum(psiSoil.*bbx)/sum(bbx);   % root zone averaged soil water potential
+            psiRoot = sum(psiSoil.*rootLengthDensityFrac)
+        end
+        psiRoot = max(psiRoot, -1000); % -10MPa to m = -1019.368 
+        psiRoot = min(0, psiRoot);
     end
 
     %% =================== stem water potential ========================
@@ -132,20 +153,22 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     end
     
     %% ===================== leaf water potential ====================
-    phwsfLeaf = PlantHydraulicsStressFactor(psiStem, p50Leaf, shapeFactorLeaf, phwsfMethod);
-    if (lai>0 && phwsfLeaf>0)
+    phwsfStem2Leaf = PlantHydraulicsStressFactor(psiStem, p50Leaf, shapeFactorLeaf, phwsfMethod);
+    if (lai>0 && phwsfStem2Leaf>0)
         % leaf hydraulic conductance
-        kStem2Leaf = ParaPlant.Kleafmax .* phwsfLeaf;
+        kStem2Leaf = ParaPlant.Kleafmax .* phwsfStem2Leaf;
 
         % leaf water potential
         psiLeaf = psiStem - qStem2Leaf ./ lai ./kStem2Leaf;
     else
         psiLeaf = psiStem;
     end
-    
+     phwsfLeaf = PlantHydraulicsStressFactor(psiLeaf, -150, shapeFactorLeaf, phwsfMethod);
+
     %% ==================== set complex value ======================
     if ~isreal(psiRoot)
-        psiRoot = sum(psiSoil.*bbx)/sum(bbx);   % root zone averaged soil water potential
+%         psiRoot = sum(psiSoil.*bbx)/sum(bbx);   % root zone averaged soil water potential
+        psiRoot = sum(psiSoil.*rootFracFactor)
     end
     if ~isreal(psiStem)
         psiStem = psiRoot;
@@ -170,7 +193,7 @@ function [psiLeaf, psiStem, psiRoot, kSoil2Root, kRoot2Stem, kStem2Leaf, phwsfLe
     TempVar.sai = sai;
     TempVar.rai = rai;
     TempVar.phwsfRoot = phwsfRoot;
-    TempVar.phwsfStem = phwsfStem;
+    TempVar.phwsfStem2Leaf = phwsfStem2Leaf;
     TempVar.soilConductance = soilConductance;
     TempVar.rootConductance = rootConductance;
     
