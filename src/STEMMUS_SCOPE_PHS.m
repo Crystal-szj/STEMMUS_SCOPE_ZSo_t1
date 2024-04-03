@@ -38,6 +38,9 @@ end
 disp (['Reading config from ',CFG])
 [DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages] = io.read_config(CFG);
 
+% set soil temperature boundary condition
+load([DataPaths.input, 'soilTempInitial.mat'], 'soilTempInitial');
+
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
 [SiteProperties, DELT, forcingTimeLength] = io.prepareForcingData(DataPaths, forcingFileName, startDate, endDate);   % DELT: time steps, default is 1800 s.
@@ -61,7 +64,7 @@ else
 end
 
 % set Scenario 
-[biochemical, gsOption, phwsfMethod] = setScenario(gsOption, phsOption);
+[biochemical, gsMethod, phwsfMethod] = setScenario(gsOption, phsOption);
 %%
 run Constants %input soil parameters
 global i tS KT Delt_t TEND TIME MN NN NL ML ND hOLD TOLD h hh T TT P_gOLD P_g P_gg Delt_t0 g
@@ -166,8 +169,8 @@ end
 
 if options.simulation>2 || options.simulation<0, fprintf('\n simulation option should be between 0 and 2 \r'); return, end
 
-options.plantHydraulics = phsOption;  % Indicating whether to use PHS: 1 PHS open; 0 PHS close.
-options.gsMethod = 2; % 1 for BallBerry; 2 for Medlyn
+options.plantHydraulics = phsOption;  % Indicating whether to use PHS: 1 for CLM5 scheme, 2 for ED2 ; 0 PHS close.
+options.gsMethod = gsMethod; % 1 for BallBerry; 2 for Medlyn
 
 %% 3. file names
 if ~useXLSX
@@ -474,6 +477,7 @@ if options.simulation==1
     if options.soil_heat_method<2
         meteo.Ta = Ta_msr(1);
         soil.Tsold = meteo.Ta*ones(12,2);
+%         soil.Tsold = soilTempInitial(1) * ones(12,2);
     end
 end
 
@@ -494,7 +498,7 @@ atmfile     = [path_input 'radiationdata/' char(F(4).FileName(1))];
 atmo.M      = helpers.aggreg(atmfile,spectral.SCOPEspec);
 
 %% 13. create output files
-Scenario = [gsOption,'_',phwsfMethod];
+Scenario = [num2str(options.gsMethod, '%02d'),'_',phwsfMethod];
 [Output_dir, f, fnames] = io.create_output_files_binary(parameter_file, sitename, path_of_code, path_input, path_output, spectral, options, Scenario, RunningMessages);
 run StartInit;   % Initialize Temperature, Matric potential and soil air pressure.
 
@@ -503,7 +507,7 @@ diary([Output_dir,'log.txt'])
 fprintf('This is Scenario -- %s for %s_%d-%d\n',...
     Scenario,SiteProperties.siteName,SiteProperties.startyear,SiteProperties.endyear);
 fprintf('Folder          :  %s\n',Output_dir);
-fprintf('R_depth: 50 --> 30\n');
+fprintf('R_depth: 30\n');
 fprintf('SaturatedK(cm/d):  %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedK.*3600.*24);
 fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedMC);
 fprintf('ResidualMC:        %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',ResidualMC);
@@ -516,7 +520,7 @@ fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 I
 fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
 fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
 
-if phsOption ==1
+if phsOption
     fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
     fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
     fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
@@ -677,7 +681,9 @@ for i = 1:1:Dur_tot
         
         soil.refl    = rs;
         
-        soil.Ts     = meteo.Ta * ones(2,1);       % initial soil surface temperature
+        soil.Ts     =  meteo.Ta * ones(2,1);       % initial soil surface temperature
+%         soil.Ts     = soilTempInitial(KT) * ones(2,1); %meteo.Ta * ones(2,1);       % initial soil surface temperature
+
         
         if length(F(4).FileName)>1 && options.simulation==0
             atmfile     = [path_input 'radiationdata/' char(F(4).FileName(k))];
