@@ -476,8 +476,8 @@ if options.simulation==1
     I_tmax              =   find(min(diff_tmax)==diff_tmax);
     if options.soil_heat_method<2
         meteo.Ta = Ta_msr(1);
-        soil.Tsold = meteo.Ta*ones(12,2);
-%         soil.Tsold = soilTempInitial(1) * ones(12,2);
+%         soil.Tsold = meteo.Ta*ones(12,2);
+        soil.Tsold = soilTempInitial(1) * ones(12,2);
     end
 end
 
@@ -681,8 +681,8 @@ for i = 1:1:Dur_tot
         
         soil.refl    = rs;
         
-        soil.Ts     =  meteo.Ta * ones(2,1);       % initial soil surface temperature
-%         soil.Ts     = soilTempInitial(KT) * ones(2,1); %meteo.Ta * ones(2,1);       % initial soil surface temperature
+%         soil.Ts     =  meteo.Ta * ones(2,1);       % initial soil surface temperature
+        soil.Ts     = soilTempInitial(KT) * ones(2,1); %meteo.Ta * ones(2,1);       % initial soil surface temperature
 
         
         if length(F(4).FileName)>1 && options.simulation==0

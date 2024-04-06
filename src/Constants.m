@@ -593,5 +593,5 @@ end
 if nanmean(Ta_msr)<0
     BtmT  = 0;  %9 8.1
 else
-    BtmT  =  nanmean(Ta_msr);
+    BtmT  =  14.5;%nanmean(Ta_msr);
 end
