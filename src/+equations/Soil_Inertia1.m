@@ -37,7 +37,7 @@ lambda_o = 2.0; % thermal conductivity of other minerals [W m-1 K-1] (lambda_o =
 lambda_s = (lambda_qc^(QC))*lambda_o^(1-QC);% thermal conductivity for thermal conductivity of the soil solids
 lambda_wtr = 0.57;   % thermal conductivity of water, constant [W m-1 K-1]
 
-lambda_w = (lambda_s^(1-phis))*lambda_wtr^(phis); % saturated thermal conductivity (eq. 17)
+lambda_w = (lambda_s^(1-phis))*lambda_wtr^(SMC); % saturated thermal conductivity (eq. 17)
 
 lambdas = ke*(lambda_w - lambda_0) + lambda_0; % thermal conductivity (eq. 14)
 
