@@ -86,8 +86,9 @@ function phwsf = PHS(psi, psi50, m)
     psiMPa = psi .* m2MPa;
     psi50MPa  = psi50 .* m2MPa;
     psi0  = -0.33; % psi0 is p0, we use the soil water potential at the field capacity to represent this value.
-    
+    % -m .* psi0 = psi0 + (psi1.5MPa + psi0)/2
     phwsf = (1+exp(-m .* psi0 * (psiMPa - psi50MPa))).^-1;
+%     % -m .* psi0 = psi0 + (psi1.5MPa + psi0)/2
 end
 
 
