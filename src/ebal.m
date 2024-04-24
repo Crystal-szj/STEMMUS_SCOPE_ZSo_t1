@@ -343,9 +343,9 @@ while CONT                          % while energy balance does not close
     %         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
     %         [lEcu,Hcu,ecu,Ccu,lambdau,su]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,PSI,Ca,Ciu,constants,es_fun,s_fun);
     %         [lEs,Hs,~,~,lambdas,ss]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
-            [lEch,Hch,ech,Cch,lambdah,sh, delta_eh, delta_th]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,psiLeaf,Ca,Cih,constants,es_fun,s_fun);
-            [lEcu,Hcu,ecu,Ccu,lambdau,su, delta_eu, delta_tu]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,psiLeaf,Ca,Ciu,constants,es_fun,s_fun);
-            [lEs,Hs,~,~,lambdas,ss, delta_es, delta_ts]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
+            [lEch,Hch,ech,eih, Cch,lambdah,sh, delta_eh, delta_th]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,psiLeaf,Ca,Cih,constants,es_fun,s_fun);
+            [lEcu,Hcu,ecu,eiu, Ccu,lambdau,su, delta_eu, delta_tu]     = heatfluxes(rac,rcwu,Tcu,ea,Ta,e_to_q,psiLeaf,Ca,Ciu,constants,es_fun,s_fun);
+            [lEs,Hs,~,~,~,lambdas,ss, delta_es, delta_ts]           = heatfluxes(ras,rss,Ts ,ea,Ta,e_to_q,PSIss,Ca,Ca,constants,es_fun,s_fun);
             
             [lEct,Hct,ect,Cct,lambdat,st, delta_et, delta_tt]     = heatfluxes(rac,rcw_t,Tc_t,ea,Ta,e_to_q,psiLeaf,Ca,Ci_t,constants,es_fun,s_fun);
 
@@ -560,6 +560,8 @@ rad.LotBB_  = Lot_;           % Note that this is the blackbody radiance!
 TestPHS.rssTot(KT) = rss;  % Surface resistance of soil for vapour transport
 TestPHS.racTot(KT) = rac;  % aerodynamic resistance for heat in canopy
 TestPHS.rasTot(KT) = ras;  % aerodynamic resistance for heat in soil
+TestPHS.rcwhTot(:,KT) = rcwh;  % stomatal resistance of sunlit leaf
+TestPHS.rcwuTot(:,KT) = reshape(rcwu,[],1);  % stomatal resistance of sunlit leaf
 TestPHS.rcwTot(KT) = Fc*rcwh+equations.meanleaf(canopy,rcwu,'angles_and_layers',Ps);  % stomatal resistance of sunlit leaf
 TestPHS.gamTot(KT) = GAM;
 TestPHS.delta_ecTot(KT) = Fc*delta_eh+equations.meanleaf(canopy, delta_eu, 'angles_and_layers',Ps); 

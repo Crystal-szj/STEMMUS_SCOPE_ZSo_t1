@@ -13,7 +13,7 @@
 close all;
 %% directionary and data
 % ---------- obs directionary -------------
-data_obs_dir = '../../CH_HTC_2022/Processed/CH-HTC_2022_0101_0809_v4.xlsx';
+data_obs_dir = '../../CH_HTC_2022/Processed/08_CH-HTC_2022_0101_0809_v5.xlsx';
 psiLeaf_obs_dir = '../../CH_HTC_2022/Observed/plant_water_potential.xlsx';
 sif_obs_dir = '../../CH_HTC_2022/Observed/2022_SIF.xlsx';
 

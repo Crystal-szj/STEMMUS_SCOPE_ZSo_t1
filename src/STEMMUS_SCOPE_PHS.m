@@ -507,6 +507,17 @@ diary([Output_dir,'log.txt'])
 fprintf('This is Scenario -- %s for %s_%d-%d\n',...
     Scenario,SiteProperties.siteName,SiteProperties.startyear,SiteProperties.endyear);
 fprintf('Folder          :  %s\n',Output_dir);
+fprintf('----------------- Config file ---------------------------\n');
+fprintf('forcingFileName  :  %s\n', forcingFileName);
+fprintf('numberOfTimeSteps:  %d\n', numberOfTimeSteps);
+fprintf('startDate        :  %s\n', startDate);
+fprintf('endDate          :  %s\n', endDate);
+fprintf('gsOption         :  %s\n', gsOption);
+fprintf('phsOption        :  %s\n', phwsfMethod);
+fprintf('RunningMessages  :  %s\n', RunningMessages);
+fprintf('\n');
+
+fprintf('----------------- Soil parameters ----------------------------\n')
 fprintf('R_depth: 30\n');
 fprintf('SaturatedK(cm/d):  %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedK.*3600.*24);
 fprintf('SaturatedMc:       %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',SaturatedMC);
@@ -515,12 +526,16 @@ fprintf('Coefficient_n:     %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_n
 fprintf('Coefficient_Alpha: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',Coefficient_Alpha);
 fprintf('FieldMC:           %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',fieldMC);
 fprintf('Porosity         : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',porosity);
+fprintf('\n');
 
+fprintf('----------------- Soil initial condition ---------------------------\n');
 fprintf('InitND: %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[0 InitND1 InitND2 InitND3 InitND4 InitND5 InitND6 Tot_Depth]);
 fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 InitT1 InitT2 InitT3 InitT4 InitT5 InitT6 Tss]);
 fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
+fprintf('\n');
 
 if phsOption
+    fprintf('----------------- Plant hydraulic parameters ---------------------------\n');
     fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
     fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
     fprintf('p50Root: %5.3f\n',ParaPlant.p50Root);
@@ -530,6 +545,7 @@ if phsOption
     fprintf('Krootmax: %5.1e\n',ParaPlant.Krootmax);
     fprintf('Kstemmax: %5.1e\n',ParaPlant.Kstemmax);
     fprintf('Kleafmax: %5.1e\n',ParaPlant.Kleafmax);
+    fprintf('\n');
 end
 
 fprintf('\n The calculations start now \r')
