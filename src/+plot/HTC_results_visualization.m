@@ -18,7 +18,7 @@ psiLeaf_obs_dir = '../../CH_HTC_2022/Observed/plant_water_potential.xlsx';
 sif_obs_dir = '../../CH_HTC_2022/Observed/2022_SIF.xlsx';
 
 % ---------- output directionary -------------
-figure_dir = fullfile(Output_dir, 'figures/');
+figure_dir = fullfile(Output_dir, 'figures2/');
 if ~exist (figure_dir,'dir')
     mkdir(figure_dir)
 end
@@ -279,7 +279,7 @@ ind = find(bbx==1);
 [maxV, minV] = fun_boundaries(TestPHS.psiSoilTot(ind, :));
 lineStyle = {'LineStyle','-','LineWidth',1};
 
-f1 =  figure('color','white','Units','centimeter','Position',[2,2,22,10])
+f1 =  figure('color','white','Units','centimeter','Position',[2,2,16,10])
 % set default color order of axes
 leftColor  = [0,0,0];
 rightColor = [0 0.4470 0.7410];
@@ -291,8 +291,8 @@ fill([xyt.t',fliplr(xyt.t')], [maxV, fliplr(minV)], [170,93,37]./256, 'FaceAlpha
 hold on
 plot(xyt.t, TestPHS.psiSoilTotMean, 'color',[170,93,37]./256, lineStyle{:})
 plot(xyt.t, TestPHS.psiRootTot, 'color',[0.9290 0.6940 0.1250], lineStyle{:})
-plot(xyt.t, TestPHS.psiStemTot, 'color',[0.4660 0.6740 0.1880], lineStyle{:})
-plot(xyt.t, TestPHS.psiLeafTot,'-', 'color', [0.3010 0.7450 0.9330], lineStyle{:})
+plot(xyt.t, TestPHS.psiStemTot, 'color',[0.3010 0.7450 0.9330], lineStyle{:})
+plot(xyt.t, TestPHS.psiLeafTot,'-', 'color',[0.4660 0.6740 0.1880] , lineStyle{:})
 % plot(xyt.t, TestPHS.psiAirTot , 'color', [0.3010 0.7450 0.9330], lineStyle{:})
 % plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50K_m)
 plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50H_m,'k-^','MarkerIndices',1:10:length(psiLeaf_obs.PSY50K_m), 'MarkerFaceColor',[0,0,0], 'Markersize',2)
@@ -302,16 +302,17 @@ ylabel('Soil and plant water potential (m)')
 yyaxis right
 plot(xyt.t, TestPHS.psiAirTot,'color', [0 0.4470 0.7410], lineStyle{:})
 ylim([-3e4,2e4])
-legend('psiSoilTot','psiSoilMean','psiRoot','psiStem','psiLeaf','psiStem-obs','psiAir', 'box','off','NumColumns',3,'Location','best')
+legend('psiSoilTot','psiSoilMean','psiRoot','psiStem','psiLeaf','psiStem-obs','psiAir', 'box','off','NumColumns',3,'Location','Southwest')
 
 xlabel('DoY')
 ylabel('Air water potential (m)')
 
-xlim([200,221])
+xlim([208,221])
 set(gca,'FontName','Times New Roman','FontSize',12)
-saveas(f1, fullfile(Output_dir,'figures','WaterPotentialGradients'),'fig');
-saveas(f1, fullfile(Output_dir,'figures','WaterPotentialGradients'),'png');
-%% water redistribution
+saveas(f1, fullfile(figure_dir,'WaterPotentialGradients'),'fig');
+saveas(f1, fullfile(figure_dir,'WaterPotentialGradients'),'png');
+
+%% ---------------- root zone water redistribution
 color_custom = [autumn; flipud(summer)];
 f2 = figure('color','white','Units','centimeter','Position',[2,2,18,8])
 % alphaData = ~isnan(RWUtot);
@@ -326,14 +327,14 @@ ylabels ={'1','2','3','4','5','6','8','10','12'...
 yticklabels(ylabels(1:2:29))
 
 colormap(color_custom)
-caxis([-1e-9, 1e-9]);
+caxis([-0.5e-9, 0.5e-9]);
 colorbar
 xlim([200,221])
 xlabel('DoY')
 ylabel('Soil Depth (cm)')
 set(gca,'FontName','Times New Roman','FontSize',12)
-saveas(f2, fullfile(Output_dir,'figures','WaterRedistribution'),'fig');
-saveas(f2, fullfile(Output_dir,'figures','WaterRedistribution'),'png');
+saveas(f2, fullfile(figure_dir,'WaterRedistribution'),'fig');
+saveas(f2, fullfile(figure_dir,'WaterRedistribution'),'png');
 %%
 % plot plant water potential of components
 labelFormat = {'FontWeight','bold'};
@@ -374,7 +375,7 @@ set(gca,'FontName','Times New Roman','FontSize',12)
 % psiRootTot_MPa = TestPHS.psiRootTot.*9810./1e6;
 % psiSoilTotMean_MPa = TestPHS.psiSoilTotMean.*9810./1e6;
 lineStyle = {'LineWidth',1};
-f_lwp2 = figure('color','white','Units','centimeter','Position',[2,2,20,13]);
+f_lwp2 = figure('color','white','Units','centimeter','Position',[2,2,15,10]);
 
 semilogy(doy,TestPHS.psiAirTot,lineStyle{:})
 hold on
@@ -383,24 +384,25 @@ semilogy(doy,TestPHS.psiStemTot,lineStyle{:})
 semilogy(doy,TestPHS.psiRootTot,lineStyle{:})
 semilogy(doy,TestPHS.psiSoilTotMean,lineStyle{:})
 semilogy(psiLeaf_obs.DoY,psiLeaf_obs.PSY50K_m,'k-^','MarkerIndices',1:10:length(psiLeaf_obs.PSY50K_m), 'MarkerFaceColor',[0,0,0], 'Markersize',2);
-semilogy(psiLeaf_obs.DoY, psiLeaf_obs.PSY50H_m,'k-o','MarkerIndices',1:10:length(psiLeaf_obs.PSY50H_m), 'MarkerFaceColor',[0,0,0], 'Markersize',2 );
+% semilogy(psiLeaf_obs.DoY, psiLeaf_obs.PSY50H_m,'k-o','MarkerIndices',1:10:length(psiLeaf_obs.PSY50H_m), 'MarkerFaceColor',[0,0,0], 'Markersize',2 );
 
 
 
-legend('air','leaf','stem','root','soil', 'obs stem1','obs stem2','box','off','NumColumns',2)
-ylim([-1e5,-1e-2])
+% legend('air','leaf','stem','root','soil', 'obs stem1','obs stem2','box','off','NumColumns',2)
+legend('\psi_{air}','\psi_{leaf}','\psi_{stem}','\psi_{root}','\psi_{soil}', 'Observed \psi_{stem}','box','off','NumColumns',2)
+ylim([-1e5,-1e-0])
 xlabel('DoY',labelFormat{:})
 ylabel('Water potantial (m)',labelFormat{:})
 set(gca,'FontName','Times New Roman','FontSize',12)
 
-saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_8month'),'png')
-saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_8month'),'fig')
+% saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_8month'),'png')
+% saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_8month'),'fig')
 
-xlim([193,225])
+xlim([208,221])
 saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_July'),'png')
 saveas(f_lwp2,fullfile(figure_dir,'plant_water_potential_gradients_July'),'fig')
 
-close(f_lwp2)
+% close(f_lwp2)
 %% plant hydraulic conductance
 f_k = figure('color','white','Units','centimeter','Position',[2,1,20,8]);
 plot(doy, TestPHS.kSoil2RootTotMean)
@@ -544,54 +546,54 @@ set(gca,'FontName','Times New Roman','FontSize',12)
 
 saveas(f_rad,[figure_dir,'radiation',],'png')
 close(f_rad)
-%%
-f_psi_phwsf = figure
-subplot(3,3,1)
-plot(xyt.t, TestPHS.psiRootTot)
-ylabel('psiRoot')
-
-subplot(3,3,2)
-plot(xyt.t, TestPHS.psiStemTot)
-ylabel('psiStem')
-
-subplot(3,3,3)
-plot(xyt.t, TestPHS.psiLeafTot)
-ylabel('psiLeaf')
-
-subplot(3,3,4)
-plot(xyt.t, TestPHS.phwsfRootTot)
-ylabel('phwsfRoot')
-
-subplot(3,3,5)
-plot(xyt.t, TestPHS.phwsfStemTot)
-ylabel('phwsfStem')
-
-subplot(3,3,6)
-plot(xyt.t, TestPHS.phwsfTot)
-ylabel('phwsfLeaf')
-
-subplot(3,3,7)
-scatter(TestPHS.psiRootTot, TestPHS.phwsfStemTot, '.')
-xlim([-800,0])
-ylim([0,1])
-xlabel('psiRoot')
-ylabel('phwsfStem')
-
-subplot(3,3,8)
-scatter(TestPHS.psiStemTot, TestPHS.phwsfTot, '.')
-xlim([-800,0])
-ylim([0,1])
-xlabel('psiStem')
-ylabel('phwsf')
-
-subplot(3,3,9)
-scatter(TestPHS.psiLeafTot, TestPHS.phwsfTot, '.')
-xlim([-800,0])
-ylim([0,1])
-xlabel('psiLeaf')
-ylabel('phwsf')
-saveas(f_psi_phwsf,fullfile(Output_dir, 'figures','psi_phwsf'),'png');
-saveas(f_psi_phwsf,fullfile(Output_dir, 'figures','psi_phwsf'),'fig');
+% %%
+% f_psi_phwsf = figure
+% subplot(3,3,1)
+% plot(xyt.t, TestPHS.psiRootTot)
+% ylabel('psiRoot')
+% 
+% subplot(3,3,2)
+% plot(xyt.t, TestPHS.psiStemTot)
+% ylabel('psiStem')
+% 
+% subplot(3,3,3)
+% plot(xyt.t, TestPHS.psiLeafTot)
+% ylabel('psiLeaf')
+% 
+% subplot(3,3,4)
+% plot(xyt.t, TestPHS.phwsfRootTot)
+% ylabel('phwsfRoot')
+% 
+% subplot(3,3,5)
+% % plot(xyt.t, TestPHS.phwsfStemTot)
+% ylabel('phwsfStem')
+% 
+% subplot(3,3,6)
+% plot(xyt.t, TestPHS.phwsfTot)
+% ylabel('phwsfLeaf')
+% 
+% subplot(3,3,7)
+% scatter(TestPHS.psiRootTot, TestPHS.phwsfStemTot, '.')
+% xlim([-800,0])
+% ylim([0,1])
+% xlabel('psiRoot')
+% ylabel('phwsfStem')
+% 
+% subplot(3,3,8)
+% scatter(TestPHS.psiStemTot, TestPHS.phwsfTot, '.')
+% xlim([-800,0])
+% ylim([0,1])
+% xlabel('psiStem')
+% ylabel('phwsf')
+% 
+% subplot(3,3,9)
+% scatter(TestPHS.psiLeafTot, TestPHS.phwsfTot, '.')
+% xlim([-800,0])
+% ylim([0,1])
+% xlabel('psiLeaf')
+% ylabel('phwsf')
+% saveas(f_psi_phwsf,fullfile(Output_dir, 'figures','psi_phwsf'),'png');
+% saveas(f_psi_phwsf,fullfile(Output_dir, 'figures','psi_phwsf'),'fig');
 
 
 %% fun_boundaries
