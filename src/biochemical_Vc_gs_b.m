@@ -257,9 +257,9 @@ else
 end
 
  % electron transport and fluorescence
-Kf          = 0.05;             % []            rate constant for fluorescence
+Kf          = 0.1;             % []            rate constant for fluorescence
 %Kd          = 0.95;             % []           rate constant for thermal deactivation at Fm
-Kd          = max(0.8738,  0.0301*(T-273.15)+ 0.0773);
+Kd          = 0.9; %max(0.8738,  0.0301*(T-273.15)+ 0.0773);
 Kp          = 4.0;              % []            rate constant for photochemisty
 
 % note:  rhoa/Mair = L/mol (with the current units) = 24.039 L/mol
