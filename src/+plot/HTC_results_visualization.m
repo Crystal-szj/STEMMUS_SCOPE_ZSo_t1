@@ -61,8 +61,10 @@ sif_sim = readtable(sif_sim_dir, opts_sim_sif);
 
 % obs
 opts_data_obs = detectImportOptions(data_obs_dir);
-opts_sim_sm.VariableNamesLine = 1;
-opts_sim_sm.DataLines = [2,10609];
+% opts_data_obs.VariableNamesLine = 1;
+opts_data_obs.VariableTypes{77} = 'double';
+opts_data_obs.VariableTypes{78} = 'double';
+% opts_data_obs.DataLines = [2,10609];
 data_obs = readtable(data_obs_dir, opts_data_obs);
 
 opts_psiLeaf = detectImportOptions(psiLeaf_obs_dir);
@@ -312,10 +314,54 @@ set(gca,'FontName','Times New Roman','FontSize',12)
 saveas(f1, fullfile(figure_dir,'WaterPotentialGradients'),'fig');
 saveas(f1, fullfile(figure_dir,'WaterPotentialGradients'),'png');
 
+%% water potential gradient v2
+ind = find(bbx==1);
+% find root zone soil water potential range
+[maxV, minV] = fun_boundaries(TestPHS.psiSoilTot(ind, :));
+lineStyle = {'LineStyle','-','LineWidth',1};
+
+f1 =  figure('color','white','Units','centimeter','Position',[2,2,16,10])
+[ax,hlines] = plot.plotyyy(xyt.t,TestPHS.psiSoilTotMean,xyt.t,TestPHS.psiLeafTot,xyt.t,TestPHS.psiAirTot, {'Soil Water Potential','Leaf','Air'})
+hold on
+plot(ax(2), xyt.t, TestPHS.psiStemTot)
+linkaxes(ax,'x')
+% % set default color order of axes
+% leftColor  = [0,0,0];
+% rightColor = [0 0.4470 0.7410];
+% set(f1, 'defaultAxesColorOrder',[leftColor; rightColor]);
+% 
+% % axis left
+% yyaxis left
+% fill([xyt.t',fliplr(xyt.t')], [maxV, fliplr(minV)], [170,93,37]./256, 'FaceAlpha', 0.3, 'EdgeColor', 'none')
+% hold on
+% plot(xyt.t, TestPHS.psiSoilTotMean, 'color',[170,93,37]./256, lineStyle{:})
+% plot(xyt.t, TestPHS.psiRootTot, 'color',[0.9290 0.6940 0.1250], lineStyle{:})
+% plot(xyt.t, TestPHS.psiStemTot, 'color',[0.3010 0.7450 0.9330], lineStyle{:})
+% plot(xyt.t, TestPHS.psiLeafTot,'-', 'color',[0.4660 0.6740 0.1880] , lineStyle{:})
+% % plot(xyt.t, TestPHS.psiAirTot , 'color', [0.3010 0.7450 0.9330], lineStyle{:})
+% % plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50K_m)
+% plot(psiLeaf_obs.DoY, psiLeaf_obs.PSY50H_m,'k-^','MarkerIndices',1:10:length(psiLeaf_obs.PSY50K_m), 'MarkerFaceColor',[0,0,0], 'Markersize',2)
+% ylim([-1000,0])
+% ylabel('Soil and plant water potential (m)')
+% 
+% yyaxis right
+% plot(xyt.t, TestPHS.psiAirTot,'color', [0 0.4470 0.7410], lineStyle{:})
+% ylim([-3e4,2e4])
+% legend('psiSoilTot','psiSoilMean','psiRoot','psiStem','psiLeaf','psiStem-obs','psiAir', 'box','off','NumColumns',3,'Location','Southwest')
+% 
+% xlabel('DoY')
+% ylabel('Air water potential (m)')
+% 
+% xlim([208,221])
+% set(gca,'FontName','Times New Roman','FontSize',12)
+% saveas(f1, fullfile(figure_dir,'WaterPotentialGradients'),'fig');
+% saveas(f1, fullfile(figure_dir,'WaterPotentialGradients'),'png');
 %% ---------------- root zone water redistribution
 color_custom = [autumn; flipud(summer)];
 f2 = figure('color','white','Units','centimeter','Position',[2,2,18,8])
 % alphaData = ~isnan(RWUtot);
+waterRedis = NaN(size(RWUtot));
+waterRedis = (RWUtot<0) .* RWUtot;
 alphaData = ~(flipud(RWUtot)==0);
 % imagesc(xyt.t,flipud(soilDepth), RWUtot,'AlphaData', alphaData)
 % imagesc(xyt.t,soilDepth, flipud(RWUtot))%,'AlphaData', alphaData)
