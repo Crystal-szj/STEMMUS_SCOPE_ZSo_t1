@@ -724,10 +724,15 @@ function [eta,qE,qQ,fs,fo,fm,fo0,fm0,Kn] = Fluorescencemodel(ps,x, Kp,Kf,Kd,Knpa
 
     fo0         = Kf./(Kf+Kp+Kd);        % dark-adapted fluorescence yield Fo,0
     fo          = Kf./(Kf+Kp+Kd+Kn);     % light-adapted fluorescence yield in the dark Fo
-    fm          = Kf./(Kf   +Kd+Kn);     % light-adapted fluorescence yield Fm
-    fm0         = Kf./(Kf   +Kd);        % dark-adapted fluorescence yield Fm
-    fs          = fm.*(1-ps);            % steady-state (light-adapted) yield Ft (aka Fs)
-    eta         = fs./fo0;
+    fm          = Kf./(Kf   +Kd+Kn);     % light-adapted fluorescence yield Fm: \Phi'_{Fm}
+    fm0         = Kf./(Kf   +Kd);        % dark-adapted fluorescence yield Fm: \Phi_{Fm}
+    fs          = fm.*(1-ps);            % steady-state (light-adapted) yield Ft (aka Fs) \Phi_{Ft} = \Phi'_{Fm}*(1-\Phi_p)
+    
+    % eta = Fs/Fo: the ratio providing inslights into the relative levels of
+    % steady-state fluorescence compared to the baseline. Helping to
+    % understand the efficiency and regulation of the photosynthetic
+    % apparatus.
+    eta         = fs./fo0;               
     qQ          = 1-(fs-fo)./(fm-fo);    % photochemical quenching
     qE          = 1-(fm-fo)./(fm0-fo0);  % non-photochemical quenching
 
