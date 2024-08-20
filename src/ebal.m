@@ -337,7 +337,7 @@ while CONT                          % while energy balance does not close
     rcw_t = Fc*rcwh + equations.meanleaf(canopy,rcwu,'angles_and_layers',Ps);
     Tc_t = Fc*Tch + equations.meanleaf(canopy,Tcu,'angles_and_layers',Ps);
     Ci_t = Fc*Cih + equations.meanleaf(canopy,Ciu,'angles_and_layers',Ps);
-    if options.plantHydraulics
+    if (options.plantHydraulics == 1 | options.plantHydraulics ==2)
     % ====================== PHS open ==============================
         for i=1:30
     %         [lEch,Hch,ech,Cch,lambdah,sh]     = heatfluxes(rac,rcwh,Tch,ea,Ta,e_to_q,PSI,Ca,Cih,constants,es_fun,s_fun);
@@ -484,7 +484,15 @@ while CONT                          % while energy balance does not close
                 break
             end
             psiLeaf  = 0.5 * (psiLeaf + psiLeaf_temp);
+        end % end of for 1:30 loop
+
+        if options.plantHydraulics == 3
+            phwsf = PlantHydraulicsStressFactor(psiLeaf, ParaPlant.p50Leaf, ParaPlant.shapeFactorLeaf, ParaPlant.phwsfMethod);
         end
+
+
+
+
         TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
         TestPHS.psiSoilTotMean(KT) = sum(psiSoil.*bbx)/sum(bbx);
         TestPHS.psiLeafTot(KT) = psiLeaf;

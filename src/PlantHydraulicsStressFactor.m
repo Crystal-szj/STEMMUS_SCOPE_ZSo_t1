@@ -38,11 +38,9 @@ function phwsf = PlantHydraulicsStressFactor(psi, psi50, shapeFactor, phwsfMetho
         case 'ED2'
             aED2  = shapeFactor;   % shape factor in ED2 scheme
             phwsf =  ED2(psi, psi50, aED2);
-        case 'STEMMUS-SCOPE'
+        case 'PHSWSF'
             mPHS  = shapeFactor;   % shape factor in STEMMUS-SCOPE-PHS
-            p0 = -0.33; 
-            phwsf = PHS(psi, psi50, mPHS)       
-%         case ''
+            phwsf = PHS(psi, psi50, mPHS);    
         otherwise
             phwsf = NaN;
             fprintf('phwsf method need to be defined\n.')
@@ -74,6 +72,22 @@ function phwsf = ED2(psi, psi50, a)
     phwsf = (1+(psi./psi50).^a).^-1;
 end
 
+% 
+% function phwsf = PHS(psi, psi50, m)
+% %{
+%     A new plant water stress function format based on soil water stress
+%     factor. Since the observed plant water potential with the unit of MPa,
+%     thus, we translate the unit from m to MPa at first. Then use curve
+%     fitting to retrive the parameters.
+% %}
+%     m2MPa = 1*9810/1e6;
+%     psiMPa = psi .* m2MPa;
+%     psi50MPa  = psi50 .* m2MPa;
+%     psi0  = -0.33; % psi0 is p0, we use the soil water potential at the field capacity to represent this value.
+%     % -m .* psi0 = psi0 + (psi1.5MPa + psi0)/2
+%     phwsf = (1+exp(-m .* psi0 * (psiMPa - psi50MPa))).^-1;
+% %     % -m .* psi0 = psi0 + (psi1.5MPa + psi0)/2
+% end
 
 function phwsf = PHS(psi, psi50, m)
 %{
@@ -83,12 +97,8 @@ function phwsf = PHS(psi, psi50, m)
     fitting to retrive the parameters.
 %}
     m2MPa = 1*9810/1e6;
-    psiMPa = psi .* m2MPa;
-    psi50MPa  = psi50 .* m2MPa;
-    psi0  = -0.33; % psi0 is p0, we use the soil water potential at the field capacity to represent this value.
-    % -m .* psi0 = psi0 + (psi1.5MPa + psi0)/2
-    phwsf = (1+exp(-m .* psi0 * (psiMPa - psi50MPa))).^-1;
-%     % -m .* psi0 = psi0 + (psi1.5MPa + psi0)/2
+    psi0  = -0.33 ./m2MPa; % psi0 is p0, we use the soil water potential at the field capacity to represent this value.
+    phwsf = (1+exp(m .* 1./psi0 * (psi - psi50))).^-1;
 end
 
 

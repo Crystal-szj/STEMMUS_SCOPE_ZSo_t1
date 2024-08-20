@@ -50,7 +50,7 @@ function [biochemical, gsMethod, phwsfMethod] = setScenario(gsOption, phsOption)
             case 2
                 phwsfMethod = 'ED2';
             case 3
-                phwsfMethod = 'PHS';
+                phwsfMethod = 'PHSWSF';
             otherwise
                 fprintf('Please set phsOption\n');
         end

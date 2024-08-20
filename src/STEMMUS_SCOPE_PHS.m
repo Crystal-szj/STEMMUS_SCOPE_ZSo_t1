@@ -169,7 +169,7 @@ end
 
 if options.simulation>2 || options.simulation<0, fprintf('\n simulation option should be between 0 and 2 \r'); return, end
 
-options.plantHydraulics = phsOption;  % Indicating whether to use PHS: 1 for CLM5 scheme, 2 for ED2 ; 0 PHS close.
+options.plantHydraulics = phsOption;  % Indicating whether to use PHS: 1 for CLM5 scheme, 2 for ED2 ; 3 for PHSWSF; 0 PHS close.
 options.gsMethod = gsMethod; % 1 for BallBerry; 2 for Medlyn
 
 %% 3. file names
@@ -534,7 +534,7 @@ fprintf('InitT : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitT0 Init
 fprintf('InitX : %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n',[InitX0 InitX1 InitX2 InitX3 InitX4 InitX5 InitX6 BtmX]);
 fprintf('\n');
 
-if phsOption
+if (phsOption == 1 | phsOption ==2)
     fprintf('----------------- Plant hydraulic parameters ---------------------------\n');
     fprintf('p50Leaf: %5.3f\n',ParaPlant.p50Leaf);
     fprintf('p50Stem: %5.3f\n',ParaPlant.p50Stem);
