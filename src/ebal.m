@@ -695,7 +695,7 @@ thermal.Tch   = Tch;
 fluxes.Au     = Au;
 fluxes.Ah     = Ah;
 
-if options.plantHydraulics
+if (options.plantHydraulics == 1 |options.plantHydraulics == 2)
     RWU = rootWaterUptake;
 else 
     RWU =(psiSoil - psiLeaf)./(rsss+rrr+rxx).*bbx;
