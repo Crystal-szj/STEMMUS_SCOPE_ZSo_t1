@@ -62,8 +62,8 @@ sif_sim = readtable(sif_sim_dir, opts_sim_sif);
 % obs
 opts_data_obs = detectImportOptions(data_obs_dir);
 % opts_data_obs.VariableNamesLine = 1;
-opts_data_obs.VariableTypes{77} = 'double';
-opts_data_obs.VariableTypes{78} = 'double';
+opts_data_obs.VariableTypes{75} = 'double';
+opts_data_obs.VariableTypes{76} = 'double';
 % opts_data_obs.DataLines = [2,10609];
 data_obs = readtable(data_obs_dir, opts_data_obs);
 
