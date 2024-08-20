@@ -39,7 +39,7 @@ disp (['Reading config from ',CFG])
 [DataPaths, forcingFileName, numberOfTimeSteps, startDate, endDate, gsOption, phsOption, RunningMessages] = io.read_config(CFG);
 
 % set soil temperature boundary condition
-load([DataPaths.input, 'soilTempInitial.mat'], 'soilTempInitial');
+% load([DataPaths.input, 'soilTempInitial.mat'], 'soilTempInitial');
 
 % Prepare forcing data
 global IGBP_veg_long latitude longitude reference_height canopy_height sitename DELT Dur_tot
