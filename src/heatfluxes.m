@@ -1,4 +1,4 @@
-function [lE, H, ec, ei, Cc, lambda, s, delta_e, delta_t]  = heatfluxes(ra,rs,Tc,ea,Ta,e_to_q,PSI,Ca,Ci,constants,es_fun,s_fun)
+function [lE, H, ec, Cc, lambda, s, delta_e, delta_t]  = heatfluxes(ra,rs,Tc,ea,Ta,e_to_q,PSI,Ca,Ci,constants,es_fun,s_fun)
 
 rhoa = constants.rhoa;
 cp   = constants.cp;
