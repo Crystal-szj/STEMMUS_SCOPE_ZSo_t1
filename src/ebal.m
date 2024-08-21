@@ -496,6 +496,7 @@ while CONT                          % while energy balance does not close
         TestPHS.psiSoilTot(:,KT) = psiSoil;  % psiSoil
         TestPHS.psiSoilTotMean(KT) = sum(psiSoil.*bbx)/sum(bbx);
         TestPHS.psiLeafTot(KT) = psiLeaf;
+        TestPHS.phwsfTot(KT) = phwsf;
     end 
     PSItot(KT)=psiLeaf;
     % ======================================================================
