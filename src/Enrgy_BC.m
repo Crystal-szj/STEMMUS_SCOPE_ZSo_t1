@@ -1,5 +1,6 @@
-function [RHS,C5,C5_a]=Enrgy_BC(RHS,KT,NN,c_L,RHOL,QMB,SH,Precip,L,L_ts,NBCTB,NBCT,BCT,BCTB,DSTOR0,Delt_t,T,Ts,Ta,EVAP,C5,C5_a,r_a_SOIL,Resis_a,Tbtm,c_a,Rn_SOIL)
-global Tss Tsur Tsss
+function [RHS,C5,C5_a]=Enrgy_BC(RHS,KT,NN,c_L,RHOL,QMB,SH,Precip,L,L_ts,NBCTB,NBCT,BCT,BCTB,DSTOR0,Delt_t,T,Ts,Ta,EVAP,C5,C5_a,r_a_SOIL,Resis_a,Tbtm,c_a,Rn_SOIL, soilTempInitial)
+global Tss Tsur Tsss 
+% global soilTempInitial
 Tsur(KT)=Tss;
 %%%%%%%%% Apply the bottom boundary condition called for by NBCTB %%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,11 +19,12 @@ end
 %%%%%%%%%% Apply the surface boundary condition called by NBCT %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if NBCT==1
-    if isreal(Tss)
-        RHS(NN)=Tss;%BCT;%30;
-    else
-        RHS(NN)=Ta(KT);
-    end
+    RHS(NN) = soilTempInitial(KT);
+%     if isreal(Tss)
+%         RHS(NN)=Tss;%BCT;%30;
+%     else
+%         RHS(NN)=Ta(KT);
+%     end
     C5(NN,1)=1;
     RHS(NN-1)=RHS(NN-1)-C5(NN-1,2)*RHS(NN);
     C5(NN-1,2)=0;
